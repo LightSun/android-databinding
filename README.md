@@ -27,9 +27,6 @@ this framework.
 ## hope
 i like technology. especially the open-source technology.And previous i didn't contribute to it caused by i am a little lazy, but now i really want to do some for the open-source. So i hope to share and communicate with the all of you.
 
-## hope
-i like technology. especially the open-source technology.And previous i didn't contribute to it caused by i am a little lazy, but now i really want to do some for the open-source. So i hope to share and communicate with the all of you.
-
 ## how to use or demo ?
 gradle config will support latter. 
 ``` java
