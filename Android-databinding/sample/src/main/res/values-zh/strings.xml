@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Android-databinding</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="change_data_by_handler">点击或者长按 me 更换数据（by DataBinding方式） </string>
+    <string name="change_data_by_traditional">点击或者长按 me 更换数据（by 传统方式） </string>
+</resources>

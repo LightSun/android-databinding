@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Android-databinding</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="change_data_by_handler">click or onLongClick me to change text(by DataBinding) </string>
+    <string name="change_data_by_traditional">click or onLongClick me to change text(by traditional) </string>
+</resources>

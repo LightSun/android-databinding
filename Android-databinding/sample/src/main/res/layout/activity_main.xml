@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    >
+    <Button
+        android:id="@+id/bt0"
+        android:text="@string/change_data_by_handler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:padding="5dp"
+        />
+
+    <Button
+        android:id="@+id/bt"
+        android:text="@string/hello_world"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:padding="5dp"
+        />
+
+    <Button
+        android:id="@+id/bt2"
+        android:text="@string/hello_world"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:padding="5dp"
+        />
+
+    <Button
+        android:id="@+id/bt3"
+        android:text="@string/hello_world"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:padding="5dp"
+        />
+
+    <Button
+        android:id="@+id/bt100"
+        android:text="@string/change_data_by_traditional"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:padding="5dp"
+        />
+
+</LinearLayout>
