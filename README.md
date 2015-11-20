@@ -2,8 +2,8 @@
 this is the databinding framework of android .help to binding data to the view. this is similar to google's databinding .
 
 ## Why I developed this ?
-at google-io-2015. android databindingnow can be used, it have some bugs, even if this is not the reason. because i think the engineer of google's is one of the  best of the world. so it can be better and better i believe.  I absolutely can not be compared with them. but i don't like to writing databinding expression in android layout file. so I developed 
-this fraamework. 
+at google-io-2015. android databindingnow can be used, it have some bugs, even if this is not the reason. because i think the engineer of google's is one of the  best of the world. so it can be better and better i believe.  I absolutely can not be compared with them. but i don't like to writing databinding expression in android layout file(in javaweb I hate it too ). so I developed 
+this framework. 
 
 ## Features
 - support for bind data and event handler by xml. but you must call bind method in java code.
