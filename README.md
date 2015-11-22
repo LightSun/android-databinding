@@ -8,13 +8,11 @@ this framework.
 ## Features
 - support for bind data and event handler by xml. but you must call bind method in java code.
 - support for notify data change.
-- Support for custom attributes
+- Support for custom attr and listener
 - adapter bind data ? will support latter.
 
 ## TODO
-   * other idea
-   * to support custom event handler 
-   * to support adapter
+   * to support bind   adapter
    
 ## issue
    * if you have a good suggestion  about this, please tell me. Thanks! 
