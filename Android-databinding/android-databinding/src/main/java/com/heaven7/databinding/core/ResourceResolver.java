@@ -13,7 +13,7 @@ import com.heaven7.databinding.util.ResourceUtil;
  * like <pre>{@color/xxxx} </pre>
  * Created by heaven7 on 2015/10/27.
  */
-public abstract class ResourceResolver {
+/*public*/ abstract class ResourceResolver {
 
     private static final String BIG_QUOTE_LEFT  = ExpressionParser.BRACKET_BIG_LEFT+"";
     private static final String BIG_QUOTE_RIGHT = ExpressionParser.BRACKET_BIG_RIGHT+"";

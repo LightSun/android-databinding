@@ -20,6 +20,7 @@ public interface IDataBinder{
      * @param id  the view id
      * @param propertyName the property name of view
      * @param cacheData  true to cache it for later call {@link #notifyDataSetChanged(int)} or {@link #notifyDataSetChanged(int, String)}
+     * false otherwise.
      * @param datas  the data to bind
      */
     void bind(int id, String propertyName, boolean cacheData, Object... datas);
@@ -28,7 +29,7 @@ public interface IDataBinder{
      * bind the data to target view of id
      * @param id  the view id
      * @param cacheData  true to cache it for later call
-     *     {@link #notifyDataSetChanged(int)} or {@link #notifyDataSetChanged(int, String)}
+     *     {@link #notifyDataSetChanged(int)} or {@link #notifyDataSetChanged(int, String)} false otherwise.
      * @param datas  the data to bind
      */
     void bind(int id, boolean cacheData, Object... datas);

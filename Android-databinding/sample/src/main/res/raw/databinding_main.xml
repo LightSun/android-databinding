@@ -16,9 +16,27 @@
     </bind>
 
     <bind variable="user">
-        <property id ="bt2" name="text"  valueType="string">@{user.username}</property>
+        <property id ="bt2" name="text" >@{user.username}</property>
         <property id ="bt3" name="text" >user.getNickname()</property>
     </bind>
+
+    <!-- 待验证,,, -->
+    <bindList id="lv">
+        <item layout="item_xxx" tag = "1">
+            <bind id="bt">
+                <property name="text" referVariable="user" >@{user.username}</property>
+                <property name="textColor" referVariable="user" >user.male ? {@color/red} : {@color/random}</property>
+                <property name="onClick" referVariable="user,mainHanlder" >mainHanlder.onClickChangeUsername(user)</property>
+            </bind>
+        </item>
+        <item layout="item_xxx2" tag="2">
+            <bind id="bt">
+                <property name="text" referVariable="user" >@{user.username}</property>
+                <property name="textColor" referVariable="user" >user.male ? {@color/red} : {@color/random}</property>
+                <property name="onClick" referVariable="user,mainHanlder" >mainHanlder.onClickChangeUsername(user)</property>
+            </bind>
+        </item>
+    </bindList>
 
 
 </DataBinding>

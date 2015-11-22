@@ -42,14 +42,21 @@ public class MainActivity extends AppCompatActivity {
         v.setOnClickListener(mOnclickChangeDataListener);
         v.setOnLongClickListener(mOnLongClickListener);
 
+        doBind();
+    }
+
+    private void doBind() {
+        //init DataBinder
         mDataBinder = new DataBinder(this, R.raw.databinding_main);
 
+        //bind a User and cache it for latter call notify.
         mDataBinder.bind(R.id.bt, true, mUser = new User("heaven7", false));
 
+        //bind onClick event and onLongClick event and not cache any data
         mDataBinder.bind(R.id.bt0, false, mUser,new MainEventHandler(mDataBinder));
 
+        //bind a data to multi views. but not cache
         mDataBinder.bind(new User("joker", true,"xxx_joker"));
-
     }
 
     @Override
@@ -61,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
         return true;
     }
 

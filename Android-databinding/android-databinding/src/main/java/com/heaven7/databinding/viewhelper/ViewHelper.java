@@ -24,6 +24,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.text.TextWatcher;
 import android.text.util.Linkify;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -37,7 +38,7 @@ import com.android.volley.extra.ExpandNetworkImageView;
 import com.android.volley.extra.RoundedBitmapBuilder;
 
 /**
- * for better use same view's method. cached it automatic for reuse.
+ * for better use same view's mMethod. cached it automatic for reuse.
  * @author heaven7
  *
  */
@@ -83,6 +84,10 @@ public class ViewHelper {
 
 	public void clearCache(){
 		mViewMap.clear();
+	}
+
+	public ViewHelper addTextChangedListener(int viewId ,TextWatcher watcher){
+		return view(viewId).addTextChangedListener(watcher).reverse(this);
 	}
 
 	public ViewHelper setText(int viewId,CharSequence text){

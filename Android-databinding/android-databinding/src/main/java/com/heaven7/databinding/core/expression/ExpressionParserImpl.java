@@ -56,8 +56,8 @@ class ExpressionParserImpl implements IResetable {
 
 	/**
 	 * 
-	 * @param str   the string to parse. "xxx.xxx()..." indicate is method param
-	 * @param isMethodParam  is the param of method.
+	 * @param str   the string to parse. "xxx.xxx()..." indicate is mMethod param
+	 * @param isMethodParam  is the param of mMethod.
 	 * @throws ExpressionParseException
 	 */
 	public static List<IExpression> parse(String str,boolean isMethodParam)
@@ -232,7 +232,7 @@ class ExpressionParserImpl implements IResetable {
 				break;
 			}
 		}
-		//method param
+		//mMethod param
 		if(isMethodParam){
 			// one "," indicate two param. but previous only add one
 			exprs.add( parse( str.substring(lastCommaIndex +1), false).get(0));
@@ -289,7 +289,7 @@ class ExpressionParserImpl implements IResetable {
 						).get(0) :null)
 				 //.setArrayIndex(arrayIndex)
 			     //.setNextAccessInfo(nextAccessInfo)
-			     // .setHolder(holder)
+			     // .setHolder(mHolder)
 			     .build();
 			
 			if(i == 0){

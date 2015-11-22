@@ -19,7 +19,7 @@ public interface IDataResolver extends IVariableResolver,IResetable {
     /**@param variable  may be static classname */
     String getClassname(String variable) throws DataBindException;
 
-    //may burden,method must be public
+    //may burden,mMethod must be public
     List<Method> getMethod(Class<?> clazz, String methodname) throws DataBindException;
 
    // IDataBinder getDataBinder();
@@ -34,10 +34,10 @@ public interface IDataResolver extends IVariableResolver,IResetable {
      */
     interface IEventEvaluateCallback{
         /**
-         * @param holder the Method's holder
-         * @param method  the method to invoke while event is occoured.
+         * @param holder the Method's mHolder
+         * @param method  the mMethod to invokeCallback while event is occoured.
          * @param v    the event on which view
-         * @param params  the params to transfer to method
+         * @param params  the mParams to transfer to mMethod
          */
         void onEvaluateCallback(Object holder,Method method,View v,Object...params);
     }

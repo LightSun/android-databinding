@@ -7,7 +7,7 @@ import com.heaven7.databinding.util.IResetable;
 /*public*/ class ExpressionInfo implements IResetable {
 
 	public String staticClassname; //may null
-	public String accessName;      //may be field /method 
+	public String accessName;      //may be field /mMethod
 	public String variableName; 
 	
 	public int miniBracketLeftIndex    = ExpressionParser.INVALID_INDEX;

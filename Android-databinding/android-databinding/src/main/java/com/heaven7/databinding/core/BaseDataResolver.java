@@ -14,12 +14,12 @@ import java.util.List;
 /**
  * Created by heaven7 on 2015/8/25.
  */
-public abstract class BaseDataResolver implements IDataResolver{
+/*public*/ abstract class BaseDataResolver implements IDataResolver{
 
     private ObjectMap<String, String> mClassnameMap;
     private ObjectMap<String, Object> mObjectMap;
 
-    private ObjectMap<String, List<Method>> mMethodsMap; //key = method name
+    private ObjectMap<String, List<Method>> mMethodsMap; //key = mMethod name
     private ObjectMap<String, Field> mFiledMap;          //key = field name
 
     private List<String> mEventHandleVariables;

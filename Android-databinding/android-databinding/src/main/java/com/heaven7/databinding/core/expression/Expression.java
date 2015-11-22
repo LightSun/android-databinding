@@ -20,7 +20,7 @@ public class Expression implements IExpression {
 
 	static final boolean sDebug = ExpressionParser.sDebug;
 
-//eg: list.get(0) .name    holder = concrete list,accessName = get .isMethod = true, arrayIndex = 0
+//eg: list.get(0) .name    mHolder = concrete list,accessName = get .isMethod = true, arrayIndex = 0
 	// user
 
 	public static final int INVALID_INDEX = -1;
@@ -37,7 +37,7 @@ public class Expression implements IExpression {
 
 	private Expression mNextAccessInfo;
 
-	// used for method access
+	// used for mMethod access
 	private List<IExpression> mParamAccessInfos;
 
 	public Object getHolder(){
@@ -61,7 +61,7 @@ public class Expression implements IExpression {
 	public String getStaticAccessClassname() {
 		return mStaticAccessClassname;
 	}
-	/** get the expressions,used for the param of method */
+	/** get the expressions,used for the param of mMethod */
 	public List<IExpression> getParamAccessInfos() {
 		return mParamAccessInfos;
 	}
@@ -141,7 +141,7 @@ public class Expression implements IExpression {
 
 	@Override
 	public String toString() {
-		return "Expression [variable=" + mVariable + ", holder=" + mHolder
+		return "Expression [variable=" + mVariable + ", mHolder=" + mHolder
 				+ ", staticAccessClassname=" + mStaticAccessClassname
 				+ ", accessName=" + mAccessName + ", isMethod=" + mIsMethod
 				+ ", arrayIndex=" + mArrayIndex + ", nextAccessInfo="
@@ -153,7 +153,7 @@ public class Expression implements IExpression {
 		try {
 			if(sDebug){
 				System.out.println("============== begin call ---> evaluate(IDataResolver) ===========");
-				System.out.println("holder           = " +mHolder);
+				System.out.println("mHolder           = " +mHolder);
 				System.out.println("staticClassname  = " +mStaticAccessClassname);
 				System.out.println("variable         = " +mVariable);
 				System.out.println("accessName       = " +mAccessName);
@@ -178,7 +178,7 @@ public class Expression implements IExpression {
 						dataResolver.resolveVariable(mVariable));
 				return objHolder;
 			}
-			//holder is IExpression
+			//mHolder is IExpression
 			if( mHolder instanceof IExpression){
 				objHolder = performNextExpressionIfNeed(dataResolver,
 						((IExpression)mHolder).evaluate(dataResolver));
@@ -194,7 +194,7 @@ public class Expression implements IExpression {
 
 				final int len = mParamAccessInfos == null ? 0 : mParamAccessInfos.size();
 				Object[] params = new Object[len];
-				//params[i].getClass().isPrimitive() //if wrapped i don't know is int or Integer
+				//mParams[i].getClass().isPrimitive() //if wrapped i don't know is int or Integer
 				IExpression ie ;
 				for (int i = 0; i < len; i++) {
 					ie = mParamAccessInfos.get(i);
@@ -217,7 +217,7 @@ public class Expression implements IExpression {
 					}
 				}
 
-				//invoke method or callback if is event
+				//invokeCallback mMethod or callback if is event
 				Object holder = this.mHolder;
 				Object result = null;
 
@@ -226,12 +226,12 @@ public class Expression implements IExpression {
                     dataResolver.getEventEvaluateCallback().onEvaluateCallback(holder,method,(View)params[0],params);
 				}else {
 					final boolean useStaticClassname = mStaticAccessClassname != null;
-					//just find method by method name,so care burden
-					final List<Method> ms = dataResolver.getMethod(clazz, mAccessName);//method can't burden
+					//just find mMethod by mMethod name,so care burden
+					final List<Method> ms = dataResolver.getMethod(clazz, mAccessName);//mMethod can't burden
 					for (int i = 0, size = ms.size(); i < size; i++) {
 						try {
 							if (sDebug) {
-								System.out.println(">>>>> begin invoke method: " + ms.get(i));
+								System.out.println(">>>>> begin invokeCallback mMethod: " + ms.get(i));
 							}
 							result = useStaticClassname ? ms.get(i).invoke(null, params)
 									: ms.get(i).invoke(holder, params);
@@ -243,7 +243,7 @@ public class Expression implements IExpression {
 						}
 					}
 					if(sDebug){
-						System.out.println(">>>>> method invoke: result = " +result);
+						System.out.println(">>>>> mMethod invokeCallback: result = " +result);
 					}
 					if (arrayIndex != INVALID_INDEX && result!=null && result.getClass().isArray()) {
 						objHolder = Array.get(result, arrayIndex);

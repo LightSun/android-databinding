@@ -11,7 +11,7 @@ public interface ICacher<T, P> {
 	/** clear the cache*/
 	 void clear();
 
-	/**@hide when cacher havn't , create by this method */
+	/**@hide when cacher havn't , create by this mMethod */
 	 T create(P p);
 
 	/** recycle it */

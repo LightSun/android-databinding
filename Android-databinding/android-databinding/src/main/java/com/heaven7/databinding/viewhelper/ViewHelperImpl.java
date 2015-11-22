@@ -23,6 +23,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.text.TextWatcher;
 import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.View;
@@ -59,7 +60,7 @@ public class ViewHelperImpl{
     /** change the current view to the target */
     public ViewHelperImpl view(View target){
         if(target==null)
-            throw new NullPointerException("target view can;t be null!");
+            throw new NullPointerException("target view can't be null!");
         this.v = target;
         return this;
     }
@@ -75,6 +76,11 @@ public class ViewHelperImpl{
 
     public Context getContext(){
         return v.getContext();
+    }
+
+    public ViewHelperImpl addTextChangedListener(TextWatcher watcher){
+        ((TextView)v).addTextChangedListener(watcher);
+        return this;
     }
 
     public ViewHelperImpl setVisibility(boolean visible){

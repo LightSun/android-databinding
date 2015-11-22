@@ -31,6 +31,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.heaven7.databinding.core.ListenerFactory.createEventListener;
+import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
+import static com.heaven7.databinding.core.PropertyUtil.apply;
+
 
 /**
  * Created by heaven7 on 2015/8/11.
@@ -247,7 +251,7 @@ import java.util.Set;
         final Array<VariableInfo> variables = getAllVariableInfosById(id);
         if(variables == null){
             throw new DataBindException("the id = " + id +" haven't bind any data yet," +
-                    " so can't call notifyDataSetChanged() method !");
+                    " so can't call notifyDataSetChanged() mMethod !");
         }
         applyDataInternal(id, null, variables,false);
         mTmpVariables.clear();
@@ -285,12 +289,12 @@ import java.util.Set;
         final SparseArray<Array<VariableInfo>> varInfos = this.mViewVariableInfos.get(id);
         if(varInfos == null){
             throw new DataBindException("the id = " + id +" haven't bind any data yet," +
-                    " so can't call notifyDataSetChangedByTargetProperty() method !");
+                    " so can't call notifyDataSetChangedByTargetProperty() mMethod !");
         }
         final Array<VariableInfo> infos = varInfos.get(propertyName.hashCode());
         if(infos == null){
             throw new DataBindException("the id ( id = "+id+" ) with target property ( propertyName = " + propertyName
-                    +" ) haven't bind any data yet, so can't call notifyDataSetChangedByTargetProperty() method !");
+                    +" ) haven't bind any data yet, so can't call notifyDataSetChangedByTargetProperty() mMethod !");
         }
         applyDataInternal(id, getBindInfo(id, propertyName), infos, false);
         mDataResolver.clearObjects();
@@ -436,6 +440,11 @@ import java.util.Set;
     public void applyData(Object data, int... ids) {
         applyData(null, data, ids);
     }
+    /**
+     *  apply the data to the all view of binds
+     * @param data  the data
+     * @param ids the ids of view ,can be null
+     */
     public void applyData(String variable,Object data, int... ids) {
         if(data == null){
             throw new NullPointerException();
@@ -551,7 +560,7 @@ import java.util.Set;
                 info.realExpr =  ExpressionParser.parse(info.expression);
                 Object val = info.realExpr.evaluate(dr);
                 caretaker.endParse();
-                PropertyUtil.apply(vp, id, info.propertyName, val,mListenerMap);
+                apply(vp, id, info.propertyName, val, mListenerMap);
             } catch (ExpressionParseException e) {
                 throw new DataBindException(e);
             }
@@ -694,11 +703,11 @@ import java.util.Set;
          * and befor {@link PropertyUtil#apply(ViewHelper, int, String, Object, SparseArray)}
          */
         void endParse(){
-            if(PropertyUtil.isEventProperty(propertyName)) {
+            if(isEventProperty(propertyName)) {
                 final int key = PropertyUtil.getEventKey(id, propertyName);
                 ListenerImplContext l = mListenerMap.get(key);
                 if (l == null) {
-                    l = PropertyUtil.createEventListener(propertyName);
+                    l = createEventListener(propertyName);
                     mListenerMap.put(key, l);
                 }
                 l.set(method,holder,params);
