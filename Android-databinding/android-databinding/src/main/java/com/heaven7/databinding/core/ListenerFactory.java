@@ -11,7 +11,7 @@ import com.heaven7.databinding.core.listener.TextWatcherImpl;
  * the ListenerFactory of view's listener, you can resgiter your self-listener so that it can be used by data-binding.
  * Created by heaven7 on 2015/11/21.
  */
-public abstract class ListenerFactory {
+public final class ListenerFactory {
 
    private static final SparseArray<String> sRegistedListenerMap;
 

@@ -15,7 +15,7 @@ import java.io.InputStream;
  * the data bind controller
  * Created by heaven7 on 2015/8/10.
  */
-public class DataBinder implements IDataBinder{
+public final class DataBinder implements IDataBinder{
 
     private final DataBindParser mDataBindParser;
     private int mBindRawResId;
