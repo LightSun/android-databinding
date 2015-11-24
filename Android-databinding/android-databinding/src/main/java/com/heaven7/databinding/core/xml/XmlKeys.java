@@ -10,16 +10,13 @@ public interface XmlKeys {
      String TYPE            = "type";
      String ALIAS           = "alias";
      String ID              = "id"; //view id
-     String VARIABLE        = "variable";
-    //adapter
-     String LIST            = "list";
-     String LAYOUT          = "layout";
-     String BIND            = "bind";
+    // String VARIABLE        = "variable";
 
      String REFER_VARIABLE                     = "referVariable";
      String REFER_IMPORT                       = "referImport";
      String VALUE_TYPE                         = "valueType";
 
-
+     String LAYOUT                             = "layout";
+     String TAG                                = "tag";
 
 }

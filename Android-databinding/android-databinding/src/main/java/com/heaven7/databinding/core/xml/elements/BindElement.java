@@ -25,11 +25,11 @@ public class BindElement extends AbsElement {
     public String getId(){
         return getAttribute(XmlKeys.ID);
     }
-    public void setVariable( String variable){
-        addAttribute(XmlKeys.VARIABLE, variable);
+    public void setReferVariable( String variable){
+        addAttribute(XmlKeys.REFER_VARIABLE, variable);
     }
-    public String getVariable(){
-        return getAttribute(XmlKeys.VARIABLE);
+    public String getReferVariable(){
+        return getAttribute(XmlKeys.REFER_VARIABLE);
     }
 
     public void addPropertyElement(PropertyElement pe){

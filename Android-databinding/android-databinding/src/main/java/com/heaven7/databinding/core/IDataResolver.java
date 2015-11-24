@@ -1,7 +1,5 @@
 package com.heaven7.databinding.core;
 
-import android.view.View;
-
 import com.heaven7.databinding.util.IResetable;
 
 import java.lang.reflect.Field;
@@ -36,9 +34,8 @@ public interface IDataResolver extends IVariableResolver,IResetable {
         /**
          * @param holder the Method's mHolder
          * @param method  the mMethod to invokeCallback while event is occoured.
-         * @param v    the event on which view
          * @param params  the mParams to transfer to mMethod
          */
-        void onEvaluateCallback(Object holder,Method method,View v,Object...params);
+        void onEvaluateCallback(Object holder,Method method,Object...params);
     }
 }

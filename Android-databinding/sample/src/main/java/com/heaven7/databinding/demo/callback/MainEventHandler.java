@@ -12,7 +12,7 @@ import com.heaven7.databinding.demo.bean.User;
 import com.heaven7.databinding.demo.util.Util;
 
 /**
- * used for MainActivity
+ * used for BaseBehaviourActivity
  * Created by heaven7 on 2015/11/18.
  */
 public class MainEventHandler extends EventContext{

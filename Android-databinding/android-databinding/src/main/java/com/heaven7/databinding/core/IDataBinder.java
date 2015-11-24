@@ -69,14 +69,18 @@ public interface IDataBinder{
 
     /**
      * notify the data changed, but previous you  must call
-     * {@link #bind(int, boolean, Object...)} or {@link #bind(int, String, boolean, Object...)}
+     * {@link #bind(int, boolean, Object...)} or {@link #bind(int, String, boolean, Object...)} and cache data.
      * @param viewId  the view id
      */
     void notifyDataSetChanged(int viewId);
     /**
      * notify the data changed, but previous you  must call
-     * {@link #bind(int, boolean, Object...)} or {@link #bind(int, String, boolean, Object...)}
+     * {@link #bind(int, boolean, Object...)} or {@link #bind(int, String, boolean, Object...)} and cache data.
      * @param viewId  the view id
+     * @param propertyName must be one of {@link PropertyNames}, eg: {@link PropertyNames#TEXT}
      */
     void notifyDataSetChanged(int viewId, String propertyName);
+
+    //bindAdapter(int id, List data)
+    //notify adapter data changed-> notifyAdapterDataSetChanged(int id).item add?
 }

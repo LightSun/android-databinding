@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ac_base_behaviour">这个例子展示了本框架数据绑定的基本功能</string>
+</resources>

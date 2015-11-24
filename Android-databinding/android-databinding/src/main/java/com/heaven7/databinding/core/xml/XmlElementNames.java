@@ -12,5 +12,9 @@ public interface XmlElementNames {
     String  DATA            =  "data";
     String  DATA_BINDING    =  "DataBinding";
 
+    //adapter
+    String  ITEM            =  "item";
+    String  BIND_ADAPTER    =  "bindAdapter";
+
 
 }

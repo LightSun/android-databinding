@@ -10,6 +10,7 @@ import com.heaven7.databinding.core.expression.ExpressionParseException;
 import com.heaven7.databinding.core.expression.ExpressionParser;
 import com.heaven7.databinding.core.expression.IExpression;
 import com.heaven7.databinding.core.listener.ListenerImplContext;
+import com.heaven7.databinding.core.xml.elements.BindAdapterElement;
 import com.heaven7.databinding.core.xml.elements.BindElement;
 import com.heaven7.databinding.core.xml.elements.DataBindingElement;
 import com.heaven7.databinding.core.xml.elements.DataElement;
@@ -265,7 +266,8 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
      * @param info  the property info to bind  or null to bind all property of target view
      * @param checkStrictly check the all variable defined in xml can find mapping, if not throw an Exception
      */
-    private void applyDataInternal(int id, PropertyBindInfo info, Array<VariableInfo> variables,boolean checkStrictly) {
+    private void applyDataInternal(int id, PropertyBindInfo info, Array<VariableInfo> variables,
+                                   boolean checkStrictly) {
         //check , put data and apply
         if(info == null) {
             final ViewHelper mViewHelper = this.mViewHelper;
@@ -487,7 +489,7 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
             PropertyBindInfo info ;
             SparseArray<Array<PropertyBindInfo>> mBindMap = this.mBindMap_variable;
             final Array<PropertyBindInfo> infos = new Array<>(8);
-            mBindMap.put(be.getVariable().hashCode(),infos);
+            mBindMap.put(be.getReferVariable().hashCode(),infos);
 
             for(int i =0,size = propEles.size() ; i <size ;i++){
                 PropertyElement e = propEles.get(i);
@@ -605,12 +607,12 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
     }
 
     @Override
-    public void onEvaluateCallback(Object holder, Method method, View v, Object... params) {
+    public void onEvaluateCallback(Object holder, Method method, Object... params) {
         //if(!v.hasOnClickListeners() //api 15
         mEventCareTaker.update(method,holder,params);
     }
 
-    private static class PropertyBindInfo{
+    public static class PropertyBindInfo{
         public String propertyName;
         public String [] referVariables;
         /** current not use */
@@ -619,7 +621,7 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         public String expression;
         public IExpression realExpr;
 
-        public int viewId;//just is valid in  variable bind element
+        public int viewId;//just is valid in  bind element(have referVariable )
     }
 
     private static class VariableInfo{
@@ -676,6 +678,11 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
                     doWithVariableBindElement(ie);
                 }
             }
+        }
+
+        @Override
+        public void onParseBindAdapterElements(List<BindAdapterElement> bindAdapterElements) {
+
         }
     }
 

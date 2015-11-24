@@ -15,28 +15,35 @@
         <property name="onLongClick" referVariable="user,mainHanlder" >mainHanlder.onLongClickChangeUsername(user)</property>
     </bind>
 
-    <bind variable="user">
+    <bind referVariable="user">
         <property id ="bt2" name="text" >@{user.username}</property>
         <property id ="bt3" name="text" >user.getNickname()</property>
     </bind>
 
     <!-- 待验证,,, -->
-    <bindList id="lv">
-        <item layout="item_xxx" tag = "1">
+    <bindAdapter id="lv">
+        <item layout="item_xxx" tag = "1" referVariable="user,itemHandler">
+            <!-- item on click  -->
+            <property name="onItemClick" >itemHandler.onItemClick(user)</property>
+            <!-- root onClickListener-->
+            <property name="onClick" >itemHandler.onItemClick(user)</property>
             <bind id="bt">
-                <property name="text" referVariable="user" >@{user.username}</property>
-                <property name="textColor" referVariable="user" >user.male ? {@color/red} : {@color/random}</property>
-                <property name="onClick" referVariable="user,mainHanlder" >mainHanlder.onClickChangeUsername(user)</property>
+                <property name="text" >user.username</property>
+                <property name="textColor" >user.male ? {@color/red} : {@color/random}</property>
+                <property name="onClick" referVariable="orderHandler">orderHandler.onClickName(user)</property>
             </bind>
         </item>
-        <item layout="item_xxx2" tag="2">
+        <item layout="item_xxx2" tag="2"  referVariable="user">
+            <bind >
+                <property id ="bt2" name="text" >@{user.username}</property>
+                <property id ="bt3" name="text" >user.getNickname()</property>
+            </bind>
             <bind id="bt">
-                <property name="text" referVariable="user" >@{user.username}</property>
-                <property name="textColor" referVariable="user" >user.male ? {@color/red} : {@color/random}</property>
-                <property name="onClick" referVariable="user,mainHanlder" >mainHanlder.onClickChangeUsername(user)</property>
+                <property name="text" >user.username</property>
+                <property name="onClick" referVariable="orderHandler">orderHandler.onClickName(user)</property>
             </bind>
         </item>
-    </bindList>
+    </bindAdapter>
 
 
 </DataBinding>

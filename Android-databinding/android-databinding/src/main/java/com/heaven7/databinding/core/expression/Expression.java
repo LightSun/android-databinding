@@ -153,11 +153,11 @@ public class Expression implements IExpression {
 		try {
 			if(sDebug){
 				System.out.println("============== begin call ---> evaluate(IDataResolver) ===========");
-				System.out.println("mHolder           = " +mHolder);
-				System.out.println("staticClassname  = " +mStaticAccessClassname);
-				System.out.println("variable         = " +mVariable);
-				System.out.println("accessName       = " +mAccessName);
-				System.out.println("arrayIndex       = " +mArrayIndex);
+				System.out.println("mHolder           = " + mHolder);
+				System.out.println("staticClassname  = " + mStaticAccessClassname);
+				System.out.println("variable         = " + mVariable);
+				System.out.println("accessName       = " + mAccessName);
+				System.out.println("arrayIndex       = " + mArrayIndex);
 			}
 
 			Object objHolder = null;
@@ -167,9 +167,6 @@ public class Expression implements IExpression {
 				if(dataResolver.isEventHandlerOfView(mVariable) && dataResolver.getCurrentBindingView() !=null){
 					Expression next = getNextAccessInfo();
 					next.setIsMethod(true);
-					//make DataBinder at the second,view is the first param
-					//ObjectExpression objExpr = next.addExtraParamTofirst(dataResolver.getDataBinder());
-					//objExpr.setIsOccasional(true);
 					// make view at first onclickxxx(view v, IDataBinder b,...)
 					ObjectExpression objExpr = next.addExtraParamTofirst(dataResolver.getCurrentBindingView());
 					objExpr.setIsOccasional(true);
@@ -223,7 +220,7 @@ public class Expression implements IExpression {
 
 				if(params.length > 0 && params[0] instanceof View){
 					Method method = clazz.getDeclaredMethod(mAccessName, ArrayUtil.getTypes(params));
-                    dataResolver.getEventEvaluateCallback().onEvaluateCallback(holder,method,(View)params[0],params);
+                    dataResolver.getEventEvaluateCallback().onEvaluateCallback(holder,method,params);
 				}else {
 					final boolean useStaticClassname = mStaticAccessClassname != null;
 					//just find mMethod by mMethod name,so care burden

@@ -50,10 +50,10 @@ public final class DataBinder implements IDataBinder{
 
     private void parseXml(Context context, int bindsRawResId,boolean cacheXml) {
         DataBindingElement dbe = new DataBindingElement(XmlElementNames.DATA_BINDING);
-        dbe.setElementParseListener(mDataBindParser.getElementParserListener());
+        dbe.addElementParseListener(mDataBindParser.getElementParserListener());
         if(mCacheXml!=null){
             dbe.parse(mCacheXml);
-            dbe.setElementParseListener(null);
+            dbe.clearElementParseListeners();
             return;
         }
         // parse bind xml
@@ -65,7 +65,7 @@ public final class DataBinder implements IDataBinder{
                 mCacheXml = new XmlReader().parse(in);
                 dbe.parse(mCacheXml);
             }
-            dbe.setElementParseListener(null);
+            dbe.clearElementParseListeners();
         } catch (IOException e) {
            throw new DataBindException(e);
         }finally{
@@ -73,6 +73,13 @@ public final class DataBinder implements IDataBinder{
                 in.close();
             } catch (IOException e) {
             }
+        }
+    }
+
+    public void onDestroy(){
+        mCacheXml = null;
+        if(mBindRawResId != 0 ) {
+            mDataBindParser.reset();
         }
     }
 

@@ -4,7 +4,7 @@ package com.heaven7.databinding.core;
  * the name of property
  * Created by heaven7 on 2015/8/10.
  */
-/*public*/ interface PropertyNames {
+public interface PropertyNames {
 
     //event name
     String ON_CLICK                =    "onClick";

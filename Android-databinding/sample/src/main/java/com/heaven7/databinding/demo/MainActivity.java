@@ -1,89 +1,76 @@
 package com.heaven7.databinding.demo;
 
+import android.app.Activity;
+import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import com.heaven7.databinding.core.DataBinder;
-import com.heaven7.databinding.core.PropertyNames;
-import com.heaven7.databinding.demo.bean.User;
-import com.heaven7.databinding.demo.callback.MainEventHandler;
-import com.heaven7.databinding.demo.util.Util;
+import com.heaven7.databinding.demo.samples.BaseBehaviourActivity;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
-    private DataBinder mDataBinder;
+public class MainActivity extends ListActivity {
 
-    User mUser;
-
-    private final View.OnClickListener mOnclickChangeDataListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Util.changeUserName(mUser,"traditional_onClick");
-            mDataBinder.notifyDataSetChanged(R.id.bt);
-        }
-    };
-    private final View.OnLongClickListener mOnLongClickListener = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            Util.changeUserName(mUser, "notifyDataSetChanged_by_propertyname");
-            mDataBinder.notifyDataSetChanged(R.id.bt, PropertyNames.TEXT);
-            return true;
-        }
-    };
+    private List<ActivityInfo> activitiesInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        final View v = findViewById(R.id.bt100);
-        v.setOnClickListener(mOnclickChangeDataListener);
-        v.setOnLongClickListener(mOnLongClickListener);
-
-        doBind();
+        activitiesInfo = getActivityInfos();
+        String[] titles = getActivityTitles();
+        setListAdapter(new ArrayAdapter<String>(
+                this, android.R.layout.simple_list_item_1, android.R.id.text1, titles));
     }
 
-    private void doBind() {
-        //init DataBinder
-        mDataBinder = new DataBinder(this, R.raw.databinding_main);
-
-        //bind a User and cache it for latter call notify.
-        mDataBinder.bind(R.id.bt, true, mUser = new User("heaven7", false));
-
-        //bind onClick event and onLongClick event and not cache any data
-        mDataBinder.bind(R.id.bt0, false, mUser,new MainEventHandler(mDataBinder));
-
-        //bind a data to multi views. but not cache
-        mDataBinder.bind(new User("joker", true,"xxx_joker"));
+    private List<ActivityInfo> getActivityInfos() {
+        ArrayList<ActivityInfo> array = new ArrayList<ActivityInfo>();
+        array.add(new ActivityInfo(BaseBehaviourActivity.class, getString(R.string.ac_base_behaviour)));
+        //TODO the more demos
+        return array;
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        Class<? extends Activity> clazz = activitiesInfo.get(position).activityClass;
+        Intent intent = new Intent(this, clazz);
+        startActivity(intent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        return true;
+    private String[] getActivityTitles() {
+        String[] result = new String[activitiesInfo.size()];
+        int i = 0;
+        for (ActivityInfo info : activitiesInfo) {
+            if(info.title != null)
+                result[i++] = info.title;
+            else
+                result[i++] = getString(info.titleResourceId);
+        }
+        return result;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    static class ActivityInfo{
+
+        public final Class<? extends Activity> activityClass;
+        public int titleResourceId = -1;
+        public String title;
+
+        public ActivityInfo(Class<? extends Activity> activityClass,
+                            int titleResourceId) {
+            super();
+            this.activityClass = activityClass;
+            this.titleResourceId = titleResourceId;
         }
 
-        return super.onOptionsItemSelected(item);
+        public ActivityInfo(Class<? extends Activity> activityClass,String title){
+            this.activityClass = activityClass;
+            this.title = title;
+        }
+
     }
+
 }

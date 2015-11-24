@@ -19,10 +19,13 @@ import java.util.List;
  */
 public class DataBindingElement extends AbsElement implements IElementParser {
 
+    private List<IElementParseListener> mListeners;
+
     private DataElement mDataElement;
     private List<BindElement> mBindEles;
     private List<BindElement> mVariableBindElements;
-    private IElementParseListener mElementListener;
+
+    private List<BindAdapterElement> mBindAdapterEles;
 
     public DataBindingElement(String mElementName) {
         super(mElementName);
@@ -55,11 +58,37 @@ public class DataBindingElement extends AbsElement implements IElementParser {
         return mVariableBindElements;
     }
 
-    public IElementParseListener getElementParseListener() {
-        return mElementListener;
+
+    public void addBindAdapterElement(BindAdapterElement bae){
+        if(mBindAdapterEles ==null)
+            mBindAdapterEles = new ArrayList<>();
+        mBindAdapterEles.add(bae);
     }
-    public void setElementParseListener(IElementParseListener l) {
-        this.mElementListener = l;
+    public List<BindAdapterElement> getBindAdapterElements(){
+        return mBindAdapterEles;
+    }
+
+    public void addElementParseListener(IElementParseListener l) {
+        if(mListeners == null)
+            mListeners = new ArrayList<>(3);
+        mListeners.add(l);
+    }
+
+    public void clearElementParseListeners(){
+        if(mListeners != null){
+            mListeners.clear();
+        }
+    }
+
+    private void handleCallback(){
+        if(mListeners!=null){
+           for(IElementParseListener l : mListeners){
+               l.onParseDataElement(getDataElement());
+               l.onParseBindElements(getBindElements());
+               l.onParseVariableBindElements(getVariableBindElements());
+               l.onParseBindAdapterElements(getBindAdapterElements());
+           }
+        }
     }
 
     @Override
@@ -75,6 +104,13 @@ public class DataBindingElement extends AbsElement implements IElementParser {
                 bindElements.get(i).write(writer);
             }
         }
+        if(mVariableBindElements != null ) {
+            List<BindElement> bindElements = this.mVariableBindElements;
+            int len = bindElements.size();
+            for (int i = len - 1; i >=0 ; i--) {
+                bindElements.get(i).write(writer);
+            }
+        }
         writer.pop();
     }
 
@@ -82,8 +118,15 @@ public class DataBindingElement extends AbsElement implements IElementParser {
     public void reset() {
         super.reset();
         mDataElement.reset();
-        mBindEles.clear();
-        mElementListener = null;
+        if(mBindEles!=null)
+            mBindEles.clear();
+        if(mVariableBindElements != null)
+             mVariableBindElements.clear();
+        if( mBindAdapterEles !=null){
+            mBindAdapterEles.clear();
+        }
+        if(mListeners != null)
+            mListeners.clear();
     }
 
     @Override
@@ -93,14 +136,24 @@ public class DataBindingElement extends AbsElement implements IElementParser {
        //parse var and import
         parseVariableAndImport(dataEle, dataElement);
         setDataElement(dataElement);
-        //parse all bind
+        //parse all custom bind
         parseBindElements(root);
 
-        if(mElementListener != null){
-            mElementListener.onParseDataElement(dataElement);
-            mElementListener.onParseBindElements(getBindElements());
-            mElementListener.onParseVariableBindElements(getVariableBindElements());
+        Array<XmlReader.Element> adapterEles = root.getChildrenByName(XmlElementNames.BIND_ADAPTER);
+        if(adapterEles != null && adapterEles.size > 0){
+             BindAdapterElement bae;
+             XmlReader.Element e;
+             for(int i=0,size = adapterEles.size ; i < size ; i++){
+                 e = adapterEles.get(i);
+
+                 bae = new BindAdapterElement(XmlElementNames.BIND_ADAPTER);
+                 bae.parse(e);
+
+                 addBindAdapterElement(bae);
+             }
         }
+
+        handleCallback();
         return true;
     }
 
@@ -129,14 +182,14 @@ public class DataBindingElement extends AbsElement implements IElementParser {
 
             XmlReader.Element bindEle =  array.get(i);
             String id = bindEle.getAttribute(XmlKeys.ID, null);
-            String variable = bindEle.getAttribute(XmlKeys.VARIABLE,null);
+            String refVariable = bindEle.getAttribute(XmlKeys.REFER_VARIABLE,null);
 
             if(TextUtils.isEmpty(id)){
-                if(TextUtils.isEmpty(variable)){
-                    throw new RuntimeException("in BindElement attr id and variable can't be empty at the same time!");
+                if(TextUtils.isEmpty(refVariable)){
+                    throw new RuntimeException("in BindElement attr id and refVariable can't be empty at the same time!");
                 }
                 oneView = false;
-                be.setVariable(variable.trim());
+                be.setReferVariable(refVariable.trim());
             }else{
                 oneView = true;
                 be.setId(id.trim());
@@ -160,11 +213,12 @@ public class DataBindingElement extends AbsElement implements IElementParser {
                     checkEmpty(propId, XmlKeys.ID);
                     pe.setId(propId);
                 }
-
+               //refer import
                 String referImport = propEle.getAttribute(XmlKeys.REFER_IMPORT, null);
                 if( !TextUtils.isEmpty(referImport) ){
                     pe.setReferImport(referImport.trim());
                 }
+                //value type
                 String valueType = propEle.getAttribute(XmlKeys.VALUE_TYPE, null);
                 if(!TextUtils.isEmpty(valueType)){
                     // checkEmpty(valueType,XmlKeys.VALUE_TYPE);
@@ -172,7 +226,10 @@ public class DataBindingElement extends AbsElement implements IElementParser {
                 }
 
                 String text = propEle.getText();//text can be null?
-                pe.setText(TextUtils.isEmpty(text) ? "" : text.trim());
+                if(TextUtils.isEmpty(text)){
+                    throw new RuntimeException("text content expression can't be null in <property> element." );
+                }
+                pe.setText(text);
 
                 be.addPropertyElement(pe);
             }
@@ -240,5 +297,6 @@ public class DataBindingElement extends AbsElement implements IElementParser {
 
         void onParseVariableBindElements(List<BindElement> e);
 
+        void onParseBindAdapterElements(List<BindAdapterElement> bindAdapterElements);
     }
 }

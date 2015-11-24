@@ -3,14 +3,17 @@ package com.heaven7.databinding.core.listener;
 import com.heaven7.databinding.core.DataBindException;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
- * the event callback context.
+ * the event callback context. all listenerimpl must have empty constructor.
  * Created by heaven7 on 2015/11/20.
  */
 public abstract class ListenerImplContext {
 
     static final String DEFAULT_EXCEPTION_INFO = "may be the params type mismatch or count of params is wrong.";
+
+    private static final boolean sDebug = false;
 
     protected Method mMethod;
     protected Object mHolder;
@@ -24,13 +27,14 @@ public abstract class ListenerImplContext {
         this.mParams = params;
     }
 
-    /**
-     * callback is just call once . don't cache any data  or else may cause mempry leak.
+    /*
+     * callback is just call once . don't cache any data  or else may cause memory leak.
      * so after call {@link #invokeCallback()},reset() this.
      */
-    protected void reset(){
+    // problem : reset will cause NullPointerException because we cache this
+   /* protected void reset(){
         set(null,null,null);
-    }
+    }*/
 
     /**
      * invoke the callback based on mMethod,mHolder,mParams
@@ -53,6 +57,10 @@ public abstract class ListenerImplContext {
      */
     protected  Object invokeCallback(Object[] params,String exceptionNotice){
         try {
+            if(sDebug) {
+               System.out.print("[ invokeCallback() ]: holder = " + mHolder);
+               System.out.println(" ,params = " + Arrays.toString(params));
+            }
             return mMethod.invoke(mHolder,params);
         } catch (Exception e) {
             if ( exceptionNotice == null)
@@ -60,8 +68,8 @@ public abstract class ListenerImplContext {
             else{
                 throw new DataBindException(exceptionNotice,e);
             }
-        }finally{
+        }/*finally{
             reset();
-        }
+        }*/
     }
 }
