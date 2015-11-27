@@ -98,21 +98,17 @@ public class DataBindingElement extends AbsElement implements IElementParser {
         if( mDataElement !=null )
             mDataElement.write(writer);
         if(mBindEles != null ) {
-            List<BindElement> bindElements = this.mBindEles;
-            int len = bindElements.size();
-            for (int i = len - 1; i >=0 ; i--) {
-                bindElements.get(i).write(writer);
-            }
+            Util.writeElements(writer, mBindEles);
         }
         if(mVariableBindElements != null ) {
-            List<BindElement> bindElements = this.mVariableBindElements;
-            int len = bindElements.size();
-            for (int i = len - 1; i >=0 ; i--) {
-                bindElements.get(i).write(writer);
-            }
+            Util.writeElements(writer, mVariableBindElements);
+        }
+        if(mBindAdapterEles!=null){
+            Util.writeElements(writer, mBindAdapterEles);
         }
         writer.pop();
     }
+
 
     @Override
     public void reset() {

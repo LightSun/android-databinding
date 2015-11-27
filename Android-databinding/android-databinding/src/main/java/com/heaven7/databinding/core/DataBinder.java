@@ -8,8 +8,11 @@ import com.heaven7.databinding.core.xml.XmlElementNames;
 import com.heaven7.databinding.core.xml.elements.DataBindingElement;
 import com.heaven7.xml.XmlReader;
 
+import org.heaven7.core.adapter.ISelectable;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * the data bind controller
@@ -119,6 +122,16 @@ public final class DataBinder implements IDataBinder{
     @Override
     public void notifyDataSetChanged(int viewId, String propertyName){
         mDataBindParser.notifyDataSetChangedByTargetProperty(viewId,propertyName);
+    }
+
+    @Override
+    public <T extends ISelectable> void bindAdapter(int id, List<T> data,Object...extras) {
+        mDataBindParser.bindAdapter(id,data,extras);
+    }
+
+    @Override
+    public void notifyAdapterDataSetChanged(int id) {
+        mDataBindParser.notifyAdapterDataSetChanged(id);
     }
 
 

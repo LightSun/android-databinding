@@ -1,5 +1,9 @@
 package com.heaven7.databinding.core;
 
+import org.heaven7.core.adapter.ISelectable;
+
+import java.util.List;
+
 /**
  * the data binder interface
  * Created by heaven7 on 2015/11/18.
@@ -81,6 +85,8 @@ public interface IDataBinder{
      */
     void notifyDataSetChanged(int viewId, String propertyName);
 
-    //bindAdapter(int id, List data)
+    <T extends ISelectable> void bindAdapter(int adapterViewId, List<T> data,Object...extras);
+
     //notify adapter data changed-> notifyAdapterDataSetChanged(int id).item add?
+    void notifyAdapterDataSetChanged(int id);
 }

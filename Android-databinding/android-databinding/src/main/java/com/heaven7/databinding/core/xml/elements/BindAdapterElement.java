@@ -21,6 +21,8 @@ import java.util.List;
 public class BindAdapterElement extends AbsElement implements IElementParser{
 
     private List<ItemElement> mItemEles;
+    /** the total refer */
+    private String  mTotalRefer;
 
     public BindAdapterElement(String mElementName) {
         super(mElementName);
@@ -36,11 +38,23 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
         return mItemEles;
     }
 
+    public String[] getTotalRefers(){
+        return Util.convertRefer(mTotalRefer);
+    }
+
     public void setId(String id){
-        addAttribute(XmlKeys.ID,id);
+        addAttribute(XmlKeys.ID, id);
     }
     public String getId(){
         return getAttribute(XmlKeys.ID);
+    }
+
+    /** main refer */
+    public void setReferVariable(String refer){
+        addAttribute(XmlKeys.REFER_VARIABLE, refer);
+    }
+    public String getReferVariable(){
+        return getAttribute(XmlKeys.REFER_VARIABLE);
     }
 
     @Override
@@ -60,6 +74,7 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
     @Override
     public void reset() {
         super.reset();
+        mTotalRefer = null;
         if(mItemEles!=null){
             List<ItemElement> mItemEles = this.mItemEles;
             int len = mItemEles.size();
@@ -77,6 +92,12 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
             throw new RuntimeException("you must declare attr id in <bindAdapter> element !");
         }
         setId(id);
+
+        final String referVar = root.getAttribute(XmlKeys.REFER_VARIABLE, null);
+        if(TextUtils.isEmpty(referVar)){
+            throw new RuntimeException("in <bindAdapter> element , referVariable can't be null.");
+        }
+        setReferVariable(referVar);
 
         final Array<XmlReader.Element> items = root.getChildrenByName(XmlElementNames.ITEM);
         XmlReader.Element e;
@@ -113,8 +134,9 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
                     //throw new RuntimeException("in <item> element ,attribute referVariable can't be empty");
                     ie.setReferVariable(attr);
                 }
+                attr = Util.mergeReferVariable(referVar,attr);
 
-                ie.setPropertyElements(parsePropertyElements(e, attr,false));
+                ie.setPropertyElements(parsePropertyElements(e, attr,null,false));
                 parseBindElements(e,ie,attr);
 
                 addItemElement(ie);
@@ -127,7 +149,7 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
      * parse bind element and add it to the target ItemElement
      * @param referVariable  the referVariable which is an attr of ItemElement
      */
-    private static void parseBindElements(XmlReader.Element e, ItemElement ie, String referVariable) {
+    private void parseBindElements(XmlReader.Element e, ItemElement ie, String referVariable) {
         final Array<XmlReader.Element> binds = e.getChildrenByName(XmlElementNames.BIND);
         if(binds == null || binds.size ==0)
             return;
@@ -135,21 +157,22 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
         BindElement be;
         XmlReader.Element bindEle;
         List<PropertyElement> props;
-        boolean checkId;
 
         for(int i =0 ,size = binds.size  ; i<size ; i++){
             be = new BindElement(XmlElementNames.BIND);
             bindEle = binds.get(i);
 
             String id = bindEle.getAttribute(XmlKeys.ID, null);
-            if(!TextUtils.isEmpty(id)){
+            if(!TextUtils.isEmpty(id)) {
                 be.setId(id);
-                checkId = false;
-            }else{
-                checkId = true;
             }
+            String refer = bindEle.getAttribute(XmlKeys.REFER_VARIABLE, null);
+            if(!TextUtils.isEmpty(refer)){
+                be.setReferVariable(refer);
+            }
+            refer = Util.mergeReferVariable(referVariable,refer);
 
-            props = parsePropertyElements(bindEle, referVariable, checkId);
+            props = parsePropertyElements(bindEle, refer, id, true);
             if(props != null && props.size() > 0) {
                 be.setPropertyElements(props);
             }
@@ -158,13 +181,18 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
     }
 
     /**
-     * @param referVariable  the referVariable which is an attr of ItemElement
-     * @param checkId  check if id exist
+     * @param referVariable  the referVariable which is an attr of ItemElement or BindElement
+     * @param id_bind  the id from bind element
+     * @param checkId  true to check the id in property element
      */
-    private static List<PropertyElement> parsePropertyElements(XmlReader.Element e, String referVariable,boolean checkId) {
+    private List<PropertyElement> parsePropertyElements(XmlReader.Element e, String referVariable,
+                                                               String id_bind,boolean checkId) {
         final Array<XmlReader.Element> props = e.getChildrenByName(XmlElementNames.PROPERTY);
-        if(props == null || props.size ==0)
+        if(props == null || props.size ==0) {
+            mTotalRefer = Util.mergeReferVariable(referVariable,mTotalRefer);
             return null;
+        }
+        checkId = checkId && id_bind == null;
         final List<PropertyElement> pes = new ArrayList<>();
 
         final boolean checkRefer = TextUtils.isEmpty(referVariable);
@@ -189,6 +217,8 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
                     throw new RuntimeException("attr id can't be empty in <bind> and <property>"
                             + "at the same time");
                 }
+                if(id_bind != null)
+                     pe.setId(id_bind);
             }else{
                 pe.setId(id);
             }
@@ -200,12 +230,11 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
                     throw new RuntimeException("attr referVariable can't be empty in <item> and <property>"
                              + "at the same time");
                 }
-            }else{
-                if(checkRefer){ //merge referVariable
-                    refVar = refVar + ","+ referVariable;
-                }
-                pe.setReferVariable(refVar);
             }
+            refVar = Util.mergeReferVariable(referVariable,refVar);
+            mTotalRefer = Util.mergeReferVariable(refVar,mTotalRefer);
+            //property element use the result of merged
+            pe.setReferVariable(refVar);
 
             //refer import
             String referImport = propEle.getAttribute(XmlKeys.REFER_IMPORT, null);
@@ -220,7 +249,7 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
             //text
             String text = propEle.getText();
             if(TextUtils.isEmpty(text)){
-                throw new RuntimeException("text content expression can't be null in <property> element." );
+                throw new RuntimeException("text content expression can't be empty in <property> element." );
             }
             pe.setText(text);
 

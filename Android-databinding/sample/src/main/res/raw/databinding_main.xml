@@ -2,7 +2,6 @@
     <data>
         <variable name="user"  classname="com.heaven7.databinding.demo.bean.User"  type="bean"/>
         <variable name="mainHanlder" classname="com.heaven7.databinding.demo.callback.MainEventHandler" type="callback"/>
-       <!-- <variable name="userList" classname="com.example.User" type="beans"/>-->
         <import classname="android.view.View" alias="View"/> <!-- this type of alias  can hide (but must uppercase) -->
     </data>
 
@@ -21,8 +20,8 @@
     </bind>
 
     <!-- 待验证,,, -->
-    <bindAdapter id="lv">
-        <item layout="item_xxx" tag = "1" referVariable="user,itemHandler">
+    <bindAdapter id="lv" referVariable="user">
+        <item layout="item_xxx" tag = "1" referVariable="itemHandler">
             <!-- item on click  -->
             <property name="onItemClick" >itemHandler.onItemClick(user)</property>
             <!-- root onClickListener-->
@@ -33,7 +32,7 @@
                 <property name="onClick" referVariable="orderHandler">orderHandler.onClickName(user)</property>
             </bind>
         </item>
-        <item layout="item_xxx2" tag="2"  referVariable="user">
+        <item layout="item_xxx2" tag="2"  >
             <bind >
                 <property id ="bt2" name="text" >@{user.username}</property>
                 <property id ="bt3" name="text" >user.getNickname()</property>

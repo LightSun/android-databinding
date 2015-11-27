@@ -2,9 +2,12 @@ package com.heaven7.databinding.core;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 
 import com.heaven7.databinding.core.expression.ExpressionParseException;
 import com.heaven7.databinding.core.expression.ExpressionParser;
@@ -15,17 +18,22 @@ import com.heaven7.databinding.core.xml.elements.BindElement;
 import com.heaven7.databinding.core.xml.elements.DataBindingElement;
 import com.heaven7.databinding.core.xml.elements.DataElement;
 import com.heaven7.databinding.core.xml.elements.ImportElement;
+import com.heaven7.databinding.core.xml.elements.ItemElement;
 import com.heaven7.databinding.core.xml.elements.PropertyElement;
 import com.heaven7.databinding.core.xml.elements.VariableElement;
 import com.heaven7.databinding.util.ArrayUtil;
-import com.heaven7.databinding.util.Logger;
+import com.heaven7.databinding.util.IResetable;
 import com.heaven7.databinding.util.Objects;
 import com.heaven7.databinding.util.ResourceUtil;
-import com.heaven7.databinding.viewhelper.ViewHelper;
 import com.heaven7.xml.Array;
 import com.heaven7.xml.ObjectMap;
 
+import org.heaven7.core.adapter.ISelectable;
+import org.heaven7.core.util.Logger;
+import org.heaven7.core.viewhelper.ViewHelper;
+
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -49,6 +57,7 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
     private final BaseDataResolver mDataResolver;
     private final InternalElementParserListener mParserListenerImpl;
     private final EventParseCaretaker mEventCareTaker;
+    private BindAdapterParser mAdapterParser;
 
     /** key is combination of view id and property name */
     private final SparseArray<ListenerImplContext> mListenerMap;
@@ -63,12 +72,11 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
      */
     private final ObjectMap<String,String> mVariableBeanMap ;
     private final ObjectMap<String,String> mVariableCallbakMap;
-    private ObjectMap<String,String> mVariableBeansMap;
 
 
-    /** the cached variable infos for later reuse  */
-    //--> id,<propertyName.hashCode().Array<VariableInfo>>
-    private final SparseArray<SparseArray<Array<VariableInfo>>> mViewVariableInfos; //used for notifyDataSetChanged()
+    /** the cached variable infos for later reuse , this is used for  notifyDataSetChanged() --> not adapter,
+     * key --> (  id,<propertyName.hashCode().Array<VariableInfo>> ) ,*/
+    private final SparseArray<SparseArray<Array<VariableInfo>>> mViewVariableInfos;
 
     //==================start for tmp use , just avoid reallocate memory ============//
     private final Array<VariableInfo> mTmpVariables ;
@@ -94,14 +102,17 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
 
     /** reset the bind data cache */
     public void reset(View root){
-        if(root == null)
-            mViewHelper.clearCache();
-        else
-           mViewHelper = new ViewHelper(root);
+        if(root == null) {
+            root = mViewHelper.getRootView();
+        }
+        mViewHelper = new ViewHelper(root);
+
         mDataResolver.reset();
         mVariableBeanMap.clear();
         mVariableCallbakMap.clear();
         mListenerMap.clear();
+        if(mAdapterParser !=null )
+            mAdapterParser.reset();
 
         releasePropertyBindInfos(mBindMap_viewId);
         releasePropertyBindInfos(mBindMap_variable);
@@ -157,19 +168,21 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
             System.out.println("doWithVariableElement(): " + ve.toString());
         }
         final String type = ve.getType();
-        if(VariableType.BEAN.equals(type)){
-            mVariableBeanMap.put(ve.getClassname(),ve.getName());
+      /*  if(VariableType.BEAN.equals(type)){
+            mVariableBeanMap.put(ve.getClassname(), ve.getName());
         }else if(VariableType.BEANS.equals(type)){
             //means list
             if(mVariableBeansMap == null)
                 mVariableBeansMap = new ObjectMap<String,String>(3);
             mVariableBeansMap.put(ve.getClassname(),ve.getName());
-        }else if(VariableType.CALLBACK.equals(type)){
+        }else */
+        if(VariableType.CALLBACK.equals(type)){
             //event
             mVariableCallbakMap.put(ve.getClassname(),ve.getName());
             mDataResolver.addEventHandlerVariable(ve.getName());
         }else {
-            throw new DataBindException("unsupport VariableType = " + type);
+            mVariableBeanMap.put(ve.getClassname(), ve.getName());
+           // throw new DataBindException("unsupport VariableType = " + type);
         }
     }
 
@@ -188,7 +201,7 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         final PropertyBindInfo bindInfo = getBindInfo(id, propertyName);
         final Array<VariableInfo> mTmpVariables = getAllVariables(datas);
 
-        applyDataInternal(id, bindInfo, mTmpVariables,checkStrictly);
+        applyDataInternal(id, bindInfo, mTmpVariables, checkStrictly);
         if(cacheData)
              addToVariableInfoCache(id, mTmpVariables, bindInfo);
         mTmpVariables.clear();
@@ -384,20 +397,25 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         vars.clear();
     }
 
-    /** find the all refer variable info
+    /** find the all refer variable info, the data's area may be larger.
      * @throws DataBindException if any data can't find mapping */
     private void getReferVariableInfos(String[] referVars, Object[] datas,
                                        Array<VariableInfo> outVarInfos) throws DataBindException {
         if(sDebug) {
-            Logger.i(TAG, "getReferVariableInfos", "referVars : " + Arrays.toString(referVars));
+            Logger.i(TAG, "getReferVariableInfos", "referVars = " + Arrays.toString(referVars)
+                    +" ,datas = " + Arrays.toString(datas));
         }
+       /* if(referVars != null && referVars.length > 0 && (datas == null || datas.length == 0)){
+           throw new DataBindException("can't find the mapping data, referVars = "+ Arrays.toString(referVars)
+                   +" ,datas = " + Arrays.toString(datas));
+        }*/
         String varName;
         for(int i=0,size = datas.length ; i<size ;i++){
             varName = getVariableName(datas[i].getClass().getName());
             if(sDebug){
                 Logger.i(TAG, "getReferVariableInfos", "varName : " + varName);
             }
-            if(ArrayUtil.contains(referVars,varName)){
+            if(ArrayUtil.contains(referVars, varName)){
                 outVarInfos.add(new VariableInfo(varName,datas[i]));
             }
         }
@@ -423,9 +441,6 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         String var = mVariableBeanMap.get(className);
         if(var == null){
             var = mVariableCallbakMap.get(className);
-            if(var == null){
-                var = mVariableBeansMap.get(className);
-            }
         }
         if(var == null){
             throw new DataBindException("There is no mapping of the data's class, the classname = " +className
@@ -474,7 +489,7 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
             info = infos.get(i);
             if(!checkId || ArrayUtil.contains(ids,info.viewId)){
                 mDataResolver.setCurrentBindingView(mViewHelper.getView(info.viewId));
-                applyDataReally(info.viewId, info, mViewHelper, mDataResolver,mListenerMap,caretaker);
+                applyDataReally(info.viewId, 0 , info, mViewHelper, mDataResolver,mListenerMap,caretaker);
             }
         }
         mDataResolver.clearObjects();
@@ -502,7 +517,7 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         }
     }
 
-    private static void convert(PropertyBindInfo outInfo, PropertyElement inElement) {
+    public static void convert(PropertyBindInfo outInfo, PropertyElement inElement) {
         String var;//referVariables
         var = inElement.getReferVariable();
         if(var!=null){
@@ -513,7 +528,6 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         if(var!=null){
             outInfo.referImports = var.trim().split(",");
         }
-
         outInfo.expression = inElement.getText().trim();
         outInfo.propertyName = inElement.getName();
         outInfo.expressionValueType = inElement.getValueType();
@@ -539,7 +553,7 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
                 varInfo = mTmpVariables.get(j);
                 mDataResolver.putObject(varInfo.variableName, varInfo.data);
             }
-            applyDataReally(id, info, mViewHelper, mDataResolver,mListenerMap,caretaker);
+            applyDataReally(id, 0, info, mViewHelper, mDataResolver, mListenerMap, caretaker);
         } else{
             String msg = "the property [ id = "+ id +" ,name = "+info.propertyName
                     +"] defined in xml can't be apply ,caused by some data mapping is missing !";
@@ -547,22 +561,48 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         }
     }
 
-    /***
+    /**
+     * @param id  the view id .
+     * @param layoutId  the layout id . this is only used in adapter view . often is 0.
      */
-    private static void applyDataReally(int id, PropertyBindInfo info, ViewHelper vp,
+    private static void applyDataReally(int id, int layoutId,PropertyBindInfo info, ViewHelper vp,
                                         IDataResolver dr,SparseArray<ListenerImplContext> mListenerMap,
                                         EventParseCaretaker caretaker) {
-        caretaker.beginParse(id, info.propertyName, mListenerMap);
+        caretaker.beginParse(id, layoutId , info.propertyName, mListenerMap);
         if(info.realExpr != null){
             final Object val = info.realExpr.evaluate(dr);
             caretaker.endParse();
-            PropertyUtil.apply(vp, id, info.propertyName, val, mListenerMap);
+            PropertyUtil.apply(vp, id, layoutId, info.propertyName, val, mListenerMap);
         }else {
             try {
                 info.realExpr =  ExpressionParser.parse(info.expression);
                 Object val = info.realExpr.evaluate(dr);
                 caretaker.endParse();
-                apply(vp, id, info.propertyName, val, mListenerMap);
+                apply(vp, id,layoutId, info.propertyName, val, mListenerMap);
+            } catch (ExpressionParseException e) {
+                throw new DataBindException(e);
+            }
+        }
+    }
+
+    /**
+     * apply the data by target view
+     */
+    private static void applyDataReally(View v, int layoutId,PropertyBindInfo info, ViewHelper vp,
+                                        IDataResolver dr,SparseArray<ListenerImplContext> mListenerMap,
+                                        EventParseCaretaker caretaker) {
+        final int id =  v.hashCode();
+        caretaker.beginParse(id, layoutId , info.propertyName, mListenerMap);
+        if(info.realExpr != null){
+            final Object val = info.realExpr.evaluate(dr);
+            caretaker.endParse();
+            apply(null, v, id, layoutId, info.propertyName, val, mListenerMap);
+        }else {
+            try {
+                info.realExpr =  ExpressionParser.parse(info.expression);
+                Object val = info.realExpr.evaluate(dr);
+                caretaker.endParse();
+                apply(null,v , id,layoutId, info.propertyName, val, mListenerMap);
             } catch (ExpressionParseException e) {
                 throw new DataBindException(e);
             }
@@ -595,15 +635,60 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
 
     private static void releasePropertyBindInfos(SparseArray<Array<PropertyBindInfo>> mBindMap) {
         if(mBindMap == null ) return;
-        Array<PropertyBindInfo> infos;
         for(int i =0 , size = mBindMap.size() ;i<size ;i++){
-            infos = mBindMap.get(i);
-            for(int j=0,len = infos.size ;j<len ;j++){
-                ExpressionParser.recycleIfNeed(infos.get(j).realExpr);
+            releasePropertyBindInfos(mBindMap.get(i));
+        }
+        mBindMap.clear();
+    }
+    private static Array<PropertyBindInfo> parseListItemBindInfos(Context context,
+                                                                  List<BindElement> list) {
+        if(list== null || list.size() ==0)
+            return  null;
+        final Array<PropertyBindInfo> infos = new Array<>(7);
+
+        List<PropertyElement> props;
+        PropertyBindInfo info;
+        PropertyElement pe;
+        String id;
+
+        for( BindElement be : list ){
+            props = be.getPropertyElements();
+            if(props == null || props.size() ==0)
+                continue;
+            for(int i =0,size = props.size() ; i<size ; i++){
+                info = new PropertyBindInfo();
+                pe = props.get(i);
+                convert(info,pe);
+                id = pe.getId();
+                if(!TextUtils.isEmpty(id)){
+                    info.viewId = ResourceUtil.getResId(context,id, ResourceUtil.ResourceType.Id);
+                }
+                infos.add(info);
+            }
+        }
+        return infos;
+    }
+
+    private static Array<PropertyBindInfo> parseListItemEventPropertyInfos( List<PropertyElement> list) {
+        if(list== null || list.size() ==0)
+            return  null;
+        Array<PropertyBindInfo> infos = new Array<>(3);
+        PropertyBindInfo info ;
+        for(PropertyElement pe : list){
+            info = new PropertyBindInfo();
+            convert(info,pe);
+            infos.add(info);
+        }
+        return infos;
+    }
+    /** release the array of PropertyBindInfo */
+    private static void releasePropertyBindInfos( Array<PropertyBindInfo> infos) {
+        if(infos!=null && infos.size>0){
+            for(int i=0,size = infos.size ; i<size ;i++){
+                ExpressionParser.recycleIfNeed(infos.get(i).realExpr);
             }
             infos.clear();
         }
-        mBindMap.clear();
     }
 
     @Override
@@ -612,7 +697,139 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         mEventCareTaker.update(method,holder,params);
     }
 
-    public static class PropertyBindInfo{
+    public void notifyAdapterDataSetChanged(int  id){
+        Object adapter = mAdapterParser.mAdapterMap.get(id);
+        if(adapter == null){
+            throw new DataBindException("you must call bindAdapter(...) first.");
+        }
+        //put obj to dataResolver
+        if(adapter instanceof BaseAdapter){
+            BindHelper.IAdapterDataManager ad = ((BindHelper.IAdapterDataManager)adapter);
+            checkReferAndMapping(id, ad.getMainData(),ad.getExtraData(),false);
+            ((BaseAdapter) adapter).notifyDataSetChanged();
+        }else if(adapter instanceof RecyclerView.Adapter){
+           //TODO  checkReferAndMapping(id, ad.getMainData(),ad.getExtraData(),false);
+            ((RecyclerView.Adapter) adapter).notifyDataSetChanged();
+        }else{
+            throw new UnsupportedOperationException("unsupport adapter view , class = "
+                    + mViewHelper.getView(id).getClass().getName());
+        }
+    }
+
+    public <T extends ISelectable> void bindAdapter(int id, List<T> data, Object...extras) {
+        if(mAdapterParser == null){
+            throw new DataBindException("have you declared bindAdapter element ? ");
+        }
+        if( data == null || data.size() ==0){
+            throw new DataBindException("there is no data to bind ");
+        }
+        final Array<ItemBindInfo> itemBindInfos = mAdapterParser.mItemBinds.get(id);
+        if( itemBindInfos.size == 0){
+            throw new DataBindException("no item to bind ,have you declared <item> element in bindAdapter element ? ");
+        }
+        final View adapterView = mViewHelper.getView(id);
+        final String mainRefer = mAdapterParser.mReferMap.get(id).mainRefer;
+        // 1, check all refer variable and mapping
+        checkReferAndMapping(id, data,extras,true);
+        // 2, apply in adapter
+        //TODO setAdapter
+        Object adapter;
+        if(adapterView instanceof AdapterView ){
+            QuickAdapterImpl<T> impl = new QuickAdapterImpl<>(data,itemBindInfos,mainRefer);
+            impl.setExtraData(extras);
+            ((AdapterView) adapterView).setAdapter(impl);
+            adapter = impl;
+        }else if ( adapterView instanceof RecyclerView){
+            //TODO to support ReceiverView
+            throw new UnsupportedOperationException("unsupport adapter view , classname = "+
+                    adapterView.getClass().getName());
+        }else{
+            throw new UnsupportedOperationException("unsupport adapter view , classname = "+
+                    adapterView.getClass().getName());
+        }
+        mAdapterParser.mAdapterMap.put(id,adapter);
+        // 3, clear datas
+        mDataResolver.clearObjects();
+    }
+
+    /**
+     * check the refer and mapping the all find the refer VariableInfos in bindAdapter element.
+     * @param id the id of adapter view
+     * @param data  the adapter data
+     * @param extras  the extra data
+     * @param checkMainRefer  the main refer of  data
+     * @param <T>  the bean
+     */
+    private <T extends ISelectable> void checkReferAndMapping(int id, List<T> data, Object[] extras,
+                                                              boolean checkMainRefer) {
+        final AdapterReferInfo info = mAdapterParser.mReferMap.get(id);
+        if( info == null){
+            throw new DataBindException("have to declared the right <bindAdapter> element with the adapter view id = "+id);
+        }
+        if(checkMainRefer) {
+            final String mainRefer = mVariableBeanMap.get(data.get(0).getClass().getName());
+            if (!info.mainRefer.equals(mainRefer)) {
+                throw new DataBindException("the referVariable is mismatch, referVariable in <bindAdapter> is "
+                        + info.mainRefer + " ,but declared in <variable> is " + mainRefer);
+            }
+        }
+        if( info.getOtherRefers()!=null && info.getOtherRefers().length > 0) {
+            if(extras == null || extras.length ==0)
+                throw new DataBindException("the refers is mismatch with the extra data, because extra data is empty . refers = "
+                        + Arrays.toString(info.getOtherRefers()) );
+            getReferVariableInfos(info.getOtherRefers(),extras, mTmpVariables);
+            final Array<VariableInfo> variables = this.mTmpVariables;
+            final BaseDataResolver mDataResolver = this.mDataResolver ;
+            VariableInfo info1;
+            for(int i=0, size = variables.size ; i < size ; i++){
+                info1 = variables.get(i);
+                mDataResolver.putObject(info1.variableName,info1.data);
+            }
+            variables.clear();
+        }
+    }
+
+    // T should implement ITag
+    class QuickAdapterImpl<T extends ISelectable> extends BindHelper.QuickAdapter2<T>{
+
+        final String mMainRefer;
+
+        public QuickAdapterImpl(List<T> data, Array<ItemBindInfo> infos,String mainRefer) {
+            super(data, infos);
+            this.mMainRefer = mainRefer;
+        }
+        @Override
+        protected void bindDataImpl(Context context, int position, ViewHelper helper,
+                                    int itemLayoutId, T item, ItemBindInfo bindInfo) {
+            final SparseArray<ListenerImplContext> mListenerMap = DataBindParser.this.mListenerMap;
+            final BaseDataResolver mDataResolver = DataBindParser.this.mDataResolver;
+            final EventParseCaretaker mEventCareTaker = DataBindParser.this.mEventCareTaker;
+
+            //put object
+            mDataResolver.putObject(mMainRefer, item);
+
+            int size = bindInfo.itemEvents !=null ? bindInfo.itemEvents.size : 0;
+            PropertyBindInfo info;
+
+            if(size > 0) {
+                for (int i = 0; i < size; i++) {
+                    info = bindInfo.itemEvents.get(i);
+                    applyDataReally(helper.getRootView(), bindInfo.layoutId, info, helper,
+                            mDataResolver,mListenerMap,mEventCareTaker);
+                }
+            }
+            size = bindInfo.itemBinds !=null ? bindInfo.itemBinds.size : 0;
+            if(size > 0) {
+                for (int i = 0; i < size; i++) {
+                    info = bindInfo.itemBinds.get(i);
+                    applyDataReally(info.viewId, bindInfo.layoutId, info, helper,
+                            mDataResolver, mListenerMap, mEventCareTaker);
+                }
+            }
+        }
+    }
+
+    /*public*/ static class PropertyBindInfo{
         public String propertyName;
         public String [] referVariables;
         /** current not use */
@@ -643,6 +860,131 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         @Override
         public int hashCode() {
             return Objects.hash(variableName);
+        }
+    }
+
+    /*public*/ static class ItemBindInfo implements IResetable{
+        int layoutId ;
+        int tag;
+
+        Array<PropertyBindInfo> itemBinds;
+        Array<PropertyBindInfo> itemEvents;
+
+        @Override
+        public void reset() {
+            releasePropertyBindInfos(itemBinds);
+            releasePropertyBindInfos(itemEvents);
+        }
+    }
+
+    /***
+     * the refer info of bindAdapter element
+     */
+    static class AdapterReferInfo{
+        String mainRefer ;
+        String [] totalRefer;
+        /** exclude the main refer */
+        private String [] otherRefers;
+
+        public AdapterReferInfo(String mainRefer, String[] totalRefer) {
+            this.mainRefer = mainRefer;
+            this.totalRefer = totalRefer;
+        }
+        /** exclude the main refer */
+        public String[] getOtherRefers(){
+            if(totalRefer == null || totalRefer.length == 0){
+                return null;
+            }
+            if(otherRefers!=null)
+                return  otherRefers;
+            List<String> list =  new ArrayList<>(Arrays.asList(totalRefer));
+            list.remove(mainRefer);
+            return  (otherRefers = list.toArray(new String[list.size()]));
+        }
+    }
+    /**
+     * the adapter bind parser
+     * Created by heaven7 on 2015/11/24.
+     */
+   class BindAdapterParser implements DataBindingElement.IElementParseListener, IResetable {
+
+        /** key is id of adapter view eg: listView ,recyclerView */
+        SparseArray<Array<ItemBindInfo>> mItemBinds;
+        /** key is id of adapter view eg: listView ,recyclerView */
+        SparseArray<AdapterReferInfo> mReferMap;
+        /** key is id , value is adapter */
+        SparseArray<Object> mAdapterMap;
+
+        public BindAdapterParser() {
+            this.mItemBinds = new SparseArray<>(3);
+            this.mReferMap = new SparseArray<>(3);
+            this.mAdapterMap = new SparseArray<>();
+        }
+
+        @Override
+        public void onParseBindAdapterElements(List<BindAdapterElement> list) {
+            if(list == null || list.size() ==0)
+                return;
+            final Context context = getContext();
+            final SparseArray<Array<ItemBindInfo>> mItemBinds = this.mItemBinds;
+            final SparseArray<AdapterReferInfo> mReferMap = this.mReferMap;
+
+            List<ItemElement> ies ;
+            Array<ItemBindInfo> infos;
+
+            ItemBindInfo info;
+            boolean oneItem;
+            int adapterViewId;
+
+            for(BindAdapterElement bae : list){
+                ies = bae.getItemElements();
+                if(ies == null || ies.size()==0)
+                    continue;
+                infos = new Array<>(3);
+                oneItem = ies.size() == 1;
+
+                adapterViewId = ResourceUtil.getResId(context, bae.getId(), ResourceUtil.ResourceType.Id);
+                mReferMap.put(adapterViewId,new AdapterReferInfo(bae.getReferVariable(),bae.getTotalRefers()));
+                mItemBinds.put(adapterViewId, infos);
+
+                for(ItemElement ie : ies){
+                    info = new ItemBindInfo();
+                    info.layoutId = ResourceUtil.getResId(context, ie.getLayoutName(), ResourceUtil.ResourceType.Layout);
+                    //in multi item ,index must be declared
+                    if( !oneItem )
+                        info.tag = Integer.parseInt(ie.getTag().trim());
+                    info.itemEvents = parseListItemEventPropertyInfos(ie.getPropertyElements());
+                    info.itemBinds = parseListItemBindInfos(context, ie.getBindElements());
+                    infos.add(info);
+                }
+
+            }
+        }
+        public void onParseDataElement(DataElement e) {
+        }
+        public void onParseBindElements(List<BindElement> e) {
+        }
+        public void onParseVariableBindElements(List<BindElement> e) {
+        }
+
+        @Override
+        public void reset() {
+            if(mItemBinds ==null || mItemBinds.size() ==0)
+                return;
+            final SparseArray<Array<ItemBindInfo>> mItemBinds = this.mItemBinds;
+            Array<ItemBindInfo> infos;
+            for(int i=0,size = mItemBinds.size() ; i< size ;i++){
+                infos = mItemBinds.valueAt(i);
+                if(infos == null || infos.size ==0)
+                    continue;
+                for(int j=0,len = infos.size ; j<len ;j++){
+                    infos.get(j).reset();
+                }
+                infos.clear();
+            }
+            mItemBinds.clear();
+            mReferMap.clear();
+            mAdapterMap.clear();
         }
     }
 
@@ -681,8 +1023,12 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         }
 
         @Override
-        public void onParseBindAdapterElements(List<BindAdapterElement> bindAdapterElements) {
-
+        public void onParseBindAdapterElements(List<BindAdapterElement> list) {
+            if(list == null || list.size() ==0)
+                return;
+            if(mAdapterParser == null)
+                mAdapterParser = new BindAdapterParser();
+             mAdapterParser.onParseBindAdapterElements(list);
         }
     }
 
@@ -695,23 +1041,26 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         private Object holder;
         private Object[] params;
 
+        private SparseArray<ListenerImplContext> mListenerMap;
         private String propertyName;
         private int id;
-        private SparseArray<ListenerImplContext> mListenerMap;
+        /** this is used in bind adapter or else 0 */
+        private int layoutId;
 
-        void beginParse(int viewId, String proppertyName, SparseArray<ListenerImplContext> listenerMap){
+        void beginParse(int viewId,int layoutId, String propertyName, SparseArray<ListenerImplContext> listenerMap){
             this.id = viewId;
-            this.propertyName = proppertyName;
+            this.propertyName = propertyName;
             this.mListenerMap = listenerMap;
+            this.layoutId = layoutId;
         }
 
         /**
          * must call after {@link IExpression#evaluate(IDataResolver)}
-         * and befor {@link PropertyUtil#apply(ViewHelper, int, String, Object, SparseArray)}
+         * and befor {@link PropertyUtil#apply(ViewHelper, int, int,String, Object, SparseArray)}
          */
         void endParse(){
             if(isEventProperty(propertyName)) {
-                final int key = PropertyUtil.getEventKey(id, propertyName);
+                final int key = PropertyUtil.getEventKey(id, layoutId,propertyName);
                 ListenerImplContext l = mListenerMap.get(key);
                 if (l == null) {
                     l = createEventListener(propertyName);
