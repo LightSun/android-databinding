@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="ac_base_behaviour">this demo show the base behaviour of DataBinding framework</string>
+    <string name="ac_simple_listview">this demo show how to bind a simple Adapter to ListView
+        by DataBinding framework</string>
 </resources>

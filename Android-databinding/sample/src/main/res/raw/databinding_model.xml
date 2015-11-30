@@ -20,15 +20,17 @@
     </bind>
 
     <!-- 待验证,,, -->
-    <bindAdapter id="lv" referVariable="user">
+    <!-- bean must implements the interface ISelectable in bind adapter  -->
+    <!-- selectMode="1"means single , 2  means multi , if not declared default is 1 -->
+    <bindAdapter id="lv" referVariable="user" selectMode="1">
         <item layout="item_xxx" tag = "1" referVariable="itemHandler">
-            <!-- item on click  -->
-            <property name="onItemClick" >itemHandler.onItemClick(user)</property>
+            <!-- root onLongClickListener -->
+            <property name="onLongClick" >itemHandler.onItemLongClick(user)</property>
             <!-- root onClickListener-->
             <property name="onClick" >itemHandler.onItemClick(user)</property>
             <bind id="bt">
                 <property name="text" >user.username</property>
-                <property name="textColor" >user.male ? {@color/red} : {@color/random}</property>
+                <property name="textColor" >user.isSelected() ? {@color/red} : {@color/random}</property>
                 <property name="onClick" referVariable="orderHandler">orderHandler.onClickName(user)</property>
             </bind>
         </item>

@@ -2,6 +2,7 @@ package com.heaven7.databinding.core;
 
 import android.content.Context;
 import android.util.SparseArray;
+import android.util.SparseIntArray;
 
 import com.heaven7.xml.Array;
 
@@ -29,6 +30,7 @@ import java.util.List;
 
         final Array<DataBindParser.ItemBindInfo> mItemBindInfos ;
         SparseArray<DataBindParser.ItemBindInfo> mInfoMap ;
+        SparseIntArray mViewTypeMap ;
 
         public MultiItemTypeSupportImpl(Array<DataBindParser.ItemBindInfo> infos) {
             this.mItemBindInfos = infos;
@@ -96,7 +98,26 @@ import java.util.List;
         @Override
         public int getItemViewType(int position, T t) {
             //in BaseQuickAdapter  getItemViewType = 0 is occupied by IndeterminateProgress so need +1
-            return getLayoutId(position,t) % mItemBindInfos.size + 1 ;
+
+            //can't use % , or else ,often cause bug
+            if( mItemBindInfos.size == 1 ) return 1;
+            if(! (t instanceof ITag)){
+                throw new DataBindException("multi items in adapter view ,the class: "+t.getClass().getName()+
+                        " must implements ITag , and the tag must correspond the declared tag" +
+                        " in databinding xml, eg:  <item layout=\"item_xxx\" tag = \"1\" referVariable=\"user,itemHandler\"> ");
+            }
+            final int tag = ((ITag) t).getTag();
+            if(mViewTypeMap == null)
+                mViewTypeMap = new SparseIntArray();
+
+            int itemType;
+            if( (itemType = mViewTypeMap.get(tag, -1) )== -1){
+                //value begin 1... size begin 1... too.
+                final int size = mViewTypeMap.size();
+                mViewTypeMap.put(tag , size + 1);
+                return size + 1;
+            }
+            return itemType;
         }
     }
 
@@ -115,11 +136,14 @@ import java.util.List;
         }
         @Override
         public List<T> getMainData() {
-            return getItems();
+            return getAdapterManager().getItems();
         }
         public QuickAdapter2(List<T> data, Array<DataBindParser.ItemBindInfo> infos) {
+            this(data,infos,ISelectable.SELECT_MODE_SINGLE);
+        }
+        public QuickAdapter2(List<T> data, Array<DataBindParser.ItemBindInfo> infos,int selectMode) {
             super(data instanceof ArrayList ? (ArrayList<T>) data : new ArrayList<T>(data),
-                    new MultiItemTypeSupportImpl<T>(infos));
+                    new MultiItemTypeSupportImpl<T>(infos),selectMode);
         }
 
         private DataBindParser.ItemBindInfo getItemBindInfo( int itemLayoutId){
@@ -139,7 +163,8 @@ import java.util.List;
 
         List<T> getMainData();
         Object[]  getExtraData();
-        void setExtraData(Object []extraData);
+
+        void setExtraData(Object[] extraData);
     }
 
 }

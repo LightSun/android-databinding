@@ -5,6 +5,9 @@ import android.view.View;
 
 import com.heaven7.xml.ObjectMap;
 
+import org.heaven7.core.adapter.AdapterManager;
+import org.heaven7.core.adapter.ISelectable;
+
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -14,13 +17,13 @@ import java.util.List;
 /**
  * Created by heaven7 on 2015/8/25.
  */
-/*public*/ abstract class BaseDataResolver implements IDataResolver{
+/*public*/ class BaseDataResolver implements IDataResolver{
 
     private ObjectMap<String, String> mClassnameMap;
     private ObjectMap<String, Object> mObjectMap;
 
     private ObjectMap<String, List<Method>> mMethodsMap; //key = mMethod name
-    private ObjectMap<String, Field> mFiledMap;          //key = field name
+    private ObjectMap<String, Field> mFieldMap;          //key = field name
 
     private List<String> mEventHandleVariables;
 
@@ -30,16 +33,24 @@ import java.util.List;
 
     private IEventEvaluateCallback mEvaluateCallback;
 
+    // --------------------- below is used by adapter -------------------------------//
+    private ObjectMap<String,Object> mLongStandingObjs;
+    private WeakReference<AdapterManager<? extends ISelectable>> mWeakAdapterManager;
+    private int mPosition = ISelectable.INVALID_POSITION;
+    private Object mItem ;
+
     public BaseDataResolver() {
-        mClassnameMap = new ObjectMap<>();
-        mObjectMap = new ObjectMap<>();
-        mMethodsMap = new ObjectMap<>();
-        mFiledMap =new ObjectMap<>();
-        mEventHandleVariables = new ArrayList<>();
+        mClassnameMap = new ObjectMap<>(10);
+        mObjectMap = new ObjectMap<>(6);
+        mMethodsMap = new ObjectMap<>(16);
+        mFieldMap = new ObjectMap<>(16);
+        mEventHandleVariables = new ArrayList<>(4);
+
+        mLongStandingObjs = new ObjectMap<>(3);
     }
     public void clearCache(){
         mMethodsMap.clear();
-        mFiledMap.clear();
+        mFieldMap.clear();
     }
     public void addEventHandlerVariable(String variable){
         mEventHandleVariables.add(variable);
@@ -78,7 +89,11 @@ import java.util.List;
         Object val = mObjectMap.get(pName);
         if(val != null)
             return val;
-        throw new DataBindException("can't resolve the variable , name = " + pName);
+        val = mLongStandingObjs.get(pName);
+        if(val != null)
+            return val;
+        throw new DataBindException("can't resolve the variable , name = " + pName +
+                " , current map = " + mObjectMap.toString());
     }
 
     @Override
@@ -116,14 +131,14 @@ import java.util.List;
         final boolean enableReflectCache = isEnableReflectCache();
         Field f ;
         if(enableReflectCache) {
-            f = mFiledMap.get(fieldName);
+            f = mFieldMap.get(fieldName);
             if (f != null) return f;
         }
         try {
             f = clazz.getDeclaredField(fieldName.trim());
             f.setAccessible(true);
             if(enableReflectCache) {
-                mFiledMap.put(fieldName, f);
+                mFieldMap.put(fieldName, f);
             }
         }catch (Exception e){
             throw new DataBindException("can't find the field, field name = "+ fieldName , e);
@@ -182,5 +197,44 @@ import java.util.List;
         mEnableReflectCache = true;
         mEventHandleVariables.clear();
         mClassnameMap.clear();
+        endBind();
+        mLongStandingObjs.clear();
+    }
+
+    @Override
+    public  void beginBindItem(int position, Object item) {
+        this.mPosition = position;
+        this.mItem = item;
+    }
+
+    @Override
+    public void endBind() {
+        this.mPosition = ISelectable.INVALID_POSITION;
+        this.mItem = null;
+        this.mWeakAdapterManager = null;
+    }
+
+    @Override
+    public void putLongStandingData(String variable, Object data) {
+        mLongStandingObjs.put(variable,data);
+    }
+
+    @Override
+    public Object getCurrentItem(){
+        return mItem;
+    }
+    @Override
+    public int getCurrentPosition(){
+        return mPosition;
+    }
+
+    @Override
+    public AdapterManager<? extends ISelectable> getAdapterManager() {
+        return mWeakAdapterManager!=null ? mWeakAdapterManager.get() : null;
+    }
+
+    @Override
+    public void setAdapterManager(AdapterManager<? extends ISelectable> am) {
+        mWeakAdapterManager = new WeakReference<AdapterManager<? extends ISelectable>>(am);
     }
 }

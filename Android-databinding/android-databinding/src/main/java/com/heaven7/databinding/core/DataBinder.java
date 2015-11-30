@@ -8,6 +8,7 @@ import com.heaven7.databinding.core.xml.XmlElementNames;
 import com.heaven7.databinding.core.xml.elements.DataBindingElement;
 import com.heaven7.xml.XmlReader;
 
+import org.heaven7.core.adapter.AdapterManager;
 import org.heaven7.core.adapter.ISelectable;
 
 import java.io.IOException;
@@ -45,7 +46,7 @@ public final class DataBinder implements IDataBinder{
      * */
     public DataBinder(View root,int bindsRawResId,boolean cacheXml){
         this.mBindRawResId = bindsRawResId;
-        BaseDataResolver bdr = new BaseDataResolver(){};
+        BaseDataResolver bdr = new BaseDataResolver();
         this.mDataBindParser = new DataBindParser(root, bdr);
         parseXml(root.getContext(), bindsRawResId, cacheXml);
         // property change listener ( attach and detach) notifyDataChange(user)
@@ -125,13 +126,8 @@ public final class DataBinder implements IDataBinder{
     }
 
     @Override
-    public <T extends ISelectable> void bindAdapter(int id, List<T> data,Object...extras) {
-        mDataBindParser.bindAdapter(id,data,extras);
-    }
-
-    @Override
-    public void notifyAdapterDataSetChanged(int id) {
-        mDataBindParser.notifyAdapterDataSetChanged(id);
+    public <T extends ISelectable> AdapterManager<T> bindAdapter(int id, List<T> data,Object...extras) {
+        return  mDataBindParser.bindAdapter(id,data,extras);
     }
 
 

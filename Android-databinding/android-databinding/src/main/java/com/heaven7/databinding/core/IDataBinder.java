@@ -1,5 +1,6 @@
 package com.heaven7.databinding.core;
 
+import org.heaven7.core.adapter.AdapterManager;
 import org.heaven7.core.adapter.ISelectable;
 
 import java.util.List;
@@ -85,8 +86,17 @@ public interface IDataBinder{
      */
     void notifyDataSetChanged(int viewId, String propertyName);
 
-    <T extends ISelectable> void bindAdapter(int adapterViewId, List<T> data,Object...extras);
+    /**
+     * bind adapter and return the AdapterManager
+     * @param adapterViewId  the id of adapter view ,eg: ListView or RecyclerView
+     * @param data  the list data to bind
+     * @param extras the extras objects.often is the relative listener to bind
+     * @param <T> the T
+     * @return AdapterManager to manage the adapter
+     */
+    <T extends ISelectable> AdapterManager<T> bindAdapter(int adapterViewId, List<T> data,Object...extras);
 
-    //notify adapter data changed-> notifyAdapterDataSetChanged(int id).item add?
-    void notifyAdapterDataSetChanged(int id);
+    /**
+     * void notifyAdapterDataSetChanged(int id); // moved to  AdapterManager
+     */
 }

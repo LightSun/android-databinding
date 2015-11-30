@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DataBinding>
+    <data>
+        <variable name="imageInfo"  classname="com.heaven7.databinding.demo.bean.ImageInfo"  type="bean"/>
+        <variable name="itemHandler" classname="com.heaven7.databinding.demo.samples.ListViewBindAdapterTest$ItemHandler"
+            type="callback"/>
+    </data>
+
+    <!-- bean must implements the interface ISelectable in bind adapter  -->
+    <!-- selectMode="1"means single , 2  means multi , if not declared default is 1 -->
+
+    <bindAdapter id="lv" referVariable="imageInfo">
+        <item layout="item_image"  referVariable="itemHandler">
+            <!-- root onClickListener-->
+            <property name="onClick" >itemHandler.onItemClick()</property>
+            <bind id="tv">
+                <property name="text" >imageInfo.desc</property>
+                <property name="textColor" >imageInfo.isSelected() ? {@color/red} : {@color/random}</property>
+            </bind>
+        </item>
+    </bindAdapter>
+
+
+</DataBinding>

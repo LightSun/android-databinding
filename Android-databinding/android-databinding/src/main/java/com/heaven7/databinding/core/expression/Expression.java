@@ -167,9 +167,16 @@ public class Expression implements IExpression {
 				if(dataResolver.isEventHandlerOfView(mVariable) && dataResolver.getCurrentBindingView() !=null){
 					Expression next = getNextAccessInfo();
 					next.setIsMethod(true);
+
+					if( dataResolver.getAdapterManager() != null) {
+						//add item and position for item bind,t
+						// hat means onClick in adapter  is (view, position, item, AdapterManager...etc)
+						next.addExtraParamTofirst(dataResolver.getAdapterManager(),true);
+						next.addExtraParamTofirst(dataResolver.getCurrentItem(), true);
+						next.addExtraParamTofirst(dataResolver.getCurrentPosition(), true);
+					}
 					// make view at first onclickxxx(view v, IDataBinder b,...)
-					ObjectExpression objExpr = next.addExtraParamTofirst(dataResolver.getCurrentBindingView());
-					objExpr.setIsOccasional(true);
+					next.addExtraParamTofirst(dataResolver.getCurrentBindingView(), true);
 				}
 				objHolder = performNextExpressionIfNeed(dataResolver,
 						dataResolver.resolveVariable(mVariable));
@@ -279,8 +286,11 @@ public class Expression implements IExpression {
 	/** add the param to the fist of param accessInfo
 	 * @param param the extra param to add to first , maybe view or {@link com.heaven7.databinding.core.IDataBinder}*/
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private ObjectExpression addExtraParamTofirst(Object param) {
+	private void addExtraParamTofirst(Object param,boolean occasional) {
+
 		final ObjectExpression expr = new ObjectExpression(param);
+		expr.setIsOccasional( occasional);
+
 		if(mParamAccessInfos == null){
 			mParamAccessInfos = new ArrayList();
 			mParamAccessInfos.add(expr);
@@ -290,9 +300,7 @@ public class Expression implements IExpression {
 			else
 				mParamAccessInfos.add(expr);
 		}
-		return expr;
 	}
-
 
 	public static class Builder{
 

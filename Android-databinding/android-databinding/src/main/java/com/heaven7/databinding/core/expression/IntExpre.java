@@ -6,9 +6,9 @@ import com.heaven7.databinding.core.IDataResolver;
 
 public class IntExpre implements IExpression{
 	
-	private Integer value;
+	private int value;
 	
-	public IntExpre(Integer value) {
+	public IntExpre(int value) {
 		super();
 		this.value = value;
 	}

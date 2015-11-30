@@ -41,6 +41,12 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
     public String[] getTotalRefers(){
         return Util.convertRefer(mTotalRefer);
     }
+    public String getSelectMode(){
+        return getAttribute(XmlKeys.SELECT_MODE);
+    }
+    public void setSelectMode(String selectMode){
+         addAttribute(XmlKeys.SELECT_MODE, selectMode);
+    }
 
     public void setId(String id){
         addAttribute(XmlKeys.ID, id);
@@ -98,6 +104,12 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
             throw new RuntimeException("in <bindAdapter> element , referVariable can't be null.");
         }
         setReferVariable(referVar);
+
+        String selectMode = root.getAttribute(XmlKeys.SELECT_MODE, null);
+        if(TextUtils.isEmpty(selectMode)){
+            selectMode = "1";
+        }
+        setSelectMode(selectMode);
 
         final Array<XmlReader.Element> items = root.getChildrenByName(XmlElementNames.ITEM);
         XmlReader.Element e;

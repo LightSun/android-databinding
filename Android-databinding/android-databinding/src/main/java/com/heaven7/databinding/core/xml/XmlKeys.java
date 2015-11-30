@@ -19,4 +19,5 @@ public interface XmlKeys {
      String LAYOUT                             = "layout";
      String TAG                                = "tag";
 
+     String SELECT_MODE                        = "selectMode";
 }

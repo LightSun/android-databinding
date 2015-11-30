@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="ac_base_behaviour">这个例子展示了本框架数据绑定的基本功能</string>
+     <string name="ac_simple_listview">此demo展示如何去绑定简单的ListView adapter</string>
 </resources>

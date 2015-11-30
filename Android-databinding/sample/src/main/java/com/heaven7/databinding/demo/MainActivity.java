@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.heaven7.databinding.demo.samples.BaseBehaviourActivity;
+import com.heaven7.databinding.demo.samples.ListViewBindAdapterTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class MainActivity extends ListActivity {
     private List<ActivityInfo> getActivityInfos() {
         ArrayList<ActivityInfo> array = new ArrayList<ActivityInfo>();
         array.add(new ActivityInfo(BaseBehaviourActivity.class, getString(R.string.ac_base_behaviour)));
-        //TODO the more demos
+        array.add(new ActivityInfo(ListViewBindAdapterTest.class, getString(R.string.ac_simple_listview)));
         return array;
     }
 

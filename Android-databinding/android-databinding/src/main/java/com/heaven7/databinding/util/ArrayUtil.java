@@ -2,6 +2,8 @@ package com.heaven7.databinding.util;
 
 import android.view.View;
 
+import org.heaven7.core.adapter.AdapterManager;
+
 /**
  * Created by heaven7 on 2015/11/6.
  */
@@ -31,8 +33,11 @@ public class ArrayUtil {
         for(int i=0,size = objs.length ;i<size ;i++){
             if(i==0 && objs[i] instanceof View){
                 clss[i] = View.class;
-            }else
+            }else if(objs[i] instanceof AdapterManager){
+                clss[i] = AdapterManager.class;
+            } else {
                 clss[i] = objs[i].getClass();
+            }
         }
         return clss;
     }

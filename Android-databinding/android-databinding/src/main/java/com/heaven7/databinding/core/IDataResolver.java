@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by heaven7 on 2015/8/12.
  */
-public interface IDataResolver extends IVariableResolver,IResetable {
+public interface IDataResolver extends IVariableResolver,IAdapterBindTracker,IResetable {
 
 	/** field can be private */
     Field getField(Class<?> clazz, String fieldName) throws DataBindException;

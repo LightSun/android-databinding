@@ -50,7 +50,7 @@ public class BaseBehaviourActivity extends AppCompatActivity {
 
     private void doBind() {
         //init DataBinder
-        mDataBinder = new DataBinder(this, R.raw.databinding_main);
+        mDataBinder = new DataBinder(this, R.raw.db_main);
 
         //bind a User and cache it for latter call notify.
         mDataBinder.bind(R.id.bt, true, mUser = new User("heaven7", false));
