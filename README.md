@@ -30,6 +30,9 @@ i like technology. especially the open-source technology.And previous i didn't c
 
 ## how to use or demo ?
 gradle config will support latter. 
+
+base BaseBehaviour
+
 ``` java
 //1, write some of your code
 //the event handler called by databinding
