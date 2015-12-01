@@ -9,10 +9,13 @@ this framework.
 - support for bind data and event handler by xml. but you must call bind method in java code.
 - support for notify data change.
 - Support for custom attr and listener
-- adapter bind data ? will support latter.
+- support for bind adapter for any child of Adapter view  or RecyclerView
+- suooprt for bind image 
+- Expression support like java , only nested ternary  expression is not support.
+
 
 ## TODO
-   * to support bind   adapter
+   * test , write doc detail , find bug and fix.
    
 ## issue
    * if you have a good suggestion  about this, please tell me. Thanks! 
@@ -90,6 +93,122 @@ public class MainEventHandler extends EventContext{
         //bind a data to multi views. but cache
         mDataBinder.bind(new User("joker", true,"xxx_joker"));
     }
+
+```
+below is bind adapter 
+``` java
+//1, declare your main layout  like this
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+
+</LinearLayout>
+
+// 2, declare item layout like this 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <com.android.volley.extra.ExpandNetworkImageView
+        android:id="@+id/eniv"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:padding="10dp"
+        />
+
+</LinearLayout>
+
+//3 , declare the config of bind adapter like this:
+<DataBinding>
+    <data>
+        <variable name="imageInfo"  classname="com.heaven7.databinding.demo.bean.ImageInfo"  type="bean"/>
+        <variable name="itemHandler" classname="com.heaven7.databinding.demo.samples.ListViewBindAdapterTest$ItemHandler"
+            type="callback"/>
+    </data>
+
+    <!-- bean must implements the interface ISelectable in bind adapter  -->
+    <!-- selectMode="1"means single , 2  means multi , if not declared default is 1 -->
+
+    <bindAdapter id="lv" referVariable="imageInfo">
+        <item layout="item_image"  referVariable="itemHandler">
+            <!-- root onClickListener-->
+            <property name="onClick" >itemHandler.onItemClick()</property>
+            <bind id="tv">
+                <property name="text" >imageInfo.desc</property>
+                <property name="textColor" >imageInfo.isSelected() ? {@color/red} : {@color/random}</property>
+                <property name="onClick" >itemHandler.onTextClick()</property>
+            </bind>
+            <bind id="eniv">
+                <property name="img_url" >imageInfo.url</property>
+            </bind>
+        </item>
+    </bindAdapter>
+
+</DataBinding>
+
+//4,  java code -> bindAdapter
+public class ListViewBindAdapterTest extends BaseActivity {
+
+    AdapterManager<ImageInfo> mAM;
+
+    @Override
+    protected int getBindRawId() {
+        return R.raw.db_test_simple_listview;
+    }
+    @Override
+    protected int getlayoutId() {
+        return R.layout.activity_listview;
+    }
+
+    @Override
+    protected void onFinalInit(Bundle savedInstanceState) {
+    }
+
+    @Override
+    public void doBind() {
+        List<ImageInfo> infos = new ArrayList<>();
+        for(int i=0 , size = Test.URLS.length ; i < size  ;i++){
+            infos.add(new ImageInfo(Test.URLS[i],"desc_"+i));
+        }
+        mAM = mDataBinder.bindAdapter(R.id.lv, infos, new ItemHandler(getToaster()));
+    }
+
+    public static class ItemHandler {
+        private final Toaster mToaster;
+        public ItemHandler(Toaster mToaster) {
+            this.mToaster = mToaster;
+        }
+
+        //every param must not be primitive
+        public void onItemClick(View v, Integer position,ImageInfo item, AdapterManager<?> am){
+            mToaster.show("ItemHandler_onItemClick: position = " + position + " ,item = " + item);
+            if(item.isSelected()){
+                am.getSelectHelper().setUnselected(position);
+            }else{
+                am.getSelectHelper().setSelected(position);
+            }
+        }
+        public void onTextClick(View v, Integer position,ImageInfo item, AdapterManager<?> am){
+            mToaster.show("on text click: position = " + position + " ,item = " + item);
+        }
+    }
+}
 
 ```
 
