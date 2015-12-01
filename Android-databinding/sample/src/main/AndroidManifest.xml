@@ -22,9 +22,18 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".samples.BaseBehaviourActivity"/>
-        <activity android:name=".samples.ListViewBindAdapterTest"/>
-        <activity android:name=".samples.RecycleViewBindAdapterTest"/>
+        <activity android:name=".samples.BaseBehaviourActivity"
+            android:label="BaseBehaviourActivity"
+            />
+        <activity android:name=".samples.ListViewBindAdapterTest"
+            android:label="ListViewBindAdapterTest"
+            />
+        <activity android:name=".samples.RecycleViewBindAdapterTest"
+            android:label="RecycleViewBindAdapterTest"
+            />
+        <activity android:name=".samples.TextChangeTest"
+            android:label="TextChangeTest"
+            />
     </application>
 
 </manifest>

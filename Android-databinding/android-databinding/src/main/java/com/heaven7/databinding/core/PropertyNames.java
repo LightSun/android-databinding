@@ -9,7 +9,10 @@ public interface PropertyNames {
     //event name
     String ON_CLICK                =    "onClick";
     String ON_LONG_CLICK           =    "onLongClick";
-    String TEXT_WATCHER            =    "textWatcher";
+    String TEXT_CHANGE_BEFORE      =    "textChange_before";
+    String TEXT_CHANGE             =    "textChange";
+    String TEXT_CHANGE_AFTER       =    "textChange_after";
+
    // String ON_TOUCH                =    "onTouch";
 
     //common name

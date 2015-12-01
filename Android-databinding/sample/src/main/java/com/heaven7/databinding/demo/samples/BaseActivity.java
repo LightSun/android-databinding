@@ -57,13 +57,6 @@ public abstract  class BaseActivity extends AppCompatActivity{
         mSaveStateHelper.onRestoreInstanceState(savedInstanceState);
     }
 
-    protected abstract void doBind();
-
-    protected abstract void onFinalInit(Bundle savedInstanceState);
-
-    protected abstract int getlayoutId();
-    protected abstract int getBindRawId();
-
     protected void showToast(String msg){
         mToaster.show(msg);
     }
@@ -74,4 +67,13 @@ public abstract  class BaseActivity extends AppCompatActivity{
     protected Toaster getToaster(){
         return mToaster;
     }
+
+
+    protected abstract int getlayoutId();
+    protected abstract int getBindRawId();
+
+    protected abstract void onFinalInit(Bundle savedInstanceState);
+    protected abstract void doBind();
+
+
 }

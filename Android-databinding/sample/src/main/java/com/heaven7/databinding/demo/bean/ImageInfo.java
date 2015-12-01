@@ -3,6 +3,8 @@ package com.heaven7.databinding.demo.bean;
 import org.heaven7.core.adapter.ISelectable;
 
 /**
+ * as the item of bind adapter . ImageInfo must implement ISelectable interface.
+ * if multi item. must implement ITag interface
  * Created by heaven7 on 2015/11/30.
  */
 public class ImageInfo implements ISelectable{

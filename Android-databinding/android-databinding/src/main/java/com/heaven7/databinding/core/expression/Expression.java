@@ -226,7 +226,22 @@ public class Expression implements IExpression {
 				Object result = null;
 
 				if(params.length > 0 && params[0] instanceof View){
-					Method method = clazz.getDeclaredMethod(mAccessName, ArrayUtil.getTypes(params));
+					Method method ;
+					try {
+						method = clazz.getDeclaredMethod(mAccessName, ArrayUtil.getTypes(params));
+					}catch (NoSuchMethodException e){
+						List<Method> ms = dataResolver.getMethod(clazz, mAccessName);
+						final int size = ms.size();
+						if( size == 0){
+                             throw new DataBindException("event handler must have the method name = " + mAccessName);
+						}
+						if(size > 1){
+							throw new DataBindException("event handler can only have one method with the name = " +
+									mAccessName + " ,but get " + size +"( this means burden method in event handler" +
+									" is not support !)");
+						}
+						method = ms.get(0);
+					}
                     dataResolver.getEventEvaluateCallback().onEvaluateCallback(holder,method,params);
 				}else {
 					final boolean useStaticClassname = mStaticAccessClassname != null;
@@ -276,10 +291,6 @@ public class Expression implements IExpression {
 				throw (DataBindException)e;
 			else
 				throw new DataBindException(e);
-		}finally{
-			/*
-			ExpressionParser.getInternalPool().recycle(this);
-			*/
 		}
 	}
 

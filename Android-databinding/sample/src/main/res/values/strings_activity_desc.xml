@@ -5,4 +5,5 @@
         by DataBinding framework</string>
     <string name="ac_simple_recycle_view">this demo show how to bind a simple Adapter to RecyclerView
         by DataBinding framework</string>
+    <string name="ac_text_change_listener">this demo show how to listen text change</string>
 </resources>

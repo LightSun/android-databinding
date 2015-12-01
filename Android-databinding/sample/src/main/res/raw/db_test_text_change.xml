@@ -1,0 +1,14 @@
+<DataBinding>
+    <data>
+        <variable name="textListener"  classname="com.heaven7.databinding.demo.samples.TextChangeTest$TextChangeListenerImpl"  type="callback"/>
+        <import classname="android.view.View" alias="View"/> <!-- this type of alias  can hide (but must uppercase) -->
+    </data>
+
+    <bind id="et">
+        <property name="textChange" referVariable="textListener" >textListener.onTextChanged()</property>
+        <property name="textChange_before" referVariable="textListener" >textListener.beforeTextChanged()</property>
+        <property name="textChange_after" referVariable="textListener" >textListener.afterTextChanged()</property>
+    </bind>
+
+
+</DataBinding>

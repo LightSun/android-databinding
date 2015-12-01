@@ -13,21 +13,32 @@ import com.heaven7.databinding.core.listener.TextWatcherImpl;
  */
 public final class ListenerFactory {
 
-   private static final SparseArray<String> sRegistedListenerMap;
+    private static final SparseArray<String> sRegistedListenerMap;
 
     static{
         sRegistedListenerMap = new SparseArray<String>();
+
         registEventListener(PropertyNames.ON_CLICK      , OnClickListenerImpl.class);
         registEventListener(PropertyNames.ON_LONG_CLICK , OnLongClickListenerImpl.class);
-        registEventListener(PropertyNames.TEXT_WATCHER  , TextWatcherImpl.class);
+        registEventListener(PropertyNames.TEXT_CHANGE  , TextWatcherImpl.OnTextChangeImpl.class);
+        registEventListener(PropertyNames.TEXT_CHANGE_AFTER  , TextWatcherImpl.AfterTextChangeImpl.class);
+        registEventListener(PropertyNames.TEXT_CHANGE_BEFORE, TextWatcherImpl.BeforeTextChangeImpl.class);
+
     }
 
-    public static void registEventListener(String propertyName,String classname){
-       sRegistedListenerMap.put(propertyName.hashCode(),classname);
-    }
     public static void registEventListener(String propertyName,Class<?> clazz){
        sRegistedListenerMap.put(propertyName.hashCode(),clazz.getName());
     }
+
+   /* public static void registEventParamTypes(Class<?> holderClass,String methodName,Class<?>...paramTypes){
+        sMethodParamTypes.put(getMethodTypesKey(holderClass, methodName),paramTypes);
+    }
+    public static Class<?>[] getEventParamTypes(Class<?> holderClass,String methodName){
+        return sMethodParamTypes.get(getMethodTypesKey(holderClass, methodName));
+    }
+    private static int getMethodTypesKey(Class<?> holderClass, String methodName) {
+        return (holderClass.getName() + "_" + methodName).hashCode();
+    }*/
 
     /*public*/ static ListenerImplContext createEventListener(String propName){
         String className = sRegistedListenerMap.get(propName.hashCode());

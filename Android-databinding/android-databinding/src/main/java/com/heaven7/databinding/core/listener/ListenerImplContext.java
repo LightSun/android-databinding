@@ -63,13 +63,20 @@ public abstract class ListenerImplContext {
             }
             return mMethod.invoke(mHolder,params);
         } catch (Exception e) {
-            if ( exceptionNotice == null)
+            if (exceptionNotice == null)
                 throw new DataBindException(e);
-            else{
-                throw new DataBindException(exceptionNotice,e);
+            else {
+                throw new DataBindException(exceptionNotice, e);
             }
-        }/*finally{
-            reset();
-        }*/
+        }finally {
+            afterCallback();
+        }
     }
+
+    /**  this is called at last  */
+    protected void afterCallback() {
+
+    }
+
+
 }

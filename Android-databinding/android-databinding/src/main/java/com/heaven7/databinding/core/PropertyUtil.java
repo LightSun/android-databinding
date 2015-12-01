@@ -68,7 +68,9 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
             //helper.setVisibility(viewId, (Integer) value);
             impl.setOnLongClickListener((View.OnLongClickListener)
                     mListenerMap.get(getEventKey(id, layoutId, propertyName)));
-        }else if(PropertyNames.TEXT_WATCHER.equals(propertyName)){
+        }else if(PropertyNames.TEXT_CHANGE.equals(propertyName)
+                || PropertyNames.TEXT_CHANGE_BEFORE.equals(propertyName)
+                || PropertyNames.TEXT_CHANGE_AFTER.equals(propertyName)){
             impl.addTextChangedListener((TextWatcher)
                     mListenerMap.get(getEventKey(id, layoutId, propertyName)));
         }

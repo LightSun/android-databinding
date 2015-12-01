@@ -49,6 +49,7 @@ public class ListViewBindAdapterTest extends BaseActivity {
         }
 
         //every param must not be primitive
+        // and in  adapter item's onClick event or onLongClick event , params must like below
         public void onItemClick(View v, Integer position,ImageInfo item, AdapterManager<?> am){
             mToaster.show("ItemHandler_onItemClick: position = " + position + " ,item = " + item);
             if(item.isSelected()){
@@ -57,9 +58,6 @@ public class ListViewBindAdapterTest extends BaseActivity {
                 am.getSelectHelper().setSelected(position);
             }
         }
-       /* public void onImageClick(View v, Integer position,ImageInfo item, AdapterManager<?> am){
-            mToaster.show("on image click: position = " + position + " ,item = " + item);
-        }*/
         public void onTextClick(View v, Integer position,ImageInfo item, AdapterManager<?> am){
             mToaster.show("on text click: position = " + position + " ,item = " + item);
         }
