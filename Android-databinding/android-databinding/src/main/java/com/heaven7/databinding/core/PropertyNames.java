@@ -24,5 +24,10 @@ public interface PropertyNames {
     String TEXT_SIZE_RES           =    "textSize_res";
 
     String VISIBILITY              =    "visibility";
+    //image
+    String IMGAE_URL               =    "img_url";
+    String IMGAE_BITMAP            =    "img_bitmap";
+    String IMGAE_DRAWABLE          =    "img_drawable";
+    String IMGAE_ROUND_BUILDER     =    "img_round_builder";
 
 }

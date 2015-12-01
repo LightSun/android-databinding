@@ -51,7 +51,7 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
  */
 /*public*/ class DataBindParser implements IDataResolver.IEventEvaluateCallback{
 
-    private static final boolean sDebug = true ;
+    private static final boolean sDebug = false ;
 
     private static final String TAG = "DataBinding";
 
@@ -575,7 +575,7 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         if(info.realExpr != null){
             final Object val = info.realExpr.evaluate(dr);
             caretaker.endParse();
-            PropertyUtil.apply(vp, id, layoutId, info.propertyName, val, mListenerMap);
+            apply(vp, id, layoutId, info.propertyName, val, mListenerMap);
         }else {
             try {
                 info.realExpr =  ExpressionParser.parse(info.expression);
@@ -721,14 +721,13 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         // 2, apply in adapter
         Object adapter;
         if(adapterView instanceof AdapterView ){
-            QuickAdapterImpl<T> impl = new QuickAdapterImpl<>(data,itemBindInfos,adapterInfo,id);
-            impl.setExtraData(extras);
+            QuickAdapterImpl<T> impl = new QuickAdapterImpl<>(data,itemBindInfos,adapterInfo);
             ((AdapterView) adapterView).setAdapter(impl);
             adapter = impl;
         }else if ( adapterView instanceof RecyclerView){
-            //TODO to support ReceiverView
-            throw new UnsupportedOperationException("unsupport adapter view , classname = "+
-                    adapterView.getClass().getName());
+            QuickRecycleAdapterImpl<T> impl = new QuickRecycleAdapterImpl<>(data,itemBindInfos,adapterInfo);
+            ((RecyclerView) adapterView).setAdapter(impl);
+            adapter = impl;
         }else{
             throw new UnsupportedOperationException("unsupport adapter view , classname = "+
                     adapterView.getClass().getName());
@@ -803,17 +802,13 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         return info;
     }
 
-    // if use multi item, T must implement ITag. onClick onLongClick in adapter
-    // param like (View v,int position,Object item,SelectHelper helper... etc)
-    class QuickAdapterImpl<T extends ISelectable> extends BindHelper.QuickAdapter2<T>{
+    class QuickRecycleAdapterImpl<T extends ISelectable> extends BindHelper.QuickRecycleAdapter2<T>{
 
         final String mMainRefer;
-        final int mAdapterViewId;
 
-        public QuickAdapterImpl(List<T> data,Array<ItemBindInfo> infos,AdapterInfo info,int adapterViewId) {
+        public QuickRecycleAdapterImpl(List<T> data,Array<ItemBindInfo> infos,AdapterInfo info) {
             super(data, infos, info.selectMode);
             this.mMainRefer = info.mainRefer;
-            this.mAdapterViewId = adapterViewId;
         }
 
         @Override
@@ -827,16 +822,8 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
         }
 
         @Override
-        protected void afterNotifyDataChanged() {
-
-        }
-
-        @Override
         protected void bindDataImpl(Context context, int position, ViewHelper helper,
                                     int itemLayoutId, T item, ItemBindInfo bindInfo) {
-            if(sDebug){
-                Logger.w(TAG, "bindDataImpl" , "begin bind item position = " + position);
-            }
             final SparseArray<ListenerImplContext> mListenerMap = DataBindParser.this.mListenerMap;
             final BaseDataResolver mDataResolver = DataBindParser.this.mDataResolver;
             final EventParseCaretaker mEventCareTaker = DataBindParser.this.mEventCareTaker;
@@ -859,11 +846,75 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
             }
             size = bindInfo.itemBinds !=null ? bindInfo.itemBinds.size : 0;
             if(size > 0) {
+                View v;
                 for (int i = 0; i < size; i++) {
                     info = bindInfo.itemBinds.get(i);
-                    mDataResolver.setCurrentBindingView(helper.getView(info.viewId));
-                    applyDataReally(info.viewId, bindInfo.layoutId, info, helper,
+                    v = helper.getView(info.viewId);
+                    mDataResolver.setCurrentBindingView(v);
+                    applyDataReally(v, bindInfo.layoutId, info, helper,
                             mDataResolver, mListenerMap, mEventCareTaker);
+                }
+            }
+        }
+    }
+
+    // if use multi item, T must implement ITag. onClick onLongClick in adapter
+    // param like (View v,int position,Object item,SelectHelper helper... etc)
+    class QuickAdapterImpl<T extends ISelectable> extends BindHelper.QuickAdapter2<T>{
+
+        final String mMainRefer;
+       // final int mAdapterViewId;
+
+        public QuickAdapterImpl(List<T> data,Array<ItemBindInfo> infos,AdapterInfo info) {
+            super(data, infos, info.selectMode);
+            this.mMainRefer = info.mainRefer;
+        }
+
+        @Override
+        protected void onFinalInit() {
+            mDataResolver.setAdapterManager(getAdapterManager());
+        }
+
+        @Override
+        protected void beforeNotifyDataChanged() {
+            mDataResolver.setAdapterManager(getAdapterManager());
+        }
+
+        @Override
+        protected void bindDataImpl(Context context, int position, ViewHelper helper,
+                                    int itemLayoutId, T item, ItemBindInfo bindInfo) {
+            final SparseArray<ListenerImplContext> mListenerMap = DataBindParser.this.mListenerMap;
+            final BaseDataResolver mDataResolver = DataBindParser.this.mDataResolver;
+            final EventParseCaretaker mEventCareTaker = DataBindParser.this.mEventCareTaker;
+
+            //put object
+            mDataResolver.putObject(mMainRefer, item);
+            mDataResolver.beginBindItem(position,item);
+
+            int size = bindInfo.itemEvents !=null ? bindInfo.itemEvents.size : 0;
+            PropertyBindInfo info;
+
+            if(size > 0) {
+                final View rootView = helper.getRootView();
+                for (int i = 0; i < size; i++) {
+                    info = bindInfo.itemEvents.get(i);
+                    mDataResolver.setCurrentBindingView(rootView);
+                    applyDataReally(rootView, bindInfo.layoutId, info, helper,
+                            mDataResolver, mListenerMap, mEventCareTaker);
+                }
+            }
+            size = bindInfo.itemBinds !=null ? bindInfo.itemBinds.size : 0;
+            if(size > 0) {
+                View v;
+                for (int i = 0; i < size; i++) {
+                    info = bindInfo.itemBinds.get(i);
+                    v = helper.getView(info.viewId);
+                    mDataResolver.setCurrentBindingView(v);
+                    applyDataReally(v, bindInfo.layoutId, info, helper,
+                            mDataResolver, mListenerMap, mEventCareTaker);
+                    //below have a bug , that position and item transfer is wrong
+                  /*  applyDataReally(info.viewId, bindInfo.layoutId, info, helper,
+                            mDataResolver, mListenerMap, mEventCareTaker);*/
                 }
             }
         }

@@ -20,6 +20,7 @@ import java.util.List;
 /*public*/ class BaseDataResolver implements IDataResolver{
 
     private ObjectMap<String, String> mClassnameMap;
+    /** tmp object cache will be clear after bind by call {@link #clearObjects()} */
     private ObjectMap<String, Object> mObjectMap;
 
     private ObjectMap<String, List<Method>> mMethodsMap; //key = mMethod name
@@ -41,11 +42,12 @@ import java.util.List;
 
     public BaseDataResolver() {
         mClassnameMap = new ObjectMap<>(10);
-        mObjectMap = new ObjectMap<>(6);
         mMethodsMap = new ObjectMap<>(16);
         mFieldMap = new ObjectMap<>(16);
+
         mEventHandleVariables = new ArrayList<>(4);
 
+        mObjectMap = new ObjectMap<>(6);
         mLongStandingObjs = new ObjectMap<>(3);
     }
     public void clearCache(){
@@ -129,16 +131,17 @@ import java.util.List;
         fieldName = fieldName.trim();
 
         final boolean enableReflectCache = isEnableReflectCache();
+        final String key = generateKey(clazz, fieldName);
         Field f ;
         if(enableReflectCache) {
-            f = mFieldMap.get(fieldName);
+            f = mFieldMap.get(key);
             if (f != null) return f;
         }
         try {
-            f = clazz.getDeclaredField(fieldName.trim());
+            f = clazz.getDeclaredField(fieldName);
             f.setAccessible(true);
             if(enableReflectCache) {
-                mFieldMap.put(fieldName, f);
+                mFieldMap.put(key, f);
             }
         }catch (Exception e){
             throw new DataBindException("can't find the field, field name = "+ fieldName , e);

@@ -169,8 +169,8 @@ public class Expression implements IExpression {
 					next.setIsMethod(true);
 
 					if( dataResolver.getAdapterManager() != null) {
-						//add item and position for item bind,t
-						// hat means onClick in adapter  is (view, position, item, AdapterManager...etc)
+						//add item and position for item bind,
+						// that means onClick in adapter  is (view, position, item, AdapterManager...etc)
 						next.addExtraParamTofirst(dataResolver.getAdapterManager(),true);
 						next.addExtraParamTofirst(dataResolver.getCurrentItem(), true);
 						next.addExtraParamTofirst(dataResolver.getCurrentPosition(), true);

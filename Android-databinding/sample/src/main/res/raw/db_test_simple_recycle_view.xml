@@ -9,7 +9,7 @@
     <!-- bean must implements the interface ISelectable in bind adapter  -->
     <!-- selectMode="1"means single , 2  means multi , if not declared default is 1 -->
 
-    <bindAdapter id="lv" referVariable="imageInfo">
+    <bindAdapter id="rv" referVariable="imageInfo">
         <item layout="item_image"  referVariable="itemHandler">
             <!-- root onClickListener-->
             <property name="onClick" >itemHandler.onItemClick()</property>

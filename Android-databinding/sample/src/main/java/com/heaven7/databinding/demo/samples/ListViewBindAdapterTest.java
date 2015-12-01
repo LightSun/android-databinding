@@ -43,9 +43,7 @@ public class ListViewBindAdapterTest extends BaseActivity {
     }
 
     public static class ItemHandler {
-
         private final Toaster mToaster;
-
         public ItemHandler(Toaster mToaster) {
             this.mToaster = mToaster;
         }
@@ -58,7 +56,12 @@ public class ListViewBindAdapterTest extends BaseActivity {
             }else{
                 am.getSelectHelper().setSelected(position);
             }
-           // am.notifyDataSetChanged();
+        }
+       /* public void onImageClick(View v, Integer position,ImageInfo item, AdapterManager<?> am){
+            mToaster.show("on image click: position = " + position + " ,item = " + item);
+        }*/
+        public void onTextClick(View v, Integer position,ImageInfo item, AdapterManager<?> am){
+            mToaster.show("on text click: position = " + position + " ,item = " + item);
         }
     }
 }

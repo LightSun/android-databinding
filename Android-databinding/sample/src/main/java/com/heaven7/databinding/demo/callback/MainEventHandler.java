@@ -23,14 +23,18 @@ public class MainEventHandler extends EventContext{
 
     public void onClickChangeUsername(View v,User user){
         Util.changeUserName(user,"by_MainEventHandler_OnClick");
+
+        //change male
+        user.setMale(!user.isMale());
         getDataBinder().notifyDataSetChanged(R.id.bt);
     }
 
     public void onLongClickChangeUsername(View v,User user){
         Toast t =  Toast.makeText(v.getContext(), "------------ onLongClick ---------", Toast.LENGTH_SHORT);
-        t.setGravity(Gravity.CENTER,0,0);
+        t.setGravity(Gravity.CENTER, 0, 0);
         t.show();
-        Util.changeUserName(user,"by_MainEventHandler_OnLongClick");
+        Util.changeUserName(user, "by_MainEventHandler_OnLongClick");
+
         getDataBinder().notifyDataSetChanged(R.id.bt, PropertyNames.TEXT);
     }
 }

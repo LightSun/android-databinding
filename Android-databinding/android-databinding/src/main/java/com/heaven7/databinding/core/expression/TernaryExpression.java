@@ -10,8 +10,6 @@ import com.heaven7.databinding.core.IDataResolver;
 	private IExpression trueExpr;
 	private IExpression falseExpr;
 
-	public TernaryExpression(){}
-	
 	public TernaryExpression(IExpression booleanExpr, IExpression trueExpr,
 			IExpression falseExpr) {
 		super();
@@ -40,8 +38,9 @@ import com.heaven7.databinding.core.IDataResolver;
 	public Object evaluate(IDataResolver dataResolver) throws DataBindException {
 		if((Boolean) booleanExpr.evaluate(dataResolver)){
 			return trueExpr.evaluate(dataResolver);
+		}else {
+			return falseExpr.evaluate(dataResolver);
 		}
-		return falseExpr.evaluate(dataResolver);
 	}
 
 }

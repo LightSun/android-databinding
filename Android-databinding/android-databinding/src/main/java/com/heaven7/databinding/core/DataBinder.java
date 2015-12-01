@@ -82,17 +82,13 @@ public final class DataBinder implements IDataBinder{
 
     public void onDestroy(){
         mCacheXml = null;
-        if(mBindRawResId != 0 ) {
-            mDataBindParser.reset();
-        }
+        mDataBindParser.reset();
     }
 
     @Override
     public void reset(){
-        if(mBindRawResId != 0 ){
-            mDataBindParser.reset();
-            parseXml(mDataBindParser.getContext(),mBindRawResId,false);
-        }
+        mDataBindParser.reset();
+        parseXml(mDataBindParser.getContext(),mBindRawResId,false);
         mCacheXml = null;
     }
 

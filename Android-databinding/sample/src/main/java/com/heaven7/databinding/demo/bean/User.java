@@ -44,4 +44,13 @@ public class User {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", male=" + male +
+                ", nickname='" + nickname + '\'' +
+                '}';
+    }
 }

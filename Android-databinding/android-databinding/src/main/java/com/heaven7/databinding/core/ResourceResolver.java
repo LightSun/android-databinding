@@ -24,8 +24,8 @@ import com.heaven7.databinding.util.ResourceUtil;
                sResolvers = new ArrayMap<>();
 
     protected final Context mAppcontext;
-    protected final String mResName;
     protected Resources.Theme mTheme;
+    private  String mResName;
 
     /*public*/ ResourceResolver(Context context, String mResName) {
         this.mAppcontext = context.getApplicationContext();
@@ -34,6 +34,10 @@ import com.heaven7.databinding.util.ResourceUtil;
 
     public abstract ResourceUtil.ResourceType getResType();
     public abstract Object getResValue();
+
+    public void setResName(String resName){
+         this.mResName = resName;
+    }
 
     public Resources.Theme getTheme() {
         return mTheme;
@@ -83,6 +87,8 @@ import com.heaven7.databinding.util.ResourceUtil;
         if(resolver == null){
             resolver = ResourceResolver.create(ctx,folderName,resName);
             sResolvers.put(folderName,resolver);
+        }else{
+            resolver.setResName(resName); //case this or make bug
         }
         return resolver;
     }
