@@ -13,6 +13,7 @@ this framework.
 - suooprt for bind image 
 - The common support attrs: 
 
+  ``` java
     //event name
     String ON_CLICK                =    "onClick";
     String ON_LONG_CLICK           =    "onLongClick";
@@ -39,7 +40,8 @@ this framework.
     String IMGAE_DRAWABLE          =    "img_drawable";
     String IMGAE_ROUND_BUILDER     =    "img_round_builder";
     
-    and also support self-attrs 
+   //ps:  and also support self-attrs 
+  ```
 
 - Expression support like java , only nested ternary  expression is not support.
 - the more later i will write blog and doc to describe this.
