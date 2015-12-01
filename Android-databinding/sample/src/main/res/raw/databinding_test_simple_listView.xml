@@ -1,0 +1,40 @@
+<DataBinding>
+    <data>
+        <variable name="user"  classname="com.heaven7.databinding.demo.bean.User"  type="bean"/>
+        <variable name="mainHanlder" classname="com.heaven7.databinding.demo.callback.MainEventHandler" type="callback"/>
+        <import classname="android.view.View" alias="View"/> <!-- this type of alias  can hide (but must uppercase) -->
+    </data>
+
+    <bind id="bt">
+        <property name="text" referVariable="user" valueType="string">@{user.username}</property>
+        <property name="textColor" referVariable="user" >user.male ? {@color/red} : {@color/random}</property>
+    </bind>
+    <bind id="bt0">
+        <property name="onClick" referVariable="user,mainHanlder" >mainHanlder.onClickChangeUsername(user)</property>
+        <property name="onLongClick" referVariable="user,mainHanlder" >mainHanlder.onLongClickChangeUsername(user)</property>
+    </bind>
+
+    <bind referVariable="user">
+        <property id ="bt2" name="text" >@{user.username}</property>
+        <property id ="bt3" name="text" >user.getNickname()</property>
+    </bind>
+
+    <!-- 待验证,,, -->
+    <!-- bean must implements the interface ISelectable in bind adapter  -->
+    <!-- selectMode="1"means single , 2  means multi , if not declared default is 1 -->
+    <bindAdapter id="lv" referVariable="user" selectMode="1">
+        <item layout="item_xxx" tag = "1" referVariable="itemHandler">
+            <!-- item on click  -->
+            <property name="onItemClick" >itemHandler.onItemClick(user)</property>
+            <!-- root onClickListener-->
+            <property name="onClick" >itemHandler.onItemClick(user)</property>
+            <bind id="bt">
+                <property name="text" >user.username</property>
+                <property name="textColor" >user.isSelected() ? {@color/red} : {@color/random}</property>
+                <property name="onClick" referVariable="orderHandler">orderHandler.onClickName(user)</property>
+            </bind>
+        </item>
+    </bindAdapter>
+
+
+</DataBinding>
