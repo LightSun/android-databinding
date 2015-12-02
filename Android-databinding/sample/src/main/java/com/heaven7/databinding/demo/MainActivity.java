@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import com.heaven7.databinding.demo.samples.BaseBehaviourActivity;
 import com.heaven7.databinding.demo.samples.ListViewBindAdapterTest;
+import com.heaven7.databinding.demo.samples.MultiItemAdapterTest;
 import com.heaven7.databinding.demo.samples.RecycleViewBindAdapterTest;
 import com.heaven7.databinding.demo.samples.TextChangeTest;
 
@@ -35,6 +36,7 @@ public class MainActivity extends ListActivity {
         array.add(new ActivityInfo(ListViewBindAdapterTest.class, getString(R.string.ac_simple_listview)));
         array.add(new ActivityInfo(RecycleViewBindAdapterTest.class, getString(R.string.ac_simple_recycle_view)));
         array.add(new ActivityInfo(TextChangeTest.class, getString(R.string.ac_text_change_listener)));
+        array.add(new ActivityInfo(MultiItemAdapterTest.class, getString(R.string.ac_text_multi_item_listview)));
         return array;
     }
 

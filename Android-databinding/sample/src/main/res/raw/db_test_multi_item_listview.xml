@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DataBinding>
+    <data>
+        <variable name="imageInfo"  classname="com.heaven7.databinding.demo.bean.ImageInfo"  type="bean"/>
+        <variable name="itemHandler" classname="com.heaven7.databinding.demo.samples.MultiItemAdapterTest$ItemHandler2"
+            type="callback"/>
+    </data>
+
+    <bindAdapter id="lv" referVariable="imageInfo" selectMode="1">
+
+        <item layout="item_image"  tag = "1" referVariable="itemHandler">
+            <property name="onClick" >itemHandler.onItemClick()</property>
+            <bind id="tv">
+                <property name="text" >imageInfo.desc</property>
+                <property name="textColor" >imageInfo.isSelected() ? {@color/red} : {@color/random}</property>
+                <property name="onClick" >itemHandler.onTextClick()</property>
+            </bind>
+            <bind id="eniv">
+                <property name="img_url" >imageInfo.url</property>
+            </bind>
+        </item>
+
+        <item layout="item_txt"  tag = "2" referVariable="itemHandler">
+            <property name="onClick" >itemHandler.onTitleClick()</property>
+            <bind id="tv">
+                <property name="text" >imageInfo.title</property>
+                <property name="textColor" >imageInfo.isSelected() ? {@color/green} : {@color/blue}</property>
+            </bind>
+        </item>
+
+    </bindAdapter>
+
+
+</DataBinding>

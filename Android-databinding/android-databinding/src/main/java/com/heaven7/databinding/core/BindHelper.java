@@ -27,7 +27,7 @@ import java.util.List;
      * but when support multi items, the T must implements the interface ITag.
      * @param <T>
      */
-    public static class MultiItemTypeSupportImpl<T extends ISelectable> implements MultiItemTypeSupport<T>{
+    /*public*/ static class MultiItemTypeSupportImpl<T extends ISelectable> implements MultiItemTypeSupport<T>{
 
         final Array<DataBindParser.ItemBindInfo> mItemBindInfos ;
         SparseArray<DataBindParser.ItemBindInfo> mInfoMap ;
@@ -119,7 +119,7 @@ import java.util.List;
         }
     }
 
-    public static abstract class QuickAdapter2<T extends ISelectable> extends QuickAdapter<T> {
+    /*public*/ static abstract class QuickAdapter2<T extends ISelectable> extends QuickAdapter<T> {
 
         public QuickAdapter2(List<T> data, Array<DataBindParser.ItemBindInfo> infos,int selectMode) {
             super(data instanceof ArrayList ? (ArrayList<T>) data : new ArrayList<T>(data),
@@ -139,7 +139,7 @@ import java.util.List;
                                              int itemLayoutId, T item, DataBindParser.ItemBindInfo bindInfo);
     }
 
-    public static abstract class QuickRecycleAdapter2<T extends ISelectable> extends QuickRecycleViewAdapter<T>{
+    /*public*/ static abstract class QuickRecycleAdapter2<T extends ISelectable> extends QuickRecycleViewAdapter<T>{
 
         final Array<DataBindParser.ItemBindInfo> mItemBindInfos;
         SparseArray<DataBindParser.ItemBindInfo> mInfoMap;

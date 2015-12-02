@@ -1,7 +1,8 @@
 package com.heaven7.databinding.core;
 
 /**
- * the event context of view's onClick or others.
+ * the event context of view's onClick ,onLongClick, textChangeListener or others.
+ *  and i suggest the event handler shouldn't have burden method. or else may cause bug.
  * Created by heaven7 on 2015/11/19.
  */
 public abstract class EventContext {

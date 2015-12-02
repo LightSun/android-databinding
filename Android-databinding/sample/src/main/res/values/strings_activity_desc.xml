@@ -6,4 +6,5 @@
     <string name="ac_simple_recycle_view">this demo show how to bind a simple Adapter to RecyclerView
         by DataBinding framework</string>
     <string name="ac_text_change_listener">this demo show how to listen text change</string>
+    <string name="ac_text_multi_item_listview">this demo show how to use bind adpter with multi items in listView</string>
 </resources>
