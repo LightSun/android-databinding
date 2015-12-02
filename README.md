@@ -1,5 +1,5 @@
 # android-databinding
-this is the databinding framework of android .help to binding data to the view. this is similar to google's databinding .
+this is the databinding framework of android .help to binding data to the view. this is a little similar to google's databinding .
 
 ## Why I developed this ?
 at google-io-2015. android databindingnow can be used, it have some problem, even if this is not the reason. because i think the engineer of google's is one of the  best of the world. so it can be better and better i believe.  I absolutely can not be compared with them. but i don't like to writing databinding expression in android layout file(in javaweb I hate it too ). so I developed 
@@ -11,7 +11,40 @@ this framework.
 - Support for custom attr and listener
 - support for bind adapter for any child of Adapter view  or RecyclerView
 - suooprt for bind image 
+- The common support attrs: 
+
+  ``` java
+    //event name
+    String ON_CLICK                =    "onClick";
+    String ON_LONG_CLICK           =    "onLongClick";
+    String TEXT_CHANGE_BEFORE      =    "textChange_before";
+    String TEXT_CHANGE             =    "textChange";
+    String TEXT_CHANGE_AFTER       =    "textChange_after";
+
+
+    //common name
+    String TEXT                    =    "text";
+    String TEXT_RES                =    "text_res";
+
+    String TEXT_COLOR              =    "textColor";
+    String TEXT_COLOR_RES          =    "textColor_res";
+    String TEXT_COLOR_STATE        =    "textColor_state";
+    String TEXT_COLOR_STATE_RES    =    "textColor_stateRes";
+    String TEXT_SIZE               =    "textSize";
+    String TEXT_SIZE_RES           =    "textSize_res";
+
+    String VISIBILITY              =    "visibility";
+    //image
+    String IMGAE_URL               =    "img_url";
+    String IMGAE_BITMAP            =    "img_bitmap";
+    String IMGAE_DRAWABLE          =    "img_drawable";
+    String IMGAE_ROUND_BUILDER     =    "img_round_builder";
+    
+   //ps:  and also support self-attrs 
+  ```
+
 - Expression support like java , only nested ternary  expression is not support.
+- the more later i will write blog and doc to describe this.
 
 
 ## TODO
