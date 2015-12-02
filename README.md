@@ -248,7 +248,234 @@ public class ListViewBindAdapterTest extends BaseActivity {
 
 ```
 
+bind multi item in adapter
+``` java
+
+//1, first declare layout xml , like this:
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+
+</LinearLayout>
+
+//2, bind xml config like this: 
+//you should care about the ImageInfo class must implement ITag interface. it will used to bind multi items.
+
+<DataBinding>
+    <data>
+        <variable name="imageInfo"  classname="com.heaven7.databinding.demo.bean.ImageInfo"  type="bean"/>
+        <variable name="itemHandler" classname="com.heaven7.databinding.demo.samples.MultiItemAdapterTest$ItemHandler2"
+            type="callback"/>
+    </data>
+
+    <bindAdapter id="lv" referVariable="imageInfo" selectMode="1">
+
+        <item layout="item_image"  tag = "1" referVariable="itemHandler">
+            <property name="onClick" >itemHandler.onItemClick()</property>
+            <bind id="tv">
+                <property name="text" >imageInfo.desc</property>
+                <property name="textColor" >imageInfo.isSelected() ? {@color/red} : {@color/random}</property>
+                <property name="onClick" >itemHandler.onTextClick()</property>
+            </bind>
+            <bind id="eniv">
+                <property name="img_url" >imageInfo.url</property>
+            </bind>
+        </item>
+
+        <item layout="item_txt"  tag = "2" referVariable="itemHandler">
+            <property name="onClick" >itemHandler.onTitleClick()</property>
+            <bind id="tv">
+                <property name="text" >imageInfo.title</property>
+                <property name="textColor" >imageInfo.isSelected() ? {@color/green} : {@color/blue}</property>
+            </bind>
+        </item>
+
+    </bindAdapter>
+</DataBinding>
+
+//3, relative java code 
+ // (1) the imageInfo class like this:
+/**
+ * as the item of bind adapter . ImageInfo must implement ISelectable interface.
+ * if multi item. must implement ITag interface
+ * Created by heaven7 on 2015/11/30.
+ */
+public class ImageInfo implements ISelectable,ITag{
+
+    private String url;
+
+    private String desc;
+
+    private String title;
+
+    private boolean selected;
+    private int tag ;
+
+    public ImageInfo(String url, String desc) {
+        this.url = url;
+        this.desc = desc;
+    }
+
+    public ImageInfo(String url, String desc,String title) {
+        this.url = url;
+        this.desc = desc;
+        this.title = title;
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
+
+    @Override
+    public int getTag() {
+        return tag;
+    }
+
+    @Override
+    public void setTag(int tag) {
+        this.tag = tag;
+    }
+}
+
+// (2) the sample like this:
+public class MultiItemAdapterTest extends BaseActivity {
+    @Override
+    protected int getlayoutId() {
+        return R.layout.activity_listview;
+    }
+
+    @Override
+    protected int getBindRawId() {
+        return R.raw.db_test_multi_item_listview;
+    }
+
+    @Override
+    protected void onFinalInit(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void doBind() {
+        List<ImageInfo> infos = new ArrayList<>();
+        for(int i=0 , size = Test.URLS.length ; i < size  ;i++){
+            final ImageInfo info = new ImageInfo(Test.URLS[i], "desc_" + i, "_title_" + i);
+            info.setTag(i % 2 == 0 ? 1: 2 );
+            infos.add(info);
+        }
+        mDataBinder.bindAdapter(R.id.lv, infos, new ItemHandler2(getToaster()));
+    }
+    public static class ItemHandler2 {
+
+        private final Toaster mToaster;
+
+        public ItemHandler2(Toaster mToaster) {
+            this.mToaster = mToaster;
+        }
+        /** this is bind in item: item_image */
+        public void onItemClick(View v, Integer position,ImageInfo item, AdapterManager<?> am){
+            mToaster.show("ItemHandler_onItemClick: position = " + position + " ,item = " + item);
+            if(item.isSelected()){
+                am.getSelectHelper().setUnselected(position);
+            }else{
+                am.getSelectHelper().setSelected(position);
+            }
+        }
+        /** this is bind in item: item_image */
+        public void onTextClick(View v, Integer position,ImageInfo item, AdapterManager<?> am){
+            mToaster.show("on text click: position = " + position + " ,item = " + item);
+        }
+
+        /** this is bind in item: item_txt */
+        public void onTitleClick(View v, Integer position,ImageInfo item, AdapterManager<?> am){
+            mToaster.show("[ this is called on item2-> 'item_txt' ] on title click: position = " +
+                    position + " ,item = " + item);
+        }
+    }
+}
+
+``` 
+
+below is bind image to ExpandNetworkImageView , support corner ,border,circle and so on.
+   here is the main code.
+``` java
+ // xml conifg in like this:
+ <DataBinding>
+    <data>
+        <variable name="imageParam" classname="com.heaven7.databinding.demo.samples.RoundImageBindTest$ImageParam" type="bean"/>
+        <import classname="com.heaven7.databinding.demo.test.Test" alias="Test"/>
+    </data>
+
+    <bind id="eniv">
+        <property name="img_round_builder" referVariable="imageParam" >
+            Test.createRoundBuilder(imageParam.roundSize,imageParam.url)
+        </property>
+    </bind>
+</DataBinding>
+
+// current use expression combine java code. later will support full config in xml
+
+ public static RoundedBitmapBuilder createRoundBuilder(float radius,String url){
+        return new RoundedBitmapBuilder().url(url).cornerRadius(radius)
+                .borderWidth(2f)
+                .borderColor(Color.RED)
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher);
+    }
+    
+/**
+ * later will support full config in xml
+ * Created by heaven7 on 2015/12/2.
+ */
+public class RoundImageBindTest extends BaseActivity {
+
+    @Override
+    protected int getBindRawId() {
+        return R.raw.db_round_image_test;
+    }
+    @Override
+    protected int getlayoutId() {
+        return R.layout.activity_round_image_test;
+    }
+    @Override
+    protected void onFinalInit(Bundle savedInstanceState) {
+    }
+    @Override
+    protected void doBind() {
+        mDataBinder.bind(R.id.eniv,false,new ImageParam(30f, Test.URLS[0]) );
+    }
+
+    public static class ImageParam{
+        float roundSize;
+        String url;
+        public ImageParam(float roundSize, String url) {
+            this.roundSize = roundSize;
+            this.url = url;
+        }
+    }
+
+}
+
+``` 
+   
+... and so on. i will write blogs and doc about this framework soon. you can see it soon. 
+
 the more to see in  [android-databinding/sample](https://github.com/LightSun/android-databinding/tree/master/Android-databinding/sample).
+
+thanks !
 
 
 ## License
