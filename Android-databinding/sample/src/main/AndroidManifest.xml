@@ -40,6 +40,9 @@
         <activity android:name=".samples.RoundImageBindTest"
             android:label="RoundImageBindTest"
             />
+        <activity android:name=".samples.DoubleListViewTest"
+            android:label="DoubleListViewTest"
+            />
     </application>
 
 </manifest>

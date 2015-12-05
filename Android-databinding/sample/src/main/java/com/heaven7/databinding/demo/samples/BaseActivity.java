@@ -3,9 +3,9 @@ package com.heaven7.databinding.demo.samples;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 
 import com.heaven7.databinding.core.DataBinder;
-import com.heaven7.databinding.demo.util.VolleyUtil;
 
 import org.heaven7.core.save_state.SaveStateHelper;
 import org.heaven7.core.util.Toaster;
@@ -17,15 +17,15 @@ public abstract  class BaseActivity extends AppCompatActivity{
 
     private Toaster mToaster;
     protected DataBinder mDataBinder;
-    protected VolleyUtil.HttpExecutor mHttpExecute;
+    //protected VolleyUtil.HttpExecutor mHttpExecute;
     private SaveStateHelper mSaveStateHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mToaster = new Toaster(this);
-        mHttpExecute = new VolleyUtil.HttpExecutor();
+        mToaster = new Toaster(this, Gravity.CENTER);
+      //  mHttpExecute = new VolleyUtil.HttpExecutor();
         mSaveStateHelper = new SaveStateHelper(this);
         setContentView(getlayoutId());
         mDataBinder = new DataBinder(this,getBindRawId());
@@ -36,7 +36,7 @@ public abstract  class BaseActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         super.onStop();
-        mHttpExecute.cancelAll();
+     //   mHttpExecute.cancelAll();
     }
 
     @Override

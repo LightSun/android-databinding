@@ -3,6 +3,7 @@ package com.heaven7.databinding.core;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.TextWatcher;
 import android.util.SparseArray;
@@ -11,6 +12,7 @@ import android.view.View;
 import com.android.volley.extra.ExpandNetworkImageView;
 import com.android.volley.extra.RoundedBitmapBuilder;
 import com.heaven7.databinding.core.listener.ListenerImplContext;
+import com.heaven7.databinding.util.ReflectUtil;
 
 import org.heaven7.core.viewhelper.ViewHelper;
 import org.heaven7.core.viewhelper.ViewHelperImpl;
@@ -48,7 +50,11 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
         }else if(PropertyNames.TEXT_RES.equals(propertyName)){
             impl.setText(res.getText((Integer) value));
         }else if(PropertyNames.TEXT_COLOR.equals(propertyName)){
-            impl.setTextColor((Integer) value);
+            if(value instanceof String){
+                impl.setTextColor(Color.parseColor((String) value));
+            }else {
+                impl.setTextColor((Integer) value);
+            }
         }else if(PropertyNames.TEXT_COLOR_RES.equals(propertyName)){
             impl.setTextColor(res.getColor((Integer) value));
         }else if(PropertyNames.TEXT_COLOR_STATE.equals(propertyName)){
@@ -103,29 +109,33 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
         }
         else if( isEventProperty(propertyName)) {
             //self property indicate is self listener
-          //  View v = helper.getView(viewId);
-            final Method m = findMethod(v.getClass(), propertyName);
+
+            //onClickListener -> OnClickListener -> setOnClickListener
+            Object listener = mListenerMap.get(getEventKey(id, layoutId, propertyName));
+            final Method m = findMethod(v.getClass(), propertyName, listener.getClass());
             if(m == null){
                 throw new DataBindException("can't find the appropriate method to apply the property ,"+
                         "property name = " +propertyName );
             }
-            //onClickListener -> OnClickListener -> setOnClickListener
-            Object listener = mListenerMap.get(getEventKey(id, layoutId, propertyName));
             try {
                 m.invoke(v, listener);
             } catch (Exception e) {
                 throw new DataBindException("apply property( " + propertyName +
-                        " ) failed caused by set listener failed, have you register event listener ? ",e);
+                        " ) failed caused by set listener failed, have you register event listener  by calling "+
+                        "ListenerFactory.registEventListener(String propertyName,Class<?> clazz) ? ",e);
             }
         }else {
             //self property
-           // View v = helper.getView(viewId);
             try {
-                v.getClass().getDeclaredMethod(getMethodName(propertyName,"set")).invoke(v, value);
+                ReflectUtil.getAppropriateMethod(v.getClass(), getMethodName(propertyName, "set")
+                        , value.getClass()) .invoke(v, value);
+               // v.getClass().getDeclaredMethod(getMethodName(propertyName,"set"),value.getClass()).invoke(v, value);
             } catch (Exception e) {
                 throw new DataBindException("can't apply the value to the property , " +
                         "because can't find the method (name = "+getMethodName(propertyName,"set")+
-                        " )in the class( "+ v.getClass().getName() +" ),property name = " + propertyName,e);
+                        " )in the class( "+ v.getClass().getName() +" ),property name = " + propertyName+
+                        " , if the  property is event property , you should regist it by calling " +
+                        "ListenerFactory.registEventListener(String propertyName,Class<?> clazz)",e);
             }
         }
     }
@@ -141,22 +151,26 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
         chars[0] = Character.toUpperCase(chars[0]);
         return prefix + new String(chars);
     }
-    private static Method findMethod(Class<? extends View> clazz, String propName){
-        Method m = null;
+    private static Method findMethod(Class<? extends View> clazz, String propName, Class<?>...paramTypes){
+        Method  m = null;
         try {
-            m = clazz.getDeclaredMethod(propName);
-        } catch (NoSuchMethodException e) {
+            m = ReflectUtil.getAppropriateMethod(clazz, propName, paramTypes);
+        }catch (NoSuchMethodException e){
+           // ignore
         }
+
         if (m == null) {
             try {
-                m = clazz.getDeclaredMethod(getMethodName(propName,"set"));
+                m = ReflectUtil.getAppropriateMethod(clazz, getMethodName(propName, "set"), paramTypes);
             } catch (NoSuchMethodException e) {
+                // ignore
             }
         }
         if(m == null){
             try {
-                m = clazz.getDeclaredMethod(getMethodName(propName,"add"));
+                m = ReflectUtil.getAppropriateMethod(clazz, getMethodName(propName, "add"), paramTypes);
             } catch (NoSuchMethodException e) {
+                // ignore
             }
         }
         return m;

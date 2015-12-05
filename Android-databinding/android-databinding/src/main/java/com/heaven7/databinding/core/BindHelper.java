@@ -208,5 +208,4 @@ import java.util.List;
             throw new DataBindException("can't find the layout id ");
         }
     }
-
 }

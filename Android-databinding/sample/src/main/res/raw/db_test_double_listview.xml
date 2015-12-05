@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DataBinding>
+    <data>
+        <variable name="imageInfo"  classname="com.heaven7.databinding.demo.bean.ImageInfo"  type="bean"/>
+        <variable name="itemHandler" classname="com.heaven7.databinding.demo.samples.DoubleListViewTest$ItemHandler"
+            type="callback"/>
+    </data>
+
+    <bindAdapter id="lv1" referVariable="imageInfo">
+        <item layout="item_image"  referVariable="itemHandler">
+            <property name="onClick" >itemHandler.onItemClick1()</property>
+            <bind id="tv">
+                <property name="text" >imageInfo.desc</property>
+                <property name="textColor" >imageInfo.isSelected() ? {@color/red} : {@color/random}</property>
+                <property name="onClick" >itemHandler.onTextClick1()</property>
+            </bind>
+        </item>
+    </bindAdapter>
+
+    <bindAdapter id="lv2" referVariable="imageInfo">
+        <item layout="item_image"  referVariable="itemHandler">
+            <property name="onClick" >itemHandler.onItemClick2()</property>
+            <bind id="tv">
+                <property name="text" >imageInfo.desc</property>
+                <property name="textColor" >imageInfo.isSelected() ? {@color/green} : {@color/blue}</property>
+                <property name="onClick" >itemHandler.onTextClick2()</property>
+            </bind>
+        </item>
+    </bindAdapter>
+
+
+</DataBinding>

@@ -19,6 +19,15 @@
         <property id ="bt3" name="text" >user.getNickname()</property>
     </bind>
 
+    <bind id="iv">
+        <property name="img_url" >@{user.link}</property>
+        <param type="round">
+             <size>@dimen/xxx</size>
+             <borderSize>{@dimen/xxx}</borderSize>
+             <borderColor>@color/xxx</borderColor>
+        </param>
+    </bind>
+
     <!-- 待验证,,, -->
     <!-- bean must implements the interface ISelectable in bind adapter  -->
     <!-- selectMode="1"means single , 2  means multi , if not declared default is 1 -->

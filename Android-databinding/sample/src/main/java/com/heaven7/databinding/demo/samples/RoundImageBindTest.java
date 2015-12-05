@@ -19,20 +19,15 @@ public class RoundImageBindTest extends BaseActivity {
     protected int getlayoutId() {
         return R.layout.activity_round_image_test;
     }
-
     @Override
     protected void onFinalInit(Bundle savedInstanceState) {
-
     }
-
     @Override
     protected void doBind() {
-
         mDataBinder.bind(R.id.eniv,false,new ImageParam(30f, Test.URLS[0]) );
     }
 
     public static class ImageParam{
-
         float roundSize;
         String url;
         public ImageParam(float roundSize, String url) {

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.heaven7.databinding.demo.samples.BaseBehaviourActivity;
+import com.heaven7.databinding.demo.samples.DoubleListViewTest;
 import com.heaven7.databinding.demo.samples.ListViewBindAdapterTest;
 import com.heaven7.databinding.demo.samples.MultiItemAdapterTest;
 import com.heaven7.databinding.demo.samples.RecycleViewBindAdapterTest;
@@ -39,6 +40,7 @@ public class MainActivity extends ListActivity {
         array.add(new ActivityInfo(TextChangeTest.class, getString(R.string.ac_text_change_listener)));
         array.add(new ActivityInfo(MultiItemAdapterTest.class, getString(R.string.ac_text_multi_item_listview)));
         array.add(new ActivityInfo(RoundImageBindTest.class, getString(R.string.ac_bind_round_image)));
+        array.add(new ActivityInfo(DoubleListViewTest.class, getString(R.string.ac_double_listview)));
         return array;
     }
 

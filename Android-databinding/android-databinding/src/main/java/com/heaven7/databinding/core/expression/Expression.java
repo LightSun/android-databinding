@@ -6,12 +6,15 @@ import android.view.View;
 import com.heaven7.databinding.core.DataBindException;
 import com.heaven7.databinding.core.IDataResolver;
 import com.heaven7.databinding.util.ArrayUtil;
+import com.heaven7.databinding.util.ReflectUtil;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import heaven7.android_databinding.R;
 
 /**
  * Created by heaven7 on 2015/8/13.
@@ -168,15 +171,18 @@ public class Expression implements IExpression {
 					Expression next = getNextAccessInfo();
 					next.setIsMethod(true);
 
-					if( dataResolver.getAdapterManager() != null) {
+					final View currBindView = (View) dataResolver.getCurrentBindingView();
+					Object tag ;
+                    if( (tag = currBindView.getTag(R.id.key_adapter_hash)) !=null) {
 						//add item and position for item bind,
 						// that means onClick in adapter  is (view, position, item, AdapterManager...etc)
-						next.addExtraParamTofirst(dataResolver.getAdapterManager(),true);
+						next.addExtraParamTofirst(dataResolver.getAdapterManager((Integer)tag),true);
 						next.addExtraParamTofirst(dataResolver.getCurrentItem(), true);
 						next.addExtraParamTofirst(dataResolver.getCurrentPosition(), true);
 					}
+
 					// make view at first onclickxxx(view v, IDataBinder b,...)
-					next.addExtraParamTofirst(dataResolver.getCurrentBindingView(), true);
+					next.addExtraParamTofirst(currBindView, true);
 				}
 				objHolder = performNextExpressionIfNeed(dataResolver,
 						dataResolver.resolveVariable(mVariable));
@@ -226,8 +232,8 @@ public class Expression implements IExpression {
 				Object result = null;
 
 				if(params.length > 0 && params[0] instanceof View){
-					Method method ;
-					try {
+					Method method  = ReflectUtil.getAppropriateMethod(clazz,mAccessName,ArrayUtil.getTypes(params));
+					/*try {
 						method = clazz.getDeclaredMethod(mAccessName, ArrayUtil.getTypes(params));
 					}catch (NoSuchMethodException e){
 						List<Method> ms = dataResolver.getMethod(clazz, mAccessName);
@@ -241,7 +247,7 @@ public class Expression implements IExpression {
 									" is not support !)");
 						}
 						method = ms.get(0);
-					}
+					}*/
                     dataResolver.getEventEvaluateCallback().onEvaluateCallback(holder,method,params);
 				}else {
 					final boolean useStaticClassname = mStaticAccessClassname != null;

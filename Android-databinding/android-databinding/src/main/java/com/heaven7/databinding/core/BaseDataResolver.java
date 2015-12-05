@@ -1,8 +1,10 @@
 package com.heaven7.databinding.core;
 
 import android.content.Context;
+import android.util.SparseArray;
 import android.view.View;
 
+import com.heaven7.databinding.util.ReflectUtil;
 import com.heaven7.xml.ObjectMap;
 
 import org.heaven7.core.adapter.AdapterManager;
@@ -39,6 +41,8 @@ import java.util.List;
     private WeakReference<AdapterManager<? extends ISelectable>> mWeakAdapterManager;
     private int mPosition = ISelectable.INVALID_POSITION;
     private Object mItem ;
+
+    private SparseArray<WeakReference<AdapterManager<? extends ISelectable>>> mAdapterManagerMap;
 
     public BaseDataResolver() {
         mClassnameMap = new ObjectMap<>(10);
@@ -176,14 +180,7 @@ import java.util.List;
                 return list;
         }
 
-        list = new ArrayList<Method>();
-
-        Method[] ms = clazz.getMethods();
-        for(int size = ms.length , i = size - 1; i >= 0 ; i--){
-            if(ms[i].getName().equals(methodname) ){
-                list.add(ms[i]);
-            }
-        }
+        list = ReflectUtil.getMethods(clazz,methodname);
         if(enableReflectCache)
               mMethodsMap.put(key , list);
         return list;
@@ -202,6 +199,22 @@ import java.util.List;
         mClassnameMap.clear();
         endBind();
         mLongStandingObjs.clear();
+    }
+
+    @Override
+    public AdapterManager<? extends ISelectable> getAdapterManager(int adapterHash) {
+        WeakReference<AdapterManager<? extends ISelectable>> ref = mAdapterManagerMap.get(adapterHash);
+        if(ref != null){
+            return ref.get();
+        }
+        return null;
+    }
+
+    @Override
+    public void putAdapterManager(int adapterHash, AdapterManager<? extends ISelectable> am) {
+         if(mAdapterManagerMap == null)
+             mAdapterManagerMap = new SparseArray<>(3);
+        mAdapterManagerMap.put(adapterHash, new WeakReference<AdapterManager<? extends ISelectable>>(am));
     }
 
     @Override
@@ -229,15 +242,5 @@ import java.util.List;
     @Override
     public int getCurrentPosition(){
         return mPosition;
-    }
-
-    @Override
-    public AdapterManager<? extends ISelectable> getAdapterManager() {
-        return mWeakAdapterManager!=null ? mWeakAdapterManager.get() : null;
-    }
-
-    @Override
-    public void setAdapterManager(AdapterManager<? extends ISelectable> am) {
-        mWeakAdapterManager = new WeakReference<AdapterManager<? extends ISelectable>>(am);
     }
 }

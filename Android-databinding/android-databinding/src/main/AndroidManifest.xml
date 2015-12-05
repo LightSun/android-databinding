@@ -2,9 +2,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="heaven7.android_databinding" >
 
-    <application
-        android:allowBackup="true"
-        android:label="@string/app_name" >
-    </application>
 
 </manifest>

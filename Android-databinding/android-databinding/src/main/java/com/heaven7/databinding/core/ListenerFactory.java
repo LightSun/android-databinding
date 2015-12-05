@@ -26,19 +26,10 @@ public final class ListenerFactory {
 
     }
 
+    /** the class clazz must have empty constructor */
     public static void registEventListener(String propertyName,Class<?> clazz){
        sRegistedListenerMap.put(propertyName.hashCode(),clazz.getName());
     }
-
-   /* public static void registEventParamTypes(Class<?> holderClass,String methodName,Class<?>...paramTypes){
-        sMethodParamTypes.put(getMethodTypesKey(holderClass, methodName),paramTypes);
-    }
-    public static Class<?>[] getEventParamTypes(Class<?> holderClass,String methodName){
-        return sMethodParamTypes.get(getMethodTypesKey(holderClass, methodName));
-    }
-    private static int getMethodTypesKey(Class<?> holderClass, String methodName) {
-        return (holderClass.getName() + "_" + methodName).hashCode();
-    }*/
 
     /*public*/ static ListenerImplContext createEventListener(String propName){
         String className = sRegistedListenerMap.get(propName.hashCode());

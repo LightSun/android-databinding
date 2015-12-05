@@ -40,6 +40,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import heaven7.android_databinding.R;
+
 import static com.heaven7.databinding.core.ListenerFactory.createEventListener;
 import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
 import static com.heaven7.databinding.core.PropertyUtil.apply;
@@ -589,7 +591,7 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
     }
 
     /**
-     * apply the data by target view
+     * apply the data by target view, often used for adapter
      */
     private static void applyDataReally(View v, int layoutId,PropertyBindInfo info, ViewHelper vp,
                                         IDataResolver dr,SparseArray<ListenerImplContext> mListenerMap,
@@ -813,12 +815,12 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
 
         @Override
         protected void onFinalInit() {
-            mDataResolver.setAdapterManager(getAdapterManager());
+            mDataResolver.putAdapterManager(this.hashCode(), getAdapterManager());
         }
 
         @Override
         protected void beforeNotifyDataChanged() {
-            mDataResolver.setAdapterManager(getAdapterManager());
+            mDataResolver.putAdapterManager(this.hashCode(), getAdapterManager());
         }
 
         @Override
@@ -837,9 +839,10 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
 
             if(size > 0) {
                 final View rootView = helper.getRootView();
+                rootView.setTag(R.id.key_adapter_hash,this.hashCode());
+                mDataResolver.setCurrentBindingView(rootView);
                 for (int i = 0; i < size; i++) {
                     info = bindInfo.itemEvents.get(i);
-                    mDataResolver.setCurrentBindingView(rootView);
                     applyDataReally(rootView, bindInfo.layoutId, info, helper,
                             mDataResolver, mListenerMap, mEventCareTaker);
                 }
@@ -850,6 +853,7 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
                 for (int i = 0; i < size; i++) {
                     info = bindInfo.itemBinds.get(i);
                     v = helper.getView(info.viewId);
+                    v.setTag(R.id.key_adapter_hash,this.hashCode());
                     mDataResolver.setCurrentBindingView(v);
                     applyDataReally(v, bindInfo.layoutId, info, helper,
                             mDataResolver, mListenerMap, mEventCareTaker);
@@ -872,12 +876,12 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
 
         @Override
         protected void onFinalInit() {
-            mDataResolver.setAdapterManager(getAdapterManager());
+            mDataResolver.putAdapterManager(this.hashCode(), getAdapterManager());
         }
 
         @Override
         protected void beforeNotifyDataChanged() {
-            mDataResolver.setAdapterManager(getAdapterManager());
+            mDataResolver.putAdapterManager(this.hashCode(), getAdapterManager());
         }
 
         @Override
@@ -896,9 +900,10 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
 
             if(size > 0) {
                 final View rootView = helper.getRootView();
+                rootView.setTag(R.id.key_adapter_hash, hashCode());
+                mDataResolver.setCurrentBindingView(rootView);
                 for (int i = 0; i < size; i++) {
                     info = bindInfo.itemEvents.get(i);
-                    mDataResolver.setCurrentBindingView(rootView);
                     applyDataReally(rootView, bindInfo.layoutId, info, helper,
                             mDataResolver, mListenerMap, mEventCareTaker);
                 }
@@ -909,6 +914,7 @@ import static com.heaven7.databinding.core.PropertyUtil.apply;
                 for (int i = 0; i < size; i++) {
                     info = bindInfo.itemBinds.get(i);
                     v = helper.getView(info.viewId);
+                    v.setTag(R.id.key_adapter_hash, hashCode());
                     mDataResolver.setCurrentBindingView(v);
                     applyDataReally(v, bindInfo.layoutId, info, helper,
                             mDataResolver, mListenerMap, mEventCareTaker);
