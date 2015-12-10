@@ -105,6 +105,11 @@ class ExpressionParserImpl implements IResetable {
 			exprs.add( new ObjectExpression(str.substring(1, str.length() - 1 )));
 			return exprs;
 		}
+		if(StringUtil2.isResourceReferOfR(str)){
+			if(exprs == null) exprs = new ArrayList<IExpression>();
+			exprs.add( new RResourceExpr(str));
+			return exprs;
+		}
 
 		// . ,() , []
 		ExpressionParserImpl impl = ExpressionParser.getInternalPool().obtainParser();

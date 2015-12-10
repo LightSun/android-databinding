@@ -6,6 +6,7 @@ import com.heaven7.databinding.core.xml.AbsElement;
 import com.heaven7.databinding.core.xml.IElementParser;
 import com.heaven7.databinding.core.xml.XmlElementNames;
 import com.heaven7.databinding.core.xml.XmlKeys;
+import com.heaven7.databinding.util.DataBindUtil;
 import com.heaven7.xml.Array;
 import com.heaven7.xml.XmlReader;
 import com.heaven7.xml.XmlWriter;
@@ -39,7 +40,7 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
     }
 
     public String[] getTotalRefers(){
-        return Util.convertRefer(mTotalRefer);
+        return DataBindUtil.convertRefer(mTotalRefer);
     }
     public String getSelectMode(){
         return getAttribute(XmlKeys.SELECT_MODE);
@@ -146,7 +147,7 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
                     //throw new RuntimeException("in <item> element ,attribute referVariable can't be empty");
                     ie.setReferVariable(attr);
                 }
-                attr = Util.mergeReferVariable(referVar,attr);
+                attr = DataBindUtil.mergeReferVariable(referVar,attr);
 
                 ie.setPropertyElements(parsePropertyElements(e, attr,null,false));
                 parseBindElements(e,ie,attr);
@@ -182,7 +183,7 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
             if(!TextUtils.isEmpty(refer)){
                 be.setReferVariable(refer);
             }
-            refer = Util.mergeReferVariable(referVariable,refer);
+            refer = DataBindUtil.mergeReferVariable(referVariable,refer);
 
             props = parsePropertyElements(bindEle, refer, id, true);
             if(props != null && props.size() > 0) {
@@ -201,7 +202,7 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
                                                                String id_bind,boolean checkId) {
         final Array<XmlReader.Element> props = e.getChildrenByName(XmlElementNames.PROPERTY);
         if(props == null || props.size ==0) {
-            mTotalRefer = Util.mergeReferVariable(referVariable,mTotalRefer);
+            mTotalRefer = DataBindUtil.mergeReferVariable(referVariable,mTotalRefer);
             return null;
         }
         checkId = checkId && id_bind == null;
@@ -243,8 +244,8 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
                              + "at the same time");
                 }
             }
-            refVar = Util.mergeReferVariable(referVariable,refVar);
-            mTotalRefer = Util.mergeReferVariable(refVar,mTotalRefer);
+            refVar = DataBindUtil.mergeReferVariable(referVariable,refVar);
+            mTotalRefer = DataBindUtil.mergeReferVariable(refVar,mTotalRefer);
             //property element use the result of merged
             pe.setReferVariable(refVar);
 

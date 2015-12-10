@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.heaven7.databinding.util.DataBindUtil.checkEmpty;
+import static com.heaven7.databinding.util.DataBindUtil.writeElements;
+import static com.heaven7.databinding.util.DataBindUtil.mergeReferVariable;
+
 /**
  * Created by heaven7 on 2015/8/10.
  */
@@ -98,13 +102,13 @@ public class DataBindingElement extends AbsElement implements IElementParser {
         if( mDataElement !=null )
             mDataElement.write(writer);
         if(mBindEles != null ) {
-            Util.writeElements(writer, mBindEles);
+            writeElements(writer, mBindEles);
         }
         if(mVariableBindElements != null ) {
-            Util.writeElements(writer, mVariableBindElements);
+            writeElements(writer, mVariableBindElements);
         }
         if(mBindAdapterEles!=null){
-            Util.writeElements(writer, mBindAdapterEles);
+            writeElements(writer, mBindAdapterEles);
         }
         writer.pop();
     }
@@ -156,6 +160,7 @@ public class DataBindingElement extends AbsElement implements IElementParser {
     private void parseBindElements(XmlReader.Element root) {
         BindElement be;
         PropertyElement pe ;
+        ImagePropertyElement ipe;
         /**
          *  <bind id="bt">
          <property name="text" referVariable="user" valueType="string">@{user.username}</property>
@@ -170,13 +175,16 @@ public class DataBindingElement extends AbsElement implements IElementParser {
          */
         boolean oneView ;
 
-        Array<XmlReader.Element> array = root.getChildrenByName(XmlElementNames.BIND);
+        final Array<XmlReader.Element> array = root.getChildrenByName(XmlElementNames.BIND);
         Array<XmlReader.Element> propArray ;
+        XmlReader.Element bindEle;
+        XmlReader.Element propEle;
+
 
         for( int i=0,size = array.size ; i<size ;i++){
             be = new BindElement(XmlElementNames.BIND);
 
-            XmlReader.Element bindEle =  array.get(i);
+            bindEle =  array.get(i);
             String id = bindEle.getAttribute(XmlKeys.ID, null);
             String refVariable = bindEle.getAttribute(XmlKeys.REFER_VARIABLE,null);
 
@@ -192,7 +200,7 @@ public class DataBindingElement extends AbsElement implements IElementParser {
             }
             propArray = bindEle.getChildrenByName(XmlElementNames.PROPERTY);
             for( int j=0,size2 = propArray.size ; j<size2 ;j++){
-                XmlReader.Element propEle =  propArray.get(j);
+                propEle =  propArray.get(j);
                 pe = new PropertyElement(XmlElementNames.PROPERTY);
 
                 String name = propEle.getAttribute(XmlKeys.NAME, null);
@@ -229,6 +237,22 @@ public class DataBindingElement extends AbsElement implements IElementParser {
 
                 be.addPropertyElement(pe);
             }
+
+            propArray = bindEle.getChildrenByName(XmlElementNames.IMAGE_PROPERTY);
+            for( int j=0,size2 = propArray.size ; j<size2 ;j++){
+                propEle =  propArray.get(j);
+                ipe = new ImagePropertyElement(XmlElementNames.IMAGE_PROPERTY);
+                ipe.parse(propEle);
+                if(ipe.getId() == null){
+                    ipe.setId(id);
+                }
+                ipe.setReferVariable(mergeReferVariable(ipe.getReferVariable(), refVariable));
+                if(ipe.getId() ==null && ipe.getReferVariable() == null)
+                    throw new RuntimeException("view id and referVariable can't be empty at the same time");
+
+                be.addPropertyElement(ipe);
+            }
+
             if(oneView) {
                 addBindElement(be);
             }else{
@@ -237,15 +261,6 @@ public class DataBindingElement extends AbsElement implements IElementParser {
         }
     }
 
-    /**
-     * @param val  the value to check
-     * @param tag   the tag to log
-     */
-    private static void checkEmpty(String val,String tag){
-        if(TextUtils.isEmpty(val)){
-            throw new RuntimeException(tag+" can't be empty");
-        }
-    }
 
     private void parseVariableAndImport(XmlReader.Element dataEle, DataElement dataElement) {
         VariableElement ve;
@@ -277,7 +292,7 @@ public class DataBindingElement extends AbsElement implements IElementParser {
             ie.setClassname(classname.trim());
 
             String alias = e.getAttribute(XmlKeys.ALIAS,null);
-           //can be null, if android.widget.View ,  alias is View
+           //can be null, eg: if android.widget.View ,  alias is View
             ie.setAlias(alias == null ? classname.substring(classname.lastIndexOf(".") + 1) : alias.trim());
 
             dataElement.addImportElement(ie);

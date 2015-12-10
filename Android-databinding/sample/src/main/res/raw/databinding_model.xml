@@ -17,18 +17,41 @@
     <bind referVariable="user">
         <property id ="bt2" name="text" >@{user.username}</property>
         <property id ="bt3" name="text" >user.getNickname()</property>
+        <!-- new -->
+        <imageProperty id = "iv" type="round">  <!-- round / circle / oval -->
+            <url>@{user.link}</url>
+            <roundSize>{@dimen/xxx}</roundSize>
+            <borderSize>{@dimen/xxx}</borderSize>
+            <borderColor>{@color/xxx}</borderColor>
+        </imageProperty>
     </bind>
 
     <bind id="iv">
-        <property name="img_url" >@{user.link}</property>
-        <param type="round">
-             <size>@dimen/xxx</size>
-             <borderSize>{@dimen/xxx}</borderSize>
-             <borderColor>@color/xxx</borderColor>
-        </param>
+        <!-- old -->
+        <property name="img_url" referVariable="user">@{user.link}</property>
+
+        <!-- new -->
+        <imageProperty type="round" referVariable="user">  <!-- round / circle / oval -->
+
+             <roundSize >{@dimen/xxx}</roundSize>
+             <corners >
+                 <topRight>{@dimen/xxx}</topRight>
+                 <topLeft>{@dimen/xxx}</topLeft>
+                 <bottomLeft>{@dimen/xxx}</bottomLeft>
+                 <bottomRight>{@dimen/xxx}</bottomRight>
+             </corners>
+
+             <borderWidth>{@dimen/xxx}</borderWidth>
+             <borderColor>{@color/xxx}</borderColor>
+
+            <url>@{user.link}</url>
+            <default>@{xxx}</default>        <!-- support drawable ,bitmap,  resource id -->
+            <errorResId>@{xxx}</errorResId>  <!-- only support resource id -->
+
+        </imageProperty>
     </bind>
 
-    <!-- 待验证,,, -->
+    <!-- 验证ok,,, -->
     <!-- bean must implements the interface ISelectable in bind adapter  -->
     <!-- selectMode="1"means single , 2  means multi , if not declared default is 1 -->
     <bindAdapter id="lv" referVariable="user" selectMode="1">

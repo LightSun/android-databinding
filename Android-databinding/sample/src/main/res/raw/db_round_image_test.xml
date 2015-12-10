@@ -1,13 +1,30 @@
 <DataBinding>
     <data>
-        <variable name="imageParam" classname="com.heaven7.databinding.demo.samples.RoundImageBindTest$ImageParam" type="bean"/>
+        <variable name="imageParam" classname="com.heaven7.databinding.demo.samples.RoundImageBindTest$ImageParam"
+            type="bean"/>
+        <variable name="eventHandler" classname="com.heaven7.databinding.demo.samples.RoundImageBindTest$ClickHandler"
+            type="callback"/>
         <import classname="com.heaven7.databinding.demo.test.Test" alias="Test"/>
+        <import classname="com.heaven7.databinding.demo.R"/>
     </data>
 
     <bind id="eniv">
         <property name="img_round_builder" referVariable="imageParam" >
             Test.createRoundBuilder(imageParam.roundSize,imageParam.url)
         </property>
+    </bind>
+    <bind id="eniv2">
+        <property name="onClick" referVariable="eventHandler" > eventHandler.onClickImage()</property>
+        <imageProperty type="round" referVariable="imageParam">  <!-- round / circle / oval -->
+            <roundSize>{@dimen/corner_size}</roundSize>
+            <borderWidth>5dp</borderWidth>
+            <borderColor>#ff0000</borderColor>
+
+            <url>imageParam.link</url>
+            <default>{@drawable/ic_default}</default>     <!-- support drawable ,bitmap,  resource id -->
+            <errorResId>R.drawable.ic_error</errorResId>  <!-- only support resource id -->
+
+        </imageProperty>
     </bind>
 
 

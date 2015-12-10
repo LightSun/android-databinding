@@ -1,6 +1,7 @@
 package com.heaven7.databinding.core;
 
 
+import android.content.Context;
 import android.view.View;
 
 public interface IVariableResolver {
@@ -27,4 +28,6 @@ public interface IVariableResolver {
 
     /**set the current bind view ,this  must called before really bind data */
     void setCurrentBindingView(View view);
+
+    Context getApplicationContext();
 }

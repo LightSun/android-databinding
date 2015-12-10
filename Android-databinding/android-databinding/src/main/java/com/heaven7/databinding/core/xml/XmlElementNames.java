@@ -16,5 +16,20 @@ public interface XmlElementNames {
     String  ITEM            =  "item";
     String  BIND_ADAPTER    =  "bindAdapter";
 
+    //imgae param
+    String  IMAGE_PROPERTY   =  "imageProperty";
+    String  ROUND_SIZE       =  "roundSize";
+    String  BORDER_WIDTH     =  "borderWidth";
+    String  BORDER_COLOR     =  "borderColor";
+    String  URL              =  "url";
+    String  DEFAULT          =  "default";
+    String  ERROR_RES_ID     =  "errorResId";
+
+
+    String  CORNERS               =  "corners";
+    String  TOP_LEFT              =  "topLeft";
+    String  TOP_RIGHT             =  "topRight";
+    String  BOTTOM_LEFT           =  "bottomLeft";
+    String  BOTTOM_RIGHT          =  "bottomRight";
 
 }

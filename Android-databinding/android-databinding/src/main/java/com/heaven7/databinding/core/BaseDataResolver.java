@@ -1,10 +1,12 @@
 package com.heaven7.databinding.core;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.SparseArray;
 import android.view.View;
 
 import com.heaven7.databinding.util.ReflectUtil;
+import com.heaven7.databinding.util.ViewUtil;
 import com.heaven7.xml.ObjectMap;
 
 import org.heaven7.core.adapter.AdapterManager;
@@ -25,8 +27,8 @@ import java.util.List;
     /** tmp object cache will be clear after bind by call {@link #clearObjects()} */
     private ObjectMap<String, Object> mObjectMap;
 
-    private ObjectMap<String, List<Method>> mMethodsMap; //key = mMethod name
-    private ObjectMap<String, Field> mFieldMap;          //key = field name
+    private ObjectMap<String, List<Method>> mMethodsMap; //key = clazz+mMethod name
+    private ObjectMap<String, Field> mFieldMap;          //key = vlazz+field name
 
     private List<String> mEventHandleVariables;
 
@@ -38,7 +40,6 @@ import java.util.List;
 
     // --------------------- below is used by adapter -------------------------------//
     private ObjectMap<String,Object> mLongStandingObjs;
-    private WeakReference<AdapterManager<? extends ISelectable>> mWeakAdapterManager;
     private int mPosition = ISelectable.INVALID_POSITION;
     private Object mItem ;
 
@@ -87,8 +88,22 @@ import java.util.List;
     public Object resolveVariable(String pName) throws DataBindException {
         pName = pName.trim();
 
-        //check android resource reference
-        if(ResourceResolver.isResourceReference(pName)){
+        //color
+        if(pName.charAt(0)=='#'){
+             return Color.parseColor(pName);// throws IllegalArgumentException
+        }
+        // 12dp or  sp
+        else if(Character.isDigit(pName.charAt(0)) ){
+            if( pName.endsWith("dp")) {
+                return ViewUtil.getDpSize(mAppContext,
+                        Float.parseFloat(pName.substring(0, pName.length() - 2)));
+            }else if(pName.endsWith("sp")){
+                return ViewUtil.getSpSize(mAppContext,
+                        Float.parseFloat(pName.substring(0, pName.length() - 2)));
+            }
+        }
+        else if(ResourceResolver.isResourceReference(pName)){
+            //check android resource reference
             return ResourceResolver.getResValue(mAppContext,pName);
         }
 
@@ -99,7 +114,7 @@ import java.util.List;
         if(val != null)
             return val;
         throw new DataBindException("can't resolve the variable , name = " + pName +
-                " , current map = " + mObjectMap.toString());
+                " , current data map = " + mObjectMap.toString());
     }
 
     @Override
@@ -128,6 +143,11 @@ import java.util.List;
         if(mAppContext == null) {
             mAppContext = view.getContext().getApplicationContext();
         }
+    }
+
+    @Override
+    public Context getApplicationContext() {
+        return mAppContext;
     }
 
     @Override
@@ -199,6 +219,9 @@ import java.util.List;
         mClassnameMap.clear();
         endBind();
         mLongStandingObjs.clear();
+        if(mAdapterManagerMap!=null){
+            mAdapterManagerMap.clear();
+        }
     }
 
     @Override
@@ -227,7 +250,6 @@ import java.util.List;
     public void endBind() {
         this.mPosition = ISelectable.INVALID_POSITION;
         this.mItem = null;
-        this.mWeakAdapterManager = null;
     }
 
     @Override

@@ -9,7 +9,6 @@ import org.heaven7.core.adapter.ISelectable;
 public interface IAdapterBindTracker {
 
     AdapterManager<? extends ISelectable> getAdapterManager(int adapterHash);
-   // void setAdapterManager(AdapterManager< ? extends ISelectable> am);
     void putAdapterManager(int adapterHash,AdapterManager< ? extends ISelectable> am);
 
     void beginBindItem(int position, Object item);

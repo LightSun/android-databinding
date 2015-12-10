@@ -1,5 +1,7 @@
 package com.heaven7.databinding.util;
 
+import android.content.Context;
+
 import java.util.regex.Pattern;
 
 import static com.heaven7.databinding.core.expression.ExpressionParser.BRACKET_BIG_LEFT;
@@ -16,10 +18,10 @@ import static com.heaven7.databinding.core.expression.ExpressionParser.QUOTE;
  */
 public class StringUtil2 {
 
-    private static final char[] UpperCases = "ABCDEFGHIJKLMNOPQRSTWVUXYZ".toCharArray();
-    private static final Pattern sIntParttern = Pattern.compile("[0-9]+");
-    private static final Pattern sFloatParttern = Pattern.compile("[0-9]+[\\.][0-9]+");
-
+    private static final char[] UpperCases       = "ABCDEFGHIJKLMNOPQRSTWVUXYZ".toCharArray();
+    private static final Pattern sIntParttern    = Pattern.compile("[0-9]+");
+    private static final Pattern sFloatParttern  = Pattern.compile("[0-9]+[\\.][0-9]+");
+    private static final Pattern sResPattern     = Pattern.compile("[R][\\.][a-z]+[\\.][a-z_0-9]+");
 
     public static boolean isFirstUpperCase(String target)throws NullPointerException{
         if(target ==null )  throw new NullPointerException();
@@ -61,6 +63,21 @@ public class StringUtil2 {
 
     public static boolean isNull(String str) {
         return "null".equals(str);
+    }
+
+    public static boolean isResourceReferOfR(String str){
+        return sResPattern.matcher(str).matches();
+    }
+
+    /** return the res id of android ( current only the calling package )*/
+    public static int getResId(String str,Context context){
+        final String packageName = context.getApplicationInfo().packageName;
+        final String[] strs = str.split("\\.");
+        try { //R.drawable.xxx_xx
+            return Class.forName(packageName +".R$" + strs[1]).getField(strs[2]).getInt(null);
+        } catch (Exception e) {
+           throw new RuntimeException(e);
+        }
     }
 
 }

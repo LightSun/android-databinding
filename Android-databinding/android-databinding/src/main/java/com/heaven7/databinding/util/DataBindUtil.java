@@ -1,4 +1,4 @@
-package com.heaven7.databinding.core.xml.elements;
+package com.heaven7.databinding.util;
 
 import android.text.TextUtils;
 
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by heaven7 on 2015/11/26.
  */
-/*public*/ class Util {
+public class DataBindUtil {
 
     static final HashSet<String> sSet = new HashSet<>();
 
@@ -55,6 +55,16 @@ import java.util.List;
         int len = list.size();
         for (int i = len - 1; i >=0 ; i--) {
             list.get(i).write(writer);
+        }
+    }
+
+    /**
+     * @param val  the value to check
+     * @param tag   the tag to log
+     */
+    public static void checkEmpty(String val,String tag){
+        if(TextUtils.isEmpty(val)){
+            throw new RuntimeException(tag+" can't be empty");
         }
     }
 }

@@ -9,9 +9,11 @@ import android.text.TextWatcher;
 import android.util.SparseArray;
 import android.view.View;
 
+import com.android.volley.extra.Corner;
 import com.android.volley.extra.ExpandNetworkImageView;
 import com.android.volley.extra.RoundedBitmapBuilder;
 import com.heaven7.databinding.core.listener.ListenerImplContext;
+import com.heaven7.databinding.core.xml.elements.ImagePropertyElement;
 import com.heaven7.databinding.util.ReflectUtil;
 
 import org.heaven7.core.viewhelper.ViewHelper;
@@ -62,7 +64,7 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
         }else if(PropertyNames.TEXT_COLOR_STATE_RES.equals(propertyName)){
             impl.setTextColor(res.getColorStateList((Integer) value));
         }else if(PropertyNames.TEXT_SIZE.equals(propertyName)){
-            impl.setTextSizeDp((Float) value);
+            impl.setTextSize((Float) value);
         }else if(PropertyNames.TEXT_SIZE_RES.equals(propertyName)){
             impl.setTextSize(res.getDimensionPixelSize((Integer) value));
         }else if(PropertyNames.VISIBILITY.equals(propertyName)){
@@ -145,6 +147,73 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
         apply( helper.view(viewId), helper.getView(viewId), viewId,
                 layoutId, propertyName, value, mListenerMap);
     }
+
+    public static void applyImageProperty(View imageView, IDataResolver dataResolver,
+                             DataBindParser.ImagePropertyBindInfo info){
+        if(! (imageView instanceof ExpandNetworkImageView))
+            throw new RuntimeException("<imageProperty> can only apply to ExpandNetworkImageView.");
+
+        final ExpandNetworkImageView eniv = (ExpandNetworkImageView) imageView;
+        final RoundedBitmapBuilder builder = new RoundedBitmapBuilder();
+        Object val;
+        if(info.defaultExpre != null){
+            val = info.defaultExpre.evaluate(dataResolver);
+            if( val instanceof Integer){
+                eniv.setImageResource(((Integer) val).intValue());
+            }else if(val instanceof Bitmap){
+                eniv.setImageBitmap((Bitmap) val);
+            }else if(val instanceof Drawable){
+                eniv.setImageDrawable((Drawable) val);
+            }else {
+                throw new RuntimeException("can't discern the expression value type ," +
+                        " only support resId/bitmap/drawable?");
+            }
+        }
+        if(info.errorExpre!=null){
+            builder.error((Integer) info.errorExpre.evaluate(dataResolver));
+        }
+        if(info.url != null){
+            builder.url((String) info.url.evaluate(dataResolver));
+        }
+        //type
+        if(info.type == ImagePropertyElement.TYPE_OVAL){
+            builder.oval(true);
+        }else if(info.type == ImagePropertyElement.TYPE_CIRCLE){
+            builder.circle(true);
+        }else if(info.type == ImagePropertyElement.TYPE_ROUND){
+            //round or corners
+            if (info.roundSizeExpre != null) {
+                builder.cornerRadius((Float) info.roundSizeExpre.evaluate(dataResolver));
+            } else if (info.cornerInfo != null) {
+                //corners --> not support in RoundedDrawable.
+                float floatVal;
+                if (info.cornerInfo.topLeftExpre != null) {
+                    floatVal = (Float) info.cornerInfo.topLeftExpre.evaluate(dataResolver);
+                    builder.cornerRadius(Corner.TOP_LEFT, floatVal);
+                }
+                if (info.cornerInfo.topRightExpre != null) {
+                    floatVal = (Float) info.cornerInfo.topRightExpre.evaluate(dataResolver);
+                    builder.cornerRadius(Corner.TOP_RIGHT, floatVal);
+                }
+                if (info.cornerInfo.bottomLeftExpre != null) {
+                    floatVal = (Float) info.cornerInfo.bottomLeftExpre.evaluate(dataResolver);
+                    builder.cornerRadius(Corner.BOTTOM_LEFT, floatVal);
+                }
+                if (info.cornerInfo.bottomRightExpre != null) {
+                    floatVal = (Float) info.cornerInfo.bottomRightExpre.evaluate(dataResolver);
+                    builder.cornerRadius(Corner.BOTTOM_RIGHT, floatVal);
+                }
+            }
+        }
+        if(info.borderColorExpre!=null){
+            builder.borderColor((Integer) info.borderColorExpre.evaluate(dataResolver));
+        }
+        if(info.borderWidthExpre !=null){
+            builder.borderWidth((Float) info.borderWidthExpre.evaluate(dataResolver));
+        }
+        builder.into(eniv);
+    }
+
     /**  name -> Name-> setName */
     private static String getMethodName(String propertyName,String prefix){
         final char[] chars = propertyName.toCharArray();

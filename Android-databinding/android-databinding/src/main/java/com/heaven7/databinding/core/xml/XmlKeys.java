@@ -20,4 +20,6 @@ public interface XmlKeys {
      String TAG                                = "tag";
 
      String SELECT_MODE                        = "selectMode";
+
+     String CORNERS                            = "corners";
 }

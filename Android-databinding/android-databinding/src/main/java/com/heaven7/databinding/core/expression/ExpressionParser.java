@@ -54,11 +54,12 @@ public class ExpressionParser {
 	public static IExpression parse(String str) throws ExpressionParseException {
 		str = str.trim();
 		//starts with @
-        if(str.startsWith(ExpressionParser.AT+""))
+        if(str.charAt(0) == ExpressionParser.AT)
 			str = str.substring(1);
 		//starts with { , end with }
-        if(str.startsWith(ExpressionParser.BRACKET_BIG_LEFT+"") &&
-				str.endsWith(ExpressionParser.BRACKET_BIG_RIGHT + "") ) {
+        if(str.charAt(0) == ExpressionParser.BRACKET_BIG_LEFT &&
+				str.charAt(1) != AT &&
+				str.charAt(str.length()-1) == ExpressionParser.BRACKET_BIG_RIGHT ) {
 			str = str.substring(1,str.length()-1);
 		}
 		if (sDebug)
