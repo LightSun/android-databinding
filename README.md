@@ -43,7 +43,26 @@ this framework.
    //ps:  and also support self-attrs 
   ```
 
-- Expression support like java , only nested ternary  expression is not support.
+- Support multi expressions. eg: java calling expression (only nested ternary expression is not support), 
+   android resource reference expression {@drawable/ic_default} or R.drawable.ic_default , dp and sp like "15dp",
+   and color like "#ff0000" and so on.
+- image config was supported from now on. here is the demo: 
+   the more to see in sample/RoundImageBindTest Activity.
+  ``` java
+   <bind id="eniv2">
+        <property name="onClick" referVariable="eventHandler" > eventHandler.onClickImage()</property>
+        <imageProperty type="round" referVariable="imageParam">  <!-- round / circle / oval -->
+            <roundSize>{@dimen/corner_size}</roundSize>
+            <borderWidth>5dp</borderWidth>
+            <borderColor>#ff0000</borderColor>
+
+            <url>imageParam.link</url>
+            <default>{@drawable/ic_default}</default>     <!-- support drawable ,bitmap,  resource id -->
+            <errorResId>R.drawable.ic_error</errorResId>  <!-- only support resource id -->
+
+        </imageProperty>
+    </bind>
+  ```
 - the more later i will write blog and doc to describe this.
 
 
