@@ -21,8 +21,13 @@ this framework.
     String TEXT_CHANGE             =    "textChange";
     String TEXT_CHANGE_AFTER       =    "textChange_after";
 
+   // String ON_TOUCH                =    "onTouch";
 
     //common name
+    String BACKGROUND              =    "background";       //drawable /color / res id
+    String BACKGROUND_COLOR        =    "backgroundColor";
+    String BACKGROUND_RES          =    "background_res";
+
     String TEXT                    =    "text";
     String TEXT_RES                =    "text_res";
 
