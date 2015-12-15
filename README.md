@@ -490,11 +490,15 @@ public class RoundImageBindTest extends BaseActivity {
 
 ``` 
    
-... and so on. i will write blogs and doc about this framework soon. you can see it soon. 
+... and so on. 
 
 the more to see in  [android-databinding/sample](https://github.com/LightSun/android-databinding/tree/master/Android-databinding/sample).
 
 thanks !
+
+## blog and pdf resource
+if you are a chinese developer or know chinese.  please click  [here](http://blog.csdn.net/pkjjun2012/article/details/50286621) to see more easier.
+[chinese pdf](http://download.csdn.net/detail/pkjjun2012/9352397)
 
 
 ## License
