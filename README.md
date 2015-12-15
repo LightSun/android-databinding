@@ -72,7 +72,7 @@ this framework.
 
 
 ## TODO
-   * test , write doc detail , find bug and fix.
+   * optimize this framework , find bug and fix.
    
 ## issue
    * if you have a good suggestion  about this, please tell me. Thanks! 
