@@ -168,6 +168,9 @@ import static com.heaven7.databinding.core.PropertyUtil.applyImageProperty;
 
     /** convert  PropertyElement to  PropertyBindInfo,  and put it into target infos ! */
     private static void convert2BindInfos(Context ctx,List<PropertyElement> propEles, Array<PropertyBindInfo> infos) {
+        if(propEles.size() == 0){
+            return;
+        }
         PropertyBindInfo info ;
         ImagePropertyBindInfo ipb;
 
@@ -737,29 +740,11 @@ import static com.heaven7.databinding.core.PropertyUtil.applyImageProperty;
     }
     private static Array<PropertyBindInfo> parseListItemBindInfos(Context context,
                                                                   List<BindElement> list) {
-        if(list== null || list.size() ==0)
+        if(list== null || list.size() == 0)
             return  null;
         final Array<PropertyBindInfo> infos = new Array<>(7);
-
-        List<PropertyElement> props;
-        PropertyBindInfo info;
-        PropertyElement pe;
-        String id;
-
         for( BindElement be : list ){
-            props = be.getPropertyElements();
-            if(props == null || props.size() ==0)
-                continue;
-            for(int i =0,size = props.size() ; i<size ; i++){
-                info = new PropertyBindInfo();
-                pe = props.get(i);
-                convert(info,pe);
-                id = pe.getId();
-                if(!TextUtils.isEmpty(id)){
-                    info.viewId = ResourceUtil.getResId(context,id, ResourceUtil.ResourceType.Id);
-                }
-                infos.add(info);
-            }
+            convert2BindInfos(context,be.getPropertyElements(),infos);
         }
         return infos;
     }

@@ -5,7 +5,6 @@
         <variable name="eventHandler" classname="com.heaven7.databinding.demo.samples.RoundImageBindTest$ClickHandler"
             type="callback"/>
         <import classname="com.heaven7.databinding.demo.test.Test" alias="Test"/>
-        <import classname="com.heaven7.databinding.demo.R"/>
     </data>
 
     <bind id="eniv">

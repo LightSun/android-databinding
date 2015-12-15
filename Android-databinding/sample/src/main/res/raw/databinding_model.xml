@@ -66,6 +66,7 @@
                 <property name="onClick" referVariable="orderHandler">orderHandler.onClickName(user)</property>
             </bind>
         </item>
+
         <item layout="item_xxx2" tag="2"  >
             <bind >
                 <property id ="bt2" name="text" >@{user.username}</property>
@@ -75,6 +76,27 @@
                 <property name="text" >user.username</property>
                 <property name="onClick" referVariable="orderHandler">orderHandler.onClickName(user)</property>
             </bind>
+            <bind id="iv">
+                <property name="img_url" >@{user.link}</property>
+                <imageProperty type="round">  <!-- round / circle / oval -->
+                    <roundSize >{@dimen/xxx}</roundSize>
+                    <corners >
+                        <topRight>{@dimen/xxx}</topRight>
+                        <topLeft>{@dimen/xxx}</topLeft>
+                        <bottomLeft>{@dimen/xxx}</bottomLeft>
+                        <bottomRight>{@dimen/xxx}</bottomRight>
+                    </corners>
+
+                    <borderWidth>{@dimen/xxx}</borderWidth>
+                    <borderColor>{@color/xxx}</borderColor>
+
+                    <url>@{user.link}</url>
+                    <default>@{xxx}</default>        <!-- support drawable ,bitmap,  resource id -->
+                    <errorResId>@{xxx}</errorResId>  <!-- only support resource id -->
+
+                </imageProperty>
+            </bind>
+
         </item>
     </bindAdapter>
 

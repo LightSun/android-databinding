@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.heaven7.databinding.util.DataBindUtil.mergeReferVariable;
+
 /**
  * used for  <bindAdapter id="lv">...</bindAdapter>
  * Created by heaven7 on 2015/11/24.
@@ -183,13 +185,38 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
             if(!TextUtils.isEmpty(refer)){
                 be.setReferVariable(refer);
             }
-            refer = DataBindUtil.mergeReferVariable(referVariable,refer);
-
+            refer = DataBindUtil.mergeReferVariable(referVariable , refer);
+           //imageProperty
             props = parsePropertyElements(bindEle, refer, id, true);
             if(props != null && props.size() > 0) {
                 be.setPropertyElements(props);
             }
+            parseImageProperty(be,bindEle, refer, id);
             ie.addBindElement(be);
+        }
+    }
+
+    /** parse imageProperty element */
+    private void parseImageProperty(BindElement be, XmlReader.Element e, String refer,
+                                    String id_bind) {
+        Array<XmlReader.Element> array = e.getChildrenByName(XmlElementNames.IMAGE_PROPERTY);
+        if(array ==null || array.size ==0)
+            return;
+        XmlReader.Element ipEle;
+        ImagePropertyElement ipe;
+        for( int j=0,size2 = array.size ; j<size2 ;j++){
+            ipEle =  array.get(j);
+            ipe = new ImagePropertyElement(XmlElementNames.IMAGE_PROPERTY);
+            ipe.parse(ipEle);
+            if(ipe.getId() == null){
+                ipe.setId(id_bind);
+            }
+            ipe.setReferVariable(mergeReferVariable(ipe.getReferVariable(), refer));
+            if(ipe.getId() == null && ipe.getReferVariable() == null)
+                throw new RuntimeException("view id and referVariable can't be empty at the same time");
+
+            be.addPropertyElement(ipe);
+            mTotalRefer = mergeReferVariable(ipe.getReferVariable(),mTotalRefer);
         }
     }
 
@@ -214,8 +241,9 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
         XmlReader.Element propEle;
 
         for( int i=0,size = props.size ; i<size ;i++){
-            pe = new PropertyElement(XmlElementNames.PROPERTY);
             propEle = props.get(i);
+
+            pe = new PropertyElement(XmlElementNames.PROPERTY);
 
             String name = propEle.getAttribute(XmlKeys.NAME, null);
             if(TextUtils.isEmpty(name)){

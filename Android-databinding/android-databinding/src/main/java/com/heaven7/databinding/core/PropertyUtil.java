@@ -168,6 +168,10 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
                 throw new RuntimeException("can't discern the expression value type ," +
                         " only support resId/bitmap/drawable?");
             }
+            /**
+             * the default expression can only use once , or else must cause  bug when in adapter.
+             */
+            info.defaultExpre = null;
         }
         if(info.errorExpre!=null){
             builder.error((Integer) info.errorExpre.evaluate(dataResolver));

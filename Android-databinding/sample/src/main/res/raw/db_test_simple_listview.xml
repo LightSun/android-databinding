@@ -19,7 +19,16 @@
                 <property name="onClick" >itemHandler.onTextClick()</property>
             </bind>
             <bind id="eniv">
-                <property name="img_url" >imageInfo.url</property>
+                <!--<property name="img_url" >imageInfo.url</property>-->
+                <imageProperty type="round" referVariable="imageParam">  <!-- round / circle / oval -->
+                    <roundSize>{@dimen/corner_size}</roundSize>
+                    <borderWidth>5dp</borderWidth>
+                    <borderColor>#ff0000</borderColor>
+
+                    <url>imageInfo.url</url>
+                    <default>{@drawable/ic_default}</default>     <!-- support drawable ,bitmap,  resource id -->
+                    <errorResId>R.drawable.ic_error</errorResId>  <!-- only support resource id -->
+                </imageProperty>
             </bind>
         </item>
     </bindAdapter>

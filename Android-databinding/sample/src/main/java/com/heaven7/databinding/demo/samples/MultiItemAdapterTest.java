@@ -3,6 +3,8 @@ package com.heaven7.databinding.demo.samples;
 import android.os.Bundle;
 import android.view.View;
 
+import com.heaven7.databinding.anno.DatabindingClass;
+import com.heaven7.databinding.anno.DatabindingMethod;
 import com.heaven7.databinding.demo.R;
 import com.heaven7.databinding.demo.bean.ImageInfo;
 import com.heaven7.databinding.demo.test.Test;
@@ -43,6 +45,7 @@ public class MultiItemAdapterTest extends BaseActivity {
         }
         mDataBinder.bindAdapter(R.id.lv, infos, new ItemHandler2(getToaster()));
     }
+    @DatabindingClass
     public static class ItemHandler2 {
 
         private final Toaster mToaster;
@@ -51,6 +54,7 @@ public class MultiItemAdapterTest extends BaseActivity {
             this.mToaster = mToaster;
         }
         /** this is bind in item: item_image */
+        @DatabindingMethod
         public void onItemClick(View v, Integer position,ImageInfo item, AdapterManager<?> am){
             mToaster.show("ItemHandler_onItemClick: position = " + position + " ,item = " + item);
             if(item.isSelected()){
@@ -60,11 +64,13 @@ public class MultiItemAdapterTest extends BaseActivity {
             }
         }
         /** this is bind in item: item_image */
+        @DatabindingMethod
         public void onTextClick(View v, Integer position,ImageInfo item, AdapterManager<?> am){
             mToaster.show("on text click: position = " + position + " ,item = " + item);
         }
 
         /** this is bind in item: item_txt */
+        @DatabindingMethod
         public void onTitleClick(View v, Integer position,ImageInfo item, AdapterManager<?> am){
             mToaster.show("[ this is called on item2-> 'item_txt' ] on title click: position = " +
                     position + " ,item = " + item);
