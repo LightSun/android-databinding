@@ -8,6 +8,7 @@
     <bind id="bt">
         <property name="text" referVariable="user" valueType="string">@{user.username}</property>
         <property name="textColor" referVariable="user" >user.male ? {@color/red} : {@color/random}</property>
+        <property name="backgroundColor" referVariable="user" >#00ff00</property>
     </bind>
     <bind id="bt0">
         <property name="onClick" referVariable="user,mainHanlder" >mainHanlder.onClickChangeUsername(user)</property>

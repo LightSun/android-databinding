@@ -26,8 +26,9 @@ public final class ListenerFactory {
 
     }
 
-    /** the class clazz must have empty constructor */
-    public static void registEventListener(String propertyName,Class<?> clazz){
+    /** the class clazz must have empty constructor
+     * @param clazz  must extends ListenerImplContext */
+    public static void registEventListener(String propertyName,Class<? extends ListenerImplContext> clazz){
        sRegistedListenerMap.put(propertyName.hashCode(),clazz.getName());
     }
 

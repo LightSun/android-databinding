@@ -16,6 +16,7 @@ import com.heaven7.databinding.core.listener.ListenerImplContext;
 import com.heaven7.databinding.core.xml.elements.ImagePropertyElement;
 import com.heaven7.databinding.util.ReflectUtil;
 
+import org.heaven7.core.util.ViewCompatUtil;
 import org.heaven7.core.viewhelper.ViewHelper;
 import org.heaven7.core.viewhelper.ViewHelperImpl;
 
@@ -46,8 +47,15 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
             impl = new ViewHelperImpl(v);
         }
         final Resources res = impl.getContext().getResources();
-
-        if(PropertyNames.TEXT.equals(propertyName)){
+        //background
+        if(PropertyNames.BACKGROUND.equals(propertyName)){
+            ViewCompatUtil.setBackgroundCompatible(v, (Drawable) value);
+        }else if(PropertyNames.BACKGROUND_COLOR.equals(propertyName)){
+            v.setBackgroundColor((Integer) value);
+        }else if(PropertyNames.BACKGROUND_RES.equals(propertyName)){
+            v.setBackgroundResource((Integer) value);
+        }
+        else if(PropertyNames.TEXT.equals(propertyName)){
             impl.setText((CharSequence) value);
         }else if(PropertyNames.TEXT_RES.equals(propertyName)){
             impl.setText(res.getText((Integer) value));
@@ -71,7 +79,7 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
             impl.setVisibility((Integer) value);
         } else if(PropertyNames.ON_CLICK.equals(propertyName)){
             impl.setOnClickListener((View.OnClickListener)
-                    mListenerMap.get(getEventKey(id, layoutId, propertyName)) );
+                    mListenerMap.get(getEventKey(id, layoutId, propertyName)));
         }else if(PropertyNames.ON_LONG_CLICK.equals(propertyName)){
             //helper.setVisibility(viewId, (Integer) value);
             impl.setOnLongClickListener((View.OnLongClickListener)
@@ -88,26 +96,26 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
                 //refer res
                 impl.setImageResource((Integer)value);
             }else{
-                impl.setImageBitmap((Bitmap)value);
+                impl.setImageBitmap((Bitmap) value);
             }
         } else if(PropertyNames.IMGAE_DRAWABLE.equals(propertyName)){
             if(value instanceof Integer){
                 //refer res
                 impl.setImageResource((Integer)value);
             }else{
-                impl.setImageDrawable( (Drawable)value );
+                impl.setImageDrawable((Drawable) value);
             }
         } else if(PropertyNames.IMGAE_URL.equals(propertyName)){
             if(! (v instanceof ExpandNetworkImageView)){
                 throw new DataBindException("property name: img_url only can be used for ExpandNetworkImageView");
             }
-            new RoundedBitmapBuilder().url((String)value).into((ExpandNetworkImageView)v);
+            new RoundedBitmapBuilder().url((String)value).into((ExpandNetworkImageView) v);
 
         } else if(PropertyNames.IMGAE_ROUND_BUILDER.equals(propertyName)){
             if(! (v instanceof ExpandNetworkImageView)){
                  throw new DataBindException("property name: img_round_builder only can be used for ExpandNetworkImageView");
             }
-            ((RoundedBitmapBuilder) value).into((ExpandNetworkImageView)v);
+            ((RoundedBitmapBuilder) value).into((ExpandNetworkImageView) v);
         }
         else if( isEventProperty(propertyName)) {
             //self property indicate is self listener

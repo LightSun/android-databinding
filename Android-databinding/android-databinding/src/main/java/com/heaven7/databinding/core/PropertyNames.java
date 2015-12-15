@@ -16,6 +16,10 @@ public interface PropertyNames {
    // String ON_TOUCH                =    "onTouch";
 
     //common name
+    String BACKGROUND              =    "background";       //drawable /color / res id
+    String BACKGROUND_COLOR        =    "backgroundColor";
+    String BACKGROUND_RES          =    "background_res";
+
     String TEXT                    =    "text";
     String TEXT_RES                =    "text_res";
 
