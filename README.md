@@ -51,8 +51,8 @@ this framework.
 - Support multi expressions. eg: java calling expression (only nested ternary expression is not support), 
    android resource reference expression {@drawable/ic_default} or R.drawable.ic_default , dp and sp like "15dp",
    and color like "#ff0000" and so on.
-- the image full config was supported  now (round/circle/borderWith/borderColor/placeHolder).  here is the demo: 
-   the more to see in sample/RoundImageBindTest Activity.
+- the image full config was supported  now (round/circle/borderWith/borderColor/placeHolder).  
+- here is the demo: 
   ``` java
    <bind id="eniv2">
         <property name="onClick" referVariable="eventHandler" > eventHandler.onClickImage()</property>
@@ -68,6 +68,7 @@ this framework.
         </imageProperty>
     </bind>
   ```
+    the more to see in sample/RoundImageBindTest Activity.
 - blog and pdf is at the bottom of this page.
 
 
