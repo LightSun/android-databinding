@@ -68,7 +68,7 @@ this framework.
         </imageProperty>
     </bind>
   ```
-- the more later i will write blog and doc to describe this.
+- blog and pdf is at the bottom of this page.
 
 
 ## TODO
