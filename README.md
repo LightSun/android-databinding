@@ -21,8 +21,13 @@ this framework.
     String TEXT_CHANGE             =    "textChange";
     String TEXT_CHANGE_AFTER       =    "textChange_after";
 
+   // String ON_TOUCH                =    "onTouch";
 
     //common name
+    String BACKGROUND              =    "background";       //drawable /color / res id
+    String BACKGROUND_COLOR        =    "backgroundColor";
+    String BACKGROUND_RES          =    "background_res";
+
     String TEXT                    =    "text";
     String TEXT_RES                =    "text_res";
 
@@ -46,8 +51,8 @@ this framework.
 - Support multi expressions. eg: java calling expression (only nested ternary expression is not support), 
    android resource reference expression {@drawable/ic_default} or R.drawable.ic_default , dp and sp like "15dp",
    and color like "#ff0000" and so on.
-- image config was supported from now on. here is the demo: 
-   the more to see in sample/RoundImageBindTest Activity.
+- the image full config was supported  now (round/circle/borderWith/borderColor/placeHolder).  
+- here is the demo: 
   ``` java
    <bind id="eniv2">
         <property name="onClick" referVariable="eventHandler" > eventHandler.onClickImage()</property>
@@ -63,11 +68,12 @@ this framework.
         </imageProperty>
     </bind>
   ```
-- the more later i will write blog and doc to describe this.
+    the more to see in sample/RoundImageBindTest Activity.
+- blog and pdf is at the bottom of this page.
 
 
 ## TODO
-   * test , write doc detail , find bug and fix.
+   * optimize this framework , find bug and fix.
    
 ## issue
    * if you have a good suggestion  about this, please tell me. Thanks! 
@@ -490,11 +496,15 @@ public class RoundImageBindTest extends BaseActivity {
 
 ``` 
    
-... and so on. i will write blogs and doc about this framework soon. you can see it soon. 
+... and so on. 
 
 the more to see in  [android-databinding/sample](https://github.com/LightSun/android-databinding/tree/master/Android-databinding/sample).
 
 thanks !
+
+## blog and pdf resource
+if you are a chinese developer or know chinese.  please click  [here](http://blog.csdn.net/pkjjun2012/article/details/50286621) to see more easier.
+[chinese pdf](http://download.csdn.net/detail/pkjjun2012/9352397)
 
 
 ## License
