@@ -3,6 +3,7 @@ package com.heaven7.databinding.demo.samples;
 import android.os.Bundle;
 import android.view.View;
 
+import com.heaven7.databinding.anno.DatabindingField;
 import com.heaven7.databinding.demo.R;
 import com.heaven7.databinding.demo.test.Test;
 
@@ -33,6 +34,7 @@ public class RoundImageBindTest extends BaseActivity {
 
     public static class ImageParam{
         float roundSize;
+        @DatabindingField
         String url;
         String link;
         public ImageParam(float roundSize, String url) {

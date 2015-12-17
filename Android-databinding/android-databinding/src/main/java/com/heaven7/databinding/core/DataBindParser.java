@@ -8,6 +8,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.heaven7.databinding.R;
 import com.heaven7.databinding.core.expression.ExpressionParseException;
 import com.heaven7.databinding.core.expression.ExpressionParser;
 import com.heaven7.databinding.core.expression.IExpression;
@@ -43,13 +44,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import heaven7.android_databinding.R;
-
 import static com.heaven7.databinding.core.ListenerFactory.createEventListener;
 import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
 import static com.heaven7.databinding.core.PropertyUtil.apply;
-import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
 import static com.heaven7.databinding.core.PropertyUtil.applyImageProperty;
+import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
 
 
 /**

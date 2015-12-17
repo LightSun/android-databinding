@@ -1,8 +1,11 @@
 package com.heaven7.databinding.demo.bean;
 
+import com.heaven7.databinding.anno.DatabindingClass;
+
 /**
  * Created by heaven7 on 2015/11/5.
  */
+@DatabindingClass
 public class User {
 
     private String username ;

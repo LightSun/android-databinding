@@ -1,5 +1,6 @@
 package com.heaven7.databinding.demo.bean;
 
+import com.heaven7.databinding.anno.DatabindingClass;
 import com.heaven7.databinding.core.ITag;
 
 import org.heaven7.core.adapter.ISelectable;
@@ -9,6 +10,7 @@ import org.heaven7.core.adapter.ISelectable;
  * if multi item. must implement ITag interface
  * Created by heaven7 on 2015/11/30.
  */
+@DatabindingClass
 public class ImageInfo implements ISelectable,ITag{
 
     private String url;

@@ -3,6 +3,7 @@ package com.heaven7.databinding.core.expression;
 
 import android.view.View;
 
+import com.heaven7.databinding.R;
 import com.heaven7.databinding.core.DataBindException;
 import com.heaven7.databinding.core.IDataResolver;
 import com.heaven7.databinding.util.ArrayUtil;
@@ -14,7 +15,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import heaven7.android_databinding.R;
 
 /**
  * Created by heaven7 on 2015/8/13.
