@@ -86,8 +86,17 @@ this framework.
 ## hope
 i like technology. especially the open-source technology.And previous i didn't contribute to it caused by i am a little lazy, but now i really want to do some for the open-source. So i hope to share and communicate with the all of you.
 
-## how to use or demo ?
-gradle config will support latter. 
+## how to use ?
+
+ gradle config:
+``` java
+dependencies {
+    compile 'com.heaven7.databinding:android-databinding:1.0'
+}
+
+``` 
+
+## Samples
 
 base BaseBehaviour
 
