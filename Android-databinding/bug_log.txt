@@ -1,0 +1,29 @@
+1, 复用 ResourceResolver，忘记改变resName的问题
+
+2, bind_adapter 绑定需要的额外对象setAdapter之后，clear掉会出 bug
+
+3,    in QuickAdapterImpl
+      //this have a bug , that position and item transfer is wrong
+     /*  applyDataReally(info.viewId, bindInfo.layoutId, info, helper,
+               mDataResolver, mListenerMap, mEventCareTaker);*/
+
+           //below is right . find reason , why ?  i'm not sure
+           applyDataReally(v, bindInfo.layoutId, info, helper,
+                                       mDataResolver, mListenerMap, mEventCareTaker);
+
+4, textChangeListener 问题。将beforeTextChange ,onTextChange,afterTextChange 1个或多个绑定到1个对象上，可能会bug.
+                                       因为3个方法都会调用，但是如果bind只有某1个时，就会Bug.
+            fix:  绑定到3个对象上即可解决
+
+5, 在绑定2个或者多个ListView or recyclerView时，adapterManager只保留了最后一个的bug.
+   解决：
+          利用view.setTag（int key,Object tag）保留adapter.hashCode.
+           再get回来。--- ps 当然必须WeakReference
+
+            info = bindInfo.itemBinds.get(i);
+           v = helper.getView(info.viewId);
+           v.setTag(R.id.key_adapter_hash,this.hashCode());
+
+            AdapterManager<? extends ISelectable> getAdapterManager(int adapterHash);
+              // void setAdapterManager(AdapterManager< ? extends ISelectable> am);
+            void putAdapterManager(int adapterHash,AdapterManager< ? extends ISelectable> am);
