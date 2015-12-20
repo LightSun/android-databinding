@@ -20,6 +20,7 @@ this framework.
     String TEXT_CHANGE_BEFORE      =    "textChange_before";
     String TEXT_CHANGE             =    "textChange";
     String TEXT_CHANGE_AFTER       =    "textChange_after";
+    String ON_FOCUS_CHANGE         =    "onFocusChange";
 
    // String ON_TOUCH                =    "onTouch";
 
@@ -91,7 +92,7 @@ i like technology. especially the open-source technology.And previous i didn't c
  gradle config:
 ``` java
 dependencies {
-    compile 'com.heaven7.databinding:android-databinding:1.0'
+    compile 'com.heaven7.databinding:android-databinding:1.0.2'
 }
 
 ``` 
