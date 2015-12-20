@@ -61,7 +61,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
 
     private static final String TAG = "DataBinding";
 
-    private final BaseDataResolver mDataResolver;
+    private final IDataResolver mDataResolver;
     private final InternalElementParserListener mParserListenerImpl;
     private final EventParseCaretaker mEventCareTaker;
     private BindAdapterParser mAdapterParser;
@@ -90,7 +90,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
     private HashSet<String> mTmpVarStrs;
     //================== end for tmp use , just avoid reallocate memory ============//
 
-    public DataBindParser(@NonNull View root,BaseDataResolver resolver) {
+    public DataBindParser(@NonNull View root,IDataResolver resolver) {
         mViewHelper = new ViewHelper(root);
         mDataResolver = resolver ;
         resolver.setEventEvaluateCallback(this);
@@ -362,7 +362,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         //check , put data and apply
         if(info == null) {
             final ViewHelper mViewHelper = this.mViewHelper;
-            final BaseDataResolver mDataResolver = this.mDataResolver;
+            final IDataResolver mDataResolver = this.mDataResolver;
             final SparseArray<ListenerImplContext> mListenerMap = this.mListenerMap;
             final EventParseCaretaker caretaker = this.mEventCareTaker;
 
@@ -419,7 +419,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         mDataResolver.setCurrentBindingView(mViewHelper.getView(id));
         if(cacheData){
             final ViewHelper mViewHelper = this.mViewHelper;
-            final BaseDataResolver mDataResolver = this.mDataResolver;
+            final IDataResolver mDataResolver = this.mDataResolver;
             final EventParseCaretaker caretaker = this.mEventCareTaker;
             final SparseArray<ListenerImplContext> mListenerMap = this.mListenerMap;
 
@@ -558,7 +558,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
 
         }
         final ViewHelper mViewHelper = this.mViewHelper;
-        final BaseDataResolver mDataResolver = this.mDataResolver;
+        final IDataResolver mDataResolver = this.mDataResolver;
         final SparseArray<ListenerImplContext> mListenerMap = this.mListenerMap;
         final EventParseCaretaker caretaker = this.mEventCareTaker;
         mDataResolver.putObject(variable,data);
@@ -642,11 +642,11 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         }
     }
 
-    /** apply data of one target PropertyBindInfo , this will auto add obj(the bind data) to BaseDataResolver,
+    /** apply data of one target PropertyBindInfo , this will auto add obj(the bind data) to IDataResolver,
      * so you might call clear after call this. */
     private static void applyDataInternal0(int id, Array<VariableInfo> mTmpVariables,
                                            PropertyBindInfo info, ViewHelper mViewHelper,
-                                           BaseDataResolver mDataResolver, boolean checkStrictly,
+                                           IDataResolver mDataResolver, boolean checkStrictly,
                                            SparseArray<ListenerImplContext> mListenerMap ,
                                            EventParseCaretaker caretaker) {
         if(!checkStrictly || containsAll(mTmpVariables,info.referVariables)){
@@ -743,7 +743,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
             return  null;
         final Array<PropertyBindInfo> infos = new Array<>(7);
         for( BindElement be : list ){
-            convert2BindInfos(context,be.getPropertyElements(),infos);
+            convert2BindInfos(context, be.getPropertyElements(), infos);
         }
         return infos;
     }
@@ -786,6 +786,11 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         final Array<ItemBindInfo> itemBindInfos = mAdapterParser.mItemBinds.get(id);
         if( itemBindInfos.size == 0){
             throw new DataBindException("no item to bind ,have you declared <item> element in bindAdapter element ? ");
+        }
+       // prepare : check if the adapter previous exist or not, if exist remove previous.
+        Object preAdapter = mAdapterParser.mAdapterMap.get(id);
+        if(preAdapter!=null) {
+            mDataResolver.removeAdapterManager(preAdapter.hashCode());
         }
 
         // 1, check all refer variable and mapping
@@ -837,7 +842,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
 
             final Array<VariableInfo> variables = this.mTmpVariables;
             if(variables.size >0) {
-                final BaseDataResolver mDataResolver = this.mDataResolver;
+                final IDataResolver mDataResolver = this.mDataResolver;
                 VariableInfo info1;
                 for (int i = 0, size = variables.size; i < size; i++) {
                     info1 = variables.get(i);
@@ -901,7 +906,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         protected void bindDataImpl(Context context, int position, ViewHelper helper,
                                     int itemLayoutId, T item, ItemBindInfo bindInfo) {
             final SparseArray<ListenerImplContext> mListenerMap = DataBindParser.this.mListenerMap;
-            final BaseDataResolver mDataResolver = DataBindParser.this.mDataResolver;
+            final IDataResolver mDataResolver = DataBindParser.this.mDataResolver;
             final EventParseCaretaker mEventCareTaker = DataBindParser.this.mEventCareTaker;
 
             //put object
@@ -963,7 +968,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         protected void bindDataImpl(Context context, int position, ViewHelper helper,
                                     int itemLayoutId, T item, ItemBindInfo bindInfo) {
             final SparseArray<ListenerImplContext> mListenerMap = DataBindParser.this.mListenerMap;
-            final BaseDataResolver mDataResolver = DataBindParser.this.mDataResolver;
+            final IDataResolver mDataResolver = DataBindParser.this.mDataResolver;
             final EventParseCaretaker mEventCareTaker = DataBindParser.this.mEventCareTaker;
 
             //put object

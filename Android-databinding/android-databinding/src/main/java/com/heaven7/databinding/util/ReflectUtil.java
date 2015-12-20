@@ -41,7 +41,7 @@ public class ReflectUtil {
                     return ms.get(0);
                default:
                    throw new NoSuchMethodException("You should not have multi methods with the same name of " +
-                           methodName + "in class " + clazz.getName() + "( that means don't burden) method !");
+                           methodName + "in class " + clazz.getName() + "( that means don't burden method )!");
            }
         }
     }

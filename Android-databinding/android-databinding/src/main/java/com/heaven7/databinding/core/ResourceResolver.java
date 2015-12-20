@@ -143,6 +143,8 @@ import com.heaven7.databinding.util.ResourceUtil;
         public ResourceUtil.ResourceType getResType() {
             return ResourceUtil.ResourceType.Drawable;
         }
+
+        @SuppressWarnings("deprecation")
         @Override
         public Object getResValue() {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){

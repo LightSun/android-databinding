@@ -10,6 +10,7 @@ public interface IAdapterBindTracker {
 
     AdapterManager<? extends ISelectable> getAdapterManager(int adapterHash);
     void putAdapterManager(int adapterHash,AdapterManager< ? extends ISelectable> am);
+    void removeAdapterManager(int adapterHash);
 
     void beginBindItem(int position, Object item);
 

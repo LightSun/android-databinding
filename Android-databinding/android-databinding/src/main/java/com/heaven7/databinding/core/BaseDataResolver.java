@@ -1,30 +1,15 @@
 package com.heaven7.databinding.core;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.util.SparseArray;
-import android.view.View;
-
-import com.heaven7.databinding.util.ReflectUtil;
-import com.heaven7.databinding.util.ViewUtil;
-import com.heaven7.xml.ObjectMap;
-
-import org.heaven7.core.adapter.AdapterManager;
-import org.heaven7.core.adapter.ISelectable;
-
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by heaven7 on 2015/8/25.
  */
-/*public*/ class BaseDataResolver implements IDataResolver{
+/*public*/ class BaseDataResolver extends DataResolver{
 
+ /*implements IDataResolver */
+
+  /*  // key-value is alias-classname
     private ObjectMap<String, String> mClassnameMap;
-    /** tmp object cache will be clear after bind by call {@link #clearObjects()} */
+    // tmp object cache will be clear after bind by call {@link #clearObjects()}
     private ObjectMap<String, Object> mObjectMap;
 
     private ObjectMap<String, List<Method>> mMethodsMap; //key = clazz+mMethod name
@@ -73,13 +58,14 @@ import java.util.List;
     public void putClassname(String alias,String classname){
         mClassnameMap.put(alias, classname);
     }
-    /**the bean and event handler often  be called in this */
+    /*//*the bean and event handler often  be called in this
     public void putObject(String variable,Object obj){
         mObjectMap.put(variable, obj);
     }
     public void removeObject(String variable){
         mObjectMap.remove(variable);
     }
+
     public void clearObjects(){
         mObjectMap.clear();
     }
@@ -190,24 +176,24 @@ import java.util.List;
     public List<Method> getMethod(Class<?> clazz, String methodname) {
         methodname = methodname.trim();
         final boolean enableReflectCache = isEnableReflectCache();
-        String key = null;
+        String key = generateKey(clazz, methodname);
         List<Method> list;
 
         if(enableReflectCache) {
-            key = generateKey(clazz, methodname);
             list = mMethodsMap.get(key);
             if (list != null)
                 return list;
         }
 
-        list = ReflectUtil.getMethods(clazz,methodname);
+        list = ReflectUtil.getMethods(clazz, methodname);
         if(enableReflectCache)
               mMethodsMap.put(key , list);
         return list;
     }
 
-    private static String  generateKey(Class<?> clazz, String methodname){
-        return clazz.getName() + "_"+methodname;
+    //@param name filed name or method name
+    private static String generateKey(Class<?> clazz, String name){
+        return clazz.getName() + "_"+ name;
     }
 
     @Override
@@ -264,5 +250,5 @@ import java.util.List;
     @Override
     public int getCurrentPosition(){
         return mPosition;
-    }
+    }*/
 }

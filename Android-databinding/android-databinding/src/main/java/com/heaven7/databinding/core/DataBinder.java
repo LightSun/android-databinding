@@ -46,8 +46,7 @@ public final class DataBinder implements IDataBinder{
      * */
     public DataBinder(View root,int bindsRawResId,boolean cacheXml){
         this.mBindRawResId = bindsRawResId;
-        BaseDataResolver bdr = new BaseDataResolver();
-        this.mDataBindParser = new DataBindParser(root, bdr);
+        this.mDataBindParser = new DataBindParser(root, new DataResolver());
         parseXml(root.getContext(), bindsRawResId, cacheXml);
         // property change listener ( attach and detach) notifyDataChange(user)
     }

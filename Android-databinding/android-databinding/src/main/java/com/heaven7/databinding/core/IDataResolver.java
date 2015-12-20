@@ -14,6 +14,9 @@ public interface IDataResolver extends IVariableResolver,IAdapterBindTracker,IRe
 	/** field can be private */
     Field getField(Class<?> clazz, String fieldName) throws DataBindException;
 
+    /** put alias-classname */
+    void putClassname(String alias, String classname);
+
     /**@param variable  may be static classname */
     String getClassname(String variable) throws DataBindException;
 
@@ -22,9 +25,16 @@ public interface IDataResolver extends IVariableResolver,IAdapterBindTracker,IRe
 
    // IDataBinder getDataBinder();
 
+    void putObject(String variable, Object obj);
+    void removeObject(String variable);
+    void clearObjects();
+
+    void addEventHandlerVariable(String variable);
+
     /** set the evaluate callback , this is used for onClick or etc.*/
     void setEventEvaluateCallback(IEventEvaluateCallback callback);
 
+    /** get the evaluate callback , this is used for onClick or etc.*/
     IEventEvaluateCallback getEventEvaluateCallback();
 
     /**
