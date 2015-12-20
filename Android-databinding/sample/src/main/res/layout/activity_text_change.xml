@@ -8,8 +8,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:lines="3"
         android:padding="10dp"
         android:background="@null"
+        />
+
+    <Button
+        android:id="@+id/bt_toogle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/toogle_focus"
         />
 
 </LinearLayout>

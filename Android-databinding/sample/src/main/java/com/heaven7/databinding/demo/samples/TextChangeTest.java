@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
 
+import com.heaven7.databinding.anno.DatabindingClass;
+import com.heaven7.databinding.anno.DatabindingMethod;
 import com.heaven7.databinding.core.IDataBinder;
 import com.heaven7.databinding.demo.R;
 import com.heaven7.databinding.demo.TestEventContext;
+import com.heaven7.databinding.util.ViewUtil;
 
 import org.heaven7.core.util.Logger;
 import org.heaven7.core.util.Toaster;
@@ -27,7 +30,10 @@ public class TextChangeTest extends BaseActivity {
 
     @Override
     protected void doBind() {
-        mDataBinder.bind(R.id.et, false,new TextChangeListenerImpl(mDataBinder,getToaster()));
+        final FocusHandler focusHandler = new FocusHandler(mDataBinder, getToaster());
+        mDataBinder.bind(R.id.bt_toogle, false, focusHandler);
+        mDataBinder.bind(R.id.et, false, new TextChangeListenerImpl(mDataBinder,getToaster()),
+                focusHandler);
     }
 
     @Override
@@ -53,6 +59,26 @@ public class TextChangeTest extends BaseActivity {
         public void afterTextChanged(View v, Editable s) {
             Logger.w(TAG, "afterTextChanged", "-------------------");
         }
+    }
+    @DatabindingClass
+    public static class FocusHandler extends TestEventContext{
 
+        public FocusHandler(IDataBinder binder, Toaster toaster) {
+            super(binder, toaster);
+        }
+
+        @DatabindingMethod
+        public void onFoucusChanged(View v, boolean hasFocus){
+            getToaster().show("onFoucusChanged: hasFocus = " + hasFocus);
+        }
+
+        @DatabindingMethod
+        public void onClickChanageFocus(View v){
+            if(v.hasFocus()){
+                ViewUtil.loseFocus(v);
+            }else {
+                ViewUtil.obtainFocus(v);
+            }
+        }
     }
 }
