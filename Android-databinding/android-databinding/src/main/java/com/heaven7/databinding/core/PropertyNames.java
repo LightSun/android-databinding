@@ -12,6 +12,7 @@ public interface PropertyNames {
     String TEXT_CHANGE_BEFORE      =    "textChange_before";
     String TEXT_CHANGE             =    "textChange";
     String TEXT_CHANGE_AFTER       =    "textChange_after";
+    String ON_FOCUS_CHANGE         =    "onFocusChange";
 
    // String ON_TOUCH                =    "onTouch";
 
