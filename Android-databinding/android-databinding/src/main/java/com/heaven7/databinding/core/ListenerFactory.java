@@ -25,7 +25,6 @@ public final class ListenerFactory {
         registEventListener(PropertyNames.TEXT_CHANGE_AFTER  , TextWatcherImpl.AfterTextChangeImpl.class);
         registEventListener(PropertyNames.TEXT_CHANGE_BEFORE, TextWatcherImpl.BeforeTextChangeImpl.class);
         registEventListener(PropertyNames.ON_FOCUS_CHANGE, OnFocusChangeListenerImpl.class);
-
     }
 
     /** the class clazz must have empty constructor

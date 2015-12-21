@@ -75,39 +75,46 @@ public final class DataBinder implements IDataBinder{
             try {
                 in.close();
             } catch (IOException e) {
+                //ignore
             }
         }
     }
 
+    @Override
     public void onDestroy(){
         mCacheXml = null;
         mDataBindParser.reset();
     }
 
     @Override
-    public void reset(){
+    public IDataBinder reset(){
         mDataBindParser.reset();
         parseXml(mDataBindParser.getContext(),mBindRawResId,false);
         mCacheXml = null;
+        return this;
     }
 
     @Override
-    public void bind(int id, String propertyName, boolean cacheData, Object... datas){
-        mDataBindParser.applyData(id, 0, propertyName, true,cacheData, datas);
+    public IDataBinder bind(int id, String propertyName, boolean cacheData, Object... datas){
+        mDataBindParser.applyData(id, 0, propertyName, true, cacheData, datas);
+        return this;
     }
 
     @Override
-    public void bind(int id , boolean cacheData, Object... datas){
-        mDataBindParser.applyData(id, 0, true,cacheData, datas);
+    public IDataBinder bind(int id , boolean cacheData, Object... datas){
+        mDataBindParser.applyData(id, 0, true, cacheData, datas);
+        return this;
     }
 
     @Override
-    public void bind(Object data, int... ids){
+    public IDataBinder bind(Object data, int... ids){
         mDataBindParser.applyData(data, ids);
+        return this;
     }
     @Override
-    public void bind(String variable, Object data, int... ids){
+    public IDataBinder bind(String variable, Object data, int... ids){
         mDataBindParser.applyData(variable,data, ids);
+        return this;
     }
 
     @Override
@@ -116,14 +123,33 @@ public final class DataBinder implements IDataBinder{
     }
 
     @Override
+    public void notifyDataSetChanged(int... viewIds) {
+        for(int id : viewIds){
+            notifyDataSetChanged(id);
+        }
+    }
+
+    @Override
+    @Deprecated
     public void notifyDataSetChanged(int viewId, String propertyName){
+        mDataBindParser.notifyDataSetChangedByTargetProperty(viewId, propertyName);
+    }
+
+    @Override
+    public void notifyDataSetChanged(String propertyName, int viewId) {
         mDataBindParser.notifyDataSetChangedByTargetProperty(viewId,propertyName);
+    }
+
+    @Override
+    public void notifyDataSetChanged(String propertyName, int... ids) {
+        for(int id : ids){
+            notifyDataSetChanged( propertyName,id);
+        }
     }
 
     @Override
     public <T extends ISelectable> AdapterManager<T> bindAdapter(int id, List<T> data,Object...extras) {
         return  mDataBindParser.bindAdapter(id,data,extras);
     }
-
 
 }

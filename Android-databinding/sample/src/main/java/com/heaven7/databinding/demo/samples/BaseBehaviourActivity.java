@@ -45,13 +45,12 @@ public class BaseBehaviourActivity extends AppCompatActivity {
         v.setOnClickListener(mOnclickChangeDataListener);
         v.setOnLongClickListener(mOnLongClickListener);
 
-        doBind();
+        mDataBinder = new DataBinder(this, R.raw.db_main);
+        doBind2();
     }
 
+    /**  old call */
     private void doBind() {
-        //init DataBinder
-        mDataBinder = new DataBinder(this, R.raw.db_main);
-
         //bind a User and cache it for latter call notify.
         mDataBinder.bind(R.id.bt, true, mUser = new User("heaven7", false));
 
@@ -60,6 +59,12 @@ public class BaseBehaviourActivity extends AppCompatActivity {
 
         //bind a data to multi views. but not cache
         mDataBinder.bind(new User("joker", true,"xxx_joker"));
+    }
+
+    private void doBind2() {
+        mDataBinder.bind(R.id.bt, true, mUser = new User("heaven7", false))
+                .bind(R.id.bt0, false, mUser,new MainEventHandler(mDataBinder))
+                .bind(new User("joker", true,"xxx_joker"));
     }
 
     @Override

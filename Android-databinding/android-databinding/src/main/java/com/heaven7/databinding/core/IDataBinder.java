@@ -12,23 +12,26 @@ import java.util.List;
 public interface IDataBinder{
 
     int TYPE_BEAN      = 1 ;
-    int TYPE_BEANS     = 2 ;
-    int TYPE_CALLBACK  = 3 ;
+
+    /**
+     * called when you want to destroy this data binder.
+     */
+    void onDestroy();
 
     /**
      * reset databinder
      */
-    void reset();
+    IDataBinder reset();
 
     /**
      * bind the data to target view of id,but only bind target propertyName
      * @param id  the view id
-     * @param propertyName the property name of view
+     * @param propertyName the property name of view, eg: {@link PropertyNames#TEXT}.
      * @param cacheData  true to cache it for later call {@link #notifyDataSetChanged(int)} or {@link #notifyDataSetChanged(int, String)}
      * false otherwise.
      * @param datas  the data to bind
      */
-    void bind(int id, String propertyName, boolean cacheData, Object... datas);
+    IDataBinder bind(int id, String propertyName, boolean cacheData, Object... datas);
 
     /**
      * bind the data to target view of id
@@ -37,7 +40,7 @@ public interface IDataBinder{
      *     {@link #notifyDataSetChanged(int)} or {@link #notifyDataSetChanged(int, String)} false otherwise.
      * @param datas  the data to bind
      */
-    void bind(int id, boolean cacheData, Object... datas);
+    IDataBinder bind(int id, boolean cacheData, Object... datas);
 
     /**
      * bind a data to multi views , this data will not cache. so by call this later can't call
@@ -55,7 +58,7 @@ public interface IDataBinder{
      * @param data  the data to bind
      * @param ids the view's id
      */
-    void bind(Object data, int... ids);
+    IDataBinder bind(Object data, int... ids);
 
     /**
      * bind a data to multi views , this data will not cache. so by call this later can't call
@@ -67,27 +70,60 @@ public interface IDataBinder{
      &lt;property id ="bt2" name="text" &gt;user.nickname &lt;/property&gt;
      &lt;/bind>
      *     </pre></li>
+     *     and call like this: <br><pre>
+     *                mDataBinder.bind("user",new User("heaven7","xxx"),R.id.xxx,R.id.xxx2);
+     *     </pre>
      * @param data  the data to bind
      * @param ids the view's id
      */
-    void bind(String variable, Object data, int... ids);
+    IDataBinder bind(String variable, Object data, int... ids);
 
     /**
      * notify the data changed, but previous you  must call
      * {@link #bind(int, boolean, Object...)} or {@link #bind(int, String, boolean, Object...)} and cache data.
+     * <br><li>note: this can't used to notify adapter data changed , or else have no effect.</li>
      * @param viewId  the view id
      */
     void notifyDataSetChanged(int viewId);
+
     /**
      * notify the data changed, but previous you  must call
      * {@link #bind(int, boolean, Object...)} or {@link #bind(int, String, boolean, Object...)} and cache data.
-     * @param viewId  the view id
-     * @param propertyName must be one of {@link PropertyNames}, eg: {@link PropertyNames#TEXT}
+     * <br><li>note: this can't used to notify adapter data changed , or else have no effect.</li>
+     * @param viewIds  the all view's id
      */
+    void notifyDataSetChanged(int...viewIds);
+    /**
+     * <li>use {@link #notifyDataSetChanged(String, int)} instead !</li>
+     * notify the data changed, but previous you  must call
+     * {@link #bind(int, boolean, Object...)} or {@link #bind(int, String, boolean, Object...)}
+     * and cache data is true.
+     * <br><li>note: this can't used to notify adapter data changed , or else have no effect.</li>
+     * @param viewId  the view id which view will be notify .
+     * @param propertyName often is one of {@link PropertyNames}, eg: {@link PropertyNames#TEXT}
+     */
+    @Deprecated
     void notifyDataSetChanged(int viewId, String propertyName);
+    /**
+     * notify the data changed, but previous you  must call
+     * {@link #bind(int, boolean, Object...)} or {@link #bind(int, String, boolean, Object...)} and cache data.
+     * <br><li>note: this can't used to notify adapter data changed , or else have no effect.</li>
+     * @param viewId  the view id which view will be notify .
+     * @param propertyName often is one of {@link PropertyNames}, eg: {@link PropertyNames#TEXT}
+     */
+    void notifyDataSetChanged(String propertyName,int viewId);
 
     /**
-     * bind adapter and return the AdapterManager
+     * notify the data changed, but previous you  must call
+     * {@link #bind(int, boolean, Object...)} or {@link #bind(int, String, boolean, Object...)} and cache data.
+     * <br><li>note: this can't used to notify adapter data changed , or else have no effect.</li>
+     * @param ids the all views id which view will be notify.
+     * @param propertyName often is  one of {@link PropertyNames}, eg: {@link PropertyNames#TEXT}
+     */
+    void notifyDataSetChanged(String propertyName, int ...ids);
+
+    /**
+     * bind adapter and return the AdapterManager ( can manage adapter) .
      * @param adapterViewId  the id of adapter view ,eg: ListView or RecyclerView
      * @param data  the list data to bind
      * @param extras the extras objects.often is the relative listener to bind

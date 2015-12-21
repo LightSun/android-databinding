@@ -4,7 +4,7 @@ package com.heaven7.databinding.core;
 import android.content.Context;
 import android.view.View;
 
-public interface IVariableResolver {
+/*public*/ interface IVariableResolver {
 
     /**
      * Resolves the specified variable. Returns null if the variable is not

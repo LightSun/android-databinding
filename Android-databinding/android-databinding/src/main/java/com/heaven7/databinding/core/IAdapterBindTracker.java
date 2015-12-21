@@ -6,7 +6,7 @@ import org.heaven7.core.adapter.ISelectable;
 /**
  * Created by heaven7 on 2015/11/29.
  */
-public interface IAdapterBindTracker {
+/*public*/ interface IAdapterBindTracker {
 
     AdapterManager<? extends ISelectable> getAdapterManager(int adapterHash);
     void putAdapterManager(int adapterHash,AdapterManager< ? extends ISelectable> am);
