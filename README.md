@@ -99,6 +99,9 @@ dependencies {
 
 ## Samples
 
+   <img src="/databinding_1.gif" alt="Demo Screen Capture" width="300px" />
+   <img src="/databinding_2.gif" alt="Demo Screen Capture" width="300px" />
+
 base BaseBehaviour
 
 ``` java
