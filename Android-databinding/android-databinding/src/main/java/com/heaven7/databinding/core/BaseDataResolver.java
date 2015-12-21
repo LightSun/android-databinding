@@ -3,7 +3,7 @@ package com.heaven7.databinding.core;
 /**
  * Created by heaven7 on 2015/8/25.
  */
-/*public*/ class BaseDataResolver extends DataResolver{
+/*public*/ class BaseDataResolver /*extends DataResolver*/{
 
  /*implements IDataResolver */
 
