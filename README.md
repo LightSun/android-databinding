@@ -92,7 +92,7 @@ i like technology. especially the open-source technology.And previous i didn't c
  gradle config:
 ``` java
 dependencies {
-    compile 'com.heaven7.databinding:android-databinding:1.0.2'
+    compile 'com.heaven7.databinding:android-databinding:1.0.3'
 }
 
 ``` 
