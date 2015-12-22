@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.heaven7.databinding.core.DataBinder;
+import com.heaven7.databinding.core.IDataBinder;
 import com.heaven7.databinding.core.PropertyNames;
 import com.heaven7.databinding.demo.R;
 import com.heaven7.databinding.demo.bean.User;
@@ -16,7 +17,7 @@ import com.heaven7.databinding.demo.util.Util;
  */
 public class BaseBehaviourActivity extends AppCompatActivity {
 
-    private DataBinder mDataBinder;
+    private IDataBinder mDataBinder;
 
     User mUser;
 
@@ -45,12 +46,12 @@ public class BaseBehaviourActivity extends AppCompatActivity {
         v.setOnClickListener(mOnclickChangeDataListener);
         v.setOnLongClickListener(mOnLongClickListener);
 
-        mDataBinder = new DataBinder(this, R.raw.db_main);
         doBind2();
     }
 
     /**  old call */
     private void doBind() {
+        mDataBinder = new DataBinder(this, R.raw.db_main);
         //bind a User and cache it for latter call notify.
         mDataBinder.bind(R.id.bt, true, mUser = new User("heaven7", false));
 
@@ -62,7 +63,8 @@ public class BaseBehaviourActivity extends AppCompatActivity {
     }
 
     private void doBind2() {
-        mDataBinder.bind(R.id.bt, true, mUser = new User("heaven7", false))
+        (mDataBinder = DataBinder.getDataBinder(this,R.raw.db_main,false))
+                .bind(R.id.bt, true, mUser = new User("heaven7", false))
                 .bind(R.id.bt0, false, mUser,new MainEventHandler(mDataBinder))
                 .bind(new User("joker", true,"xxx_joker"));
     }
