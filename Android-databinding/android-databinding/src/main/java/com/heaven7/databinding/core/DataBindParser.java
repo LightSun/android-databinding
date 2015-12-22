@@ -90,8 +90,8 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
     private HashSet<String> mTmpVarStrs;
     //================== end for tmp use , just avoid reallocate memory ============//
 
-    public DataBindParser(@NonNull View root,IDataResolver resolver) {
-        mViewHelper = new ViewHelper(root);
+    public DataBindParser(ViewHelper vp,IDataResolver resolver){
+        this.mViewHelper = vp ;
         mDataResolver = resolver ;
         resolver.setEventEvaluateCallback(this);
 
@@ -105,6 +105,9 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
 
         mListenerMap = new SparseArray<>();
         mEventCareTaker = new EventParseCaretaker();
+    }
+    public DataBindParser(@NonNull View root,IDataResolver resolver) {
+        this(new ViewHelper(root),resolver);
     }
 
     /** reset the bind data cache */
@@ -586,42 +589,6 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
             mBindMap.put(be.getReferVariable().hashCode(), infos);
 
             convert2BindInfos(getContext(),propEles,infos);
-
-           /* PropertyBindInfo info ;
-            ImagePropertyBindInfo ipb;
-            ImagePropertyElement ipe;
-            PropertyElement e;
-
-            for(int i =0,size = propEles.size() ; i <size ;i++){
-                e = propEles.get(i);
-                info = new PropertyBindInfo();
-                info.viewId = ResourceUtil.getResId(getContext(), e.getId(), ResourceUtil.ResourceType.Id);
-
-                if (e instanceof ImagePropertyElement) {
-                    ipe = (ImagePropertyElement) e;
-                    ipb = new ImagePropertyBindInfo();
-                    try{
-                        ipb.referVariables = DataBindUtil.convertRefer(ipe.getReferVariable());
-                        ipb.url = ExpressionParser.parse(ipe.getUrlText());
-                        ipb.defaultExpre = ExpressionParser.parse(ipe.getDefaultText());
-                        ipb.errorExpre = ExpressionParser.parse(ipe.getErrorResIdText());
-
-                        ipb.type = ipe.getType().hashCode();
-                        ipb.roundSizeExpre = ExpressionParser.parse(ipe.getRoundSizeText());
-                        ipb.borderColorExpre = ExpressionParser.parse(ipe.getBorderColorText());
-                        ipb.borderWidthExpre = ExpressionParser.parse(ipe.getBorderWidthText());
-                        info = ipb;
-                    }catch (ExpressionParseException e1){
-                        throw new DataBindException("while parse the <imageProperty> , the view id = " +
-                                info.viewId,e1);
-                    }
-                } else {
-                    info = new PropertyBindInfo();
-                    convert(info, e);
-                }
-
-                infos.add(info);
-            }*/
         }
     }
 

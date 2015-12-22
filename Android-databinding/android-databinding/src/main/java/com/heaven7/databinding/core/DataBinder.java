@@ -10,6 +10,7 @@ import com.heaven7.xml.XmlReader;
 
 import org.heaven7.core.adapter.AdapterManager;
 import org.heaven7.core.adapter.ISelectable;
+import org.heaven7.core.viewhelper.ViewHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,9 +47,48 @@ public final class DataBinder implements IDataBinder{
      * */
     public DataBinder(View root,int bindsRawResId,boolean cacheXml){
         this.mBindRawResId = bindsRawResId;
-        this.mDataBindParser = new DataBindParser(root, new DataResolver());
+        this.mDataBindParser = new DataBindParser(root, new BaseDataResolver());
         parseXml(root.getContext(), bindsRawResId, cacheXml);
         // property change listener ( attach and detach) notifyDataChange(user)
+    }
+    /**
+     * @param vp   the view helper
+     * @param bindsRawResId  the raw resource id of data bind.
+     * @param cacheXml to cache xml for reuse
+     */
+    DataBinder(ViewHelper vp ,int bindsRawResId,boolean cacheXml){
+        this.mBindRawResId = bindsRawResId;
+        this.mDataBindParser = new DataBindParser(vp, new BaseDataResolver());
+        parseXml(vp.getContext(), bindsRawResId, cacheXml);
+    }
+
+    /**
+     *  create an instance of IDataBinder.
+     * @param activity   the Activity
+     * @param bindsRawResId  the raw resource id of data bind.
+     * @param cacheXml to cache xml for reuse
+     */
+    public static IDataBinder getDataBinder(Activity activity,int bindsRawResId,boolean cacheXml){
+        return new DataBinder(activity, bindsRawResId, cacheXml);
+    }
+    /**
+     *  create an instance of IDataBinder.
+     * @param root   the root view of activity or fragment or others.
+     * @param bindsRawResId  the raw resource id of data bind.
+     * @param cacheXml to cache xml for reuse
+     */
+    public static IDataBinder getDataBinder(View root,int bindsRawResId,boolean cacheXml){
+        return new DataBinder(root, bindsRawResId, cacheXml);
+    }
+
+    /**
+     * create an instance of IDataBinder.
+     * @param vp   the view helper
+     * @param bindsRawResId  the raw resource id of data bind.
+     * @param cacheXml to cache xml for reuse
+     */
+    public static IDataBinder getDataBinder(ViewHelper vp ,int bindsRawResId,boolean cacheXml){
+        return new DataBinder(vp, bindsRawResId,cacheXml);
     }
 
     private void parseXml(Context context, int bindsRawResId,boolean cacheXml) {
