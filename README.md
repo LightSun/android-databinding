@@ -5,6 +5,25 @@ this is the databinding framework of android .help to binding data to the view. 
 at google-io-2015. android databindingnow can be used, it have some problem, even if this is not the reason. because i think the engineer of google's is one of the  best of the world. so it can be better and better i believe.  I absolutely can not be compared with them. but i don't like to writing databinding expression in android layout file(in javaweb I hate it too ). so I developed 
 this framework. 
 
+## new Feature
+ android studio plugin and the xml schema of config file which are used for android-databinding framework is now available  .
+ 
+## How to use plugin and xml schema ?
+
+- 1, click [here](https://github.com/LightSun/android-databinding-plugin/releases) to donwload the zip
+ 
+- 2 , Add the xml schema file (android_databinding.xsd )to android studio. 
+   and the URI is 'http://schemas.android.com/heaven7/android-databinding/1' (must).
+  <img src="/2.jpg" alt="add xsd file to as" width="1163px" height="711px"/>
+
+- 3, install the plugin 'android_databinding_plugin'. step:
+   in android studio click file-> setting->plugins -> install plugin from disk 
+    and select the file android_databinding_plugin.jar.
+
+- 4, at the res directory of android studio, right-click and select android-databinding then follow it.
+  and then you can enjoy the android-databinding framework.
+  <img src="/3.png" alt="use demo " width="1027px" height="768px"/> 
+
 ## Features
 - support for bind data and event handler by xml. but you must call bind method in java code.
 - support for notify data change.
