@@ -93,7 +93,7 @@ this framework.
 
 
 ## TODO
-   * optimize this framework , find bug and fix.
+   * optimize the plugin to use easier.
    
 ## issue
    * if you have a good suggestion  about this, please tell me. Thanks! 
