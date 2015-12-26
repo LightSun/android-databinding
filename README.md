@@ -93,21 +93,6 @@ this framework.
   and then you can enjoy the android-databinding framework.
   <img src="/3.png" alt="use demo " width="1027px" height="768px"/> 
 
-
-## TODO
-   * optimize the plugin to use easier.
-   
-## issue
-   * if you have a good suggestion  about this, please tell me. Thanks! 
-   * This is just a beginning, may have bugs ,  so if you have any question , please tell me . i will do my best to resolve it. Thanks !
-   
-## About me
-   * heaven7 
-   * email: donshine723@gmail.com or 978136772@qq.com   
-   
-## hope
-i like technology. especially the open-source technology.And previous i didn't contribute to it caused by i am a little lazy, but now i really want to do some for the open-source. So i hope to share and communicate with the all of you.
-
 ## how to use ?
 
  gradle config:
@@ -539,6 +524,20 @@ thanks !
 ## blog and pdf resource
 if you are a chinese developer or know chinese.  please click  [here](http://blog.csdn.net/pkjjun2012/article/details/50286621) to see more easier.
 [chinese pdf](http://download.csdn.net/detail/pkjjun2012/9352397)
+
+## TODO
+   * optimize the plugin to use easier.
+   
+## issue
+   * if you have a good suggestion  about this, please tell me. Thanks! 
+   * This is just a beginning, may have bugs ,  so if you have any question , please tell me . i will do my best to resolve it. Thanks !
+   
+## About me
+   * heaven7 
+   * email: donshine723@gmail.com or 978136772@qq.com   
+   
+## hope
+i like technology. especially the open-source technology.And previous i didn't contribute to it caused by i am a little lazy, but now i really want to do some for the open-source. So i hope to share and communicate with the all of you.
 
 
 ## License
