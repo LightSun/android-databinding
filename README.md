@@ -13,12 +13,12 @@ this framework.
 - 1, click [here](https://github.com/LightSun/android-databinding-plugin/releases) to donwload the zip
  
 - 2 , Add the xml schema file (android_databinding.xsd )to android studio. 
-   and the URI is 'http://schemas.android.com/heaven7/android-databinding/1' (must).
+   and the URI must be 'http://schemas.android.com/heaven7/android-databinding/1'.
   <img src="/2.jpg" alt="add xsd file to as" width="1163px" height="711px"/>
 
 - 3, install the plugin 'android_databinding_plugin'. step:
    in android studio click file-> setting->plugins -> install plugin from disk 
-    and select the file android_databinding_plugin.jar.
+    and select the file android_databinding_plugin.jar which can be found in the downloaded zip file.
 
 - 4, at the res directory of android studio, right-click and select android-databinding then follow it.
   and then you can enjoy the android-databinding framework.
