@@ -10,7 +10,7 @@ this framework.
  
 ## How to use plugin and xml schema ?
 
-- 1, click [here](https://github.com/LightSun/android-databinding-plugin/releases) to donwload the zip
+- 1, click [here](https://github.com/LightSun/android-databinding-plugin/releases) to donwload the zip. It contains a xml       schema file and a jar of plugin.
  
 - 2 , Add the xml schema file (android_databinding.xsd )to android studio. 
    and the URI must be 'http://schemas.android.com/heaven7/android-databinding/1'. And the xsd file can be found in the          downloaded zip .
