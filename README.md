@@ -1,30 +1,15 @@
 # android-databinding
-this is the databinding framework of android .help to binding data to the view. this is a little similar to google's databinding .
+this framework is now can be use in your app. By test and test,by find bug and fix i think it is now can work with well. it helps you fast bind data and event. Plugin and xml schema file for this framework can be used now. 
 
 ## Why I developed this ?
 at google-io-2015. android databindingnow can be used, it have some problem, even if this is not the reason. because i think the engineer of google's is one of the  best of the world. so it can be better and better i believe.  I absolutely can not be compared with them. but i don't like to writing databinding expression in android layout file(in javaweb I hate it too ). so I developed 
 this framework. 
 
-## new Feature- -> plugin and xml schema can be used now
+## support plugin and xml schema
  android studio plugin and the xml schema of config file which are used for android-databinding framework is now available  .
- 
-## How to use plugin and xml schema ?
-
-- 1, click [here](https://github.com/LightSun/android-databinding-plugin/releases) to donwload the zip. It contains a xml       schema file and a jar of android-databinding plugin.
- 
-- 2 , Add the xml schema file (android_databinding.xsd )to android studio. 
-   and the URI must be 'http://schemas.android.com/heaven7/android-databinding/1'. And the xsd file can be found in the          downloaded zip .
-  <img src="/2.jpg" alt="add xsd file to as" width="1163px" height="711px"/>
-
-- 3, install the plugin 'android_databinding_plugin'. step:
-   in android studio click file-> setting->plugins -> install plugin from disk 
-    and select the file android_databinding_plugin.jar which can be found in the downloaded zip file.
-
-- 4, at the res directory of android studio, right-click and select android-databinding then follow it.
-  and then you can enjoy the android-databinding framework.
-  <img src="/3.png" alt="use demo " width="1027px" height="768px"/> 
 
 ## Features
+- supported by plugin and xml schema file. 
 - support for bind data and event handler by xml. but you must call bind method in java code.
 - support for notify data change.
 - Support for custom attr and listener
@@ -90,6 +75,23 @@ this framework.
   ```
     the more to see in sample/RoundImageBindTest Activity.
 - blog and pdf is at the bottom of this page.
+
+
+## How to use plugin and xml schema ?
+
+- 1, click [here](https://github.com/LightSun/android-databinding-plugin/releases) to donwload the zip. It contains a xml       schema file and a jar of android-databinding plugin.
+ 
+- 2 , Add the xml schema file (android_databinding.xsd )to android studio. 
+   and the URI must be 'http://schemas.android.com/heaven7/android-databinding/1'. And the xsd file can be found in the          downloaded zip .
+  <img src="/2.jpg" alt="add xsd file to as" width="1163px" height="711px"/>
+
+- 3, install the plugin 'android_databinding_plugin'. step:
+   in android studio click file-> setting->plugins -> install plugin from disk 
+    and select the file android_databinding_plugin.jar which can be found in the downloaded zip file.
+
+- 4, at the res directory of android studio, right-click and select android-databinding then follow it.
+  and then you can enjoy the android-databinding framework.
+  <img src="/3.png" alt="use demo " width="1027px" height="768px"/> 
 
 
 ## TODO
