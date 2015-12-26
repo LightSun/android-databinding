@@ -5,7 +5,7 @@ this is the databinding framework of android .help to binding data to the view. 
 at google-io-2015. android databindingnow can be used, it have some problem, even if this is not the reason. because i think the engineer of google's is one of the  best of the world. so it can be better and better i believe.  I absolutely can not be compared with them. but i don't like to writing databinding expression in android layout file(in javaweb I hate it too ). so I developed 
 this framework. 
 
-## new Feature
+## new Feature- -> plugin and xml schema can be used now
  android studio plugin and the xml schema of config file which are used for android-databinding framework is now available  .
  
 ## How to use plugin and xml schema ?
