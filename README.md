@@ -93,6 +93,8 @@ this framework.
 - 4, at the res directory of android studio, right-click and select android-databinding then follow it.
   and then you can enjoy the android-databinding framework.
   <img src="/3.png" alt="use demo " width="1027px" height="768px"/> 
+  <img src="/imgs/xsd_1.png" alt="use demo " width="884px" height="599px"/> 
+
 
 ## version log
   released [1.03](https://github.com/LightSun/android-databinding/releases)
