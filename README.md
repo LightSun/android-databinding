@@ -124,8 +124,7 @@ if you are a chinese developer or know chinese.  please click  [here](http://blo
    * optimize the plugin to use easier.
    
 ## issue
-   * if you have a good suggestion  about this, please tell me. Thanks! 
-   * This is just a beginning, may have bugs ,  so if you have any question , please tell me . i will do my best to resolve it. Thanks !
+   * this framework i will try my best to uphold , and  if you have a good suggestion  about this, please tell me. Thanks! 
    
 ## About me
    * heaven7 
