@@ -99,7 +99,7 @@ this framework.
 ## version log
   released [1.03](https://github.com/LightSun/android-databinding/releases)
 
-## how to use ?
+## Gradle
 
  gradle config:
 ``` java
@@ -109,7 +109,7 @@ dependencies {
 
 ``` 
 
-## Samples
+## Samples and Usage
 
  <img src="/databinding_1.gif" alt="Demo Screen Capture" width="300px" />
  <img src="/databinding_2.gif" alt="Demo Screen Capture" width="300px" />
