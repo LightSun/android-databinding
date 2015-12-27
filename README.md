@@ -110,8 +110,11 @@ dependencies {
 
    <img src="/databinding_1.gif" alt="Demo Screen Capture" width="300px" />
    <img src="/databinding_2.gif" alt="Demo Screen Capture" width="300px" />
+   
+   before build the sample project,you need you import the xml schema file of databind.
+   see [## How to use plugin and xml schema ?]
 
-base BaseBehaviour
+base BaseBehaviour.
 
 ``` java
 //1, write some of your code
