@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 
 import com.heaven7.databinding.core.DataBinder;
+import com.heaven7.databinding.core.IDataBinder;
 
 import org.heaven7.core.save_state.SaveStateHelper;
 import org.heaven7.core.util.Toaster;
@@ -16,7 +17,7 @@ import org.heaven7.core.util.Toaster;
 public abstract  class BaseActivity extends AppCompatActivity{
 
     private Toaster mToaster;
-    protected DataBinder mDataBinder;
+    protected IDataBinder mDataBinder;
     //protected VolleyUtil.HttpExecutor mHttpExecute;
     private SaveStateHelper mSaveStateHelper;
 
@@ -28,7 +29,7 @@ public abstract  class BaseActivity extends AppCompatActivity{
       //  mHttpExecute = new VolleyUtil.HttpExecutor();
         mSaveStateHelper = new SaveStateHelper(this);
         setContentView(getlayoutId());
-        mDataBinder = new DataBinder(this,getBindRawId());
+        mDataBinder = DataBinder.getDataBinder(this,getBindRawId(),false);
         onFinalInit(savedInstanceState);
         doBind();
     }
