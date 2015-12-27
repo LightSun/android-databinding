@@ -57,7 +57,7 @@ this framework.
 - Support multi expressions. eg: java calling expression (only nested ternary expression is not support), 
    android resource reference expression {@drawable/ic_default} or R.drawable.ic_default , dp and sp like "15dp",
    and color like "#ff0000" and so on.
-- <b>the image full config was supported  now (round/circle/borderWith/borderColor/placeHolder).<b>  
+- <b>the image full config was supported  now (round/circle/borderWith/borderColor/placeHolder).</b>  
 - here is the demo: 
   ``` java
    <bind id="eniv2">
