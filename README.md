@@ -14,6 +14,7 @@ this framework.
 - support for notify data change.
 - Support for custom attr and listener
 - support for bind adapter for any child of Adapter view  or RecyclerView
+  ( contains multi items and multi select mode of adapter )
 - suooprt for bind image 
 - The common support attrs: 
 
