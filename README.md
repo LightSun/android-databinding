@@ -93,6 +93,9 @@ this framework.
   and then you can enjoy the android-databinding framework.
   <img src="/3.png" alt="use demo " width="1027px" height="768px"/> 
 
+## version log
+  released [1.03](https://github.com/LightSun/android-databinding/releases)
+
 ## how to use ?
 
  gradle config:
@@ -139,11 +142,11 @@ public class MainEventHandler extends EventContext{
         <variable name="user"  classname="com.heaven7.databinding.demo.bean.User"  type="bean"/>
         <variable name="mainHanlder" classname="com.heaven7.databinding.demo.callback.MainEventHandler" type="callback"/>
        <!-- <variable name="userList" classname="com.example.User" type="beans"/>-->
-        <import classname="android.view.View" alias="View"/> <!-- this type of alias  can hide (but must uppercase) -->
+        <import classname="android.view.View" alias="View"/>
     </data>
 
     <bind id="bt">
-        <property name="text" referVariable="user" valueType="string">@{user.username}</property>
+        <property name="text" referVariable="user">@{user.username}</property>
         <property name="textColor" referVariable="user" >user.male ? {@color/red} : {@color/random}</property>
     </bind>
     <bind id="bt0">
