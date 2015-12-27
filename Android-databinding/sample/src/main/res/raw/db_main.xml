@@ -22,8 +22,5 @@
         <property id ="bt2" name="text" >@{user.username}</property>
         <property id ="bt3" name="text" >user.getNickname()</property>
     </bind>
-    <fgggg></fgggg>
-
-    <
 
 </DataBinding>
