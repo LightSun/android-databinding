@@ -1,4 +1,7 @@
-<DataBinding>
+<DataBinding
+    xmlns = "http://schemas.android.com/heaven7/android-databinding/1"
+    version="1.0"
+    >
     <data>
         <variable name="user"  classname="com.heaven7.databinding.demo.bean.User"  type="bean"/>
         <variable name="mainHanlder" classname="com.heaven7.databinding.demo.callback.MainEventHandler" type="callback"/>
@@ -6,7 +9,7 @@
     </data>
 
     <bind id="bt">
-        <property name="text" referVariable="user" valueType="string">@{user.username}</property>
+        <property name="text" referVariable="user" >@{user.username}</property>
         <property name="textColor" referVariable="user" >user.male ? {@color/red} : {@color/random}</property>
     </bind>
     <bind id="bt0">
@@ -19,10 +22,10 @@
         <property id ="bt3" name="text" >user.getNickname()</property>
         <!-- new -->
         <imageProperty id = "iv" type="round">  <!-- round / circle / oval -->
-            <url>@{user.link}</url>
             <roundSize>{@dimen/xxx}</roundSize>
-            <borderSize>{@dimen/xxx}</borderSize>
+            <borderWidth>{@dimen/xxx}</borderWidth>
             <borderColor>{@color/xxx}</borderColor>
+            <url>@{user.link}</url>
         </imageProperty>
     </bind>
 
@@ -66,7 +69,6 @@
                 <property name="onClick" referVariable="orderHandler">orderHandler.onClickName(user)</property>
             </bind>
         </item>
-
         <item layout="item_xxx2" tag="2"  >
             <bind >
                 <property id ="bt2" name="text" >@{user.username}</property>

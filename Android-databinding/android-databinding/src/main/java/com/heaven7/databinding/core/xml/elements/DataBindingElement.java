@@ -217,17 +217,6 @@ public class DataBindingElement extends AbsElement implements IElementParser {
                     checkEmpty(propId, XmlKeys.ID);
                     pe.setId(propId);
                 }
-               //refer import
-                String referImport = propEle.getAttribute(XmlKeys.REFER_IMPORT, null);
-                if( !TextUtils.isEmpty(referImport) ){
-                    pe.setReferImport(referImport.trim());
-                }
-                //value type
-                String valueType = propEle.getAttribute(XmlKeys.VALUE_TYPE, null);
-                if(!TextUtils.isEmpty(valueType)){
-                    // checkEmpty(valueType,XmlKeys.VALUE_TYPE);
-                    pe.setValueType(valueType);
-                }
 
                 String text = propEle.getText();//text can be null?
                 if(TextUtils.isEmpty(text)){

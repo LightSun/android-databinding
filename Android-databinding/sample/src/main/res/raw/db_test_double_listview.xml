@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<DataBinding>
+<DataBinding
+    xmlns = "http://schemas.android.com/heaven7/android-databinding/1"
+    version="1.0"
+    >
     <data>
         <variable name="imageInfo"  classname="com.heaven7.databinding.demo.bean.ImageInfo"  type="bean"/>
         <variable name="itemHandler" classname="com.heaven7.databinding.demo.samples.DoubleListViewTest$ItemHandler"
             type="callback"/>
     </data>
 
-    <bindAdapter id="lv1" referVariable="imageInfo">
+    <bindAdapter id="lv1" referVariable="imageInfo" selectMode="1">
         <item layout="item_image"  referVariable="itemHandler">
             <property name="onClick" >itemHandler.onItemClick1()</property>
             <bind id="tv">
@@ -17,7 +20,7 @@
         </item>
     </bindAdapter>
 
-    <bindAdapter id="lv2" referVariable="imageInfo">
+    <bindAdapter id="lv2" referVariable="imageInfo" selectMode="1">
         <item layout="item_image"  referVariable="itemHandler">
             <property name="onClick" >itemHandler.onItemClick2()</property>
             <bind id="tv">

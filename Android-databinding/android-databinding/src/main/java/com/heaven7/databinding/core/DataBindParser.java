@@ -601,7 +601,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         }
         outInfo.expression = inElement.getText().trim();
         outInfo.propertyName = inElement.getName();
-        outInfo.expressionValueType = inElement.getValueType();
+       // outInfo.expressionValueType = inElement.getValueType();
         try {
             outInfo.realExpr = ExpressionParser.parse(outInfo.expression);
         } catch (ExpressionParseException e) {
@@ -975,9 +975,6 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
     }
 
     /*public*/ static class PropertyBindInfo{
-
-        /** current not use */
-        public String expressionValueType;
 
         public String propertyName;
         public String [] referVariables;

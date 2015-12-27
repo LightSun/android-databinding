@@ -32,12 +32,6 @@ public class PropertyElement extends NameableElement {
     public void setReferImport(String refer_import){
         addAttribute(XmlKeys.REFER_IMPORT,refer_import);
     }
-    public String getValueType(){
-       return  getAttribute(XmlKeys.VALUE_TYPE);
-    }
-    public void setValueType(String type){
-        addAttribute(XmlKeys.VALUE_TYPE,type);
-    }
     public String getReferImport(){
         return  getAttribute(XmlKeys.REFER_IMPORT);
     }

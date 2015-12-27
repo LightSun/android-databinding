@@ -277,16 +277,6 @@ public class BindAdapterElement extends AbsElement implements IElementParser{
             //property element use the result of merged
             pe.setReferVariable(refVar);
 
-            //refer import
-            String referImport = propEle.getAttribute(XmlKeys.REFER_IMPORT, null);
-            if( !TextUtils.isEmpty(referImport) ){
-                pe.setReferImport(referImport.trim());
-            }
-            //value type
-            String valueType = propEle.getAttribute(XmlKeys.VALUE_TYPE, null);
-            if(!TextUtils.isEmpty(valueType)){
-                pe.setValueType(valueType);
-            }
             //text
             String text = propEle.getText();
             if(TextUtils.isEmpty(text)){
