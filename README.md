@@ -141,7 +141,6 @@ public class MainEventHandler extends EventContext{
     <data>
         <variable name="user"  classname="com.heaven7.databinding.demo.bean.User"  type="bean"/>
         <variable name="mainHanlder" classname="com.heaven7.databinding.demo.callback.MainEventHandler" type="callback"/>
-       <!-- <variable name="userList" classname="com.example.User" type="beans"/>-->
         <import classname="android.view.View" alias="View"/>
     </data>
 
