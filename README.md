@@ -113,8 +113,9 @@ dependencies {
 
  <img src="/databinding_1.gif" alt="Demo Screen Capture" width="300px" />
  <img src="/databinding_2.gif" alt="Demo Screen Capture" width="300px" />
+ <img src="/imgs/databinding_3.gif" alt="Demo Screen Capture" width="300px" />
    
-The explanation of sample is moved to child directory. click to see it. [sample](https://github.com/LightSun/android-databinding/blob/master/readmes/sample.md)
+The explanation of usage is moved to child directory. click to see it. [Usage Detail](https://github.com/LightSun/android-databinding/blob/master/readmes/sample.md)
  
 ## blog and pdf resource
 if you are a chinese developer or know chinese.  please click  [here](http://blog.csdn.net/pkjjun2012/article/details/50286621) to see more easier.
