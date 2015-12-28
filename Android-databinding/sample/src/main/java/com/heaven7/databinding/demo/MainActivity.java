@@ -14,6 +14,7 @@ import com.heaven7.databinding.demo.samples.ListViewBindAdapterTest;
 import com.heaven7.databinding.demo.samples.MultiItemAdapterTest;
 import com.heaven7.databinding.demo.samples.RecycleViewBindAdapterTest;
 import com.heaven7.databinding.demo.samples.RoundImageBindTest;
+import com.heaven7.databinding.demo.samples.SelectModeTest;
 import com.heaven7.databinding.demo.samples.TextChangeTest;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class MainActivity extends ListActivity {
         array.add(new ActivityInfo(MultiItemAdapterTest.class, getString(R.string.ac_text_multi_item_listview)));
         array.add(new ActivityInfo(RoundImageBindTest.class, getString(R.string.ac_bind_round_image)));
         array.add(new ActivityInfo(DoubleListViewTest.class, getString(R.string.ac_double_listview)));
+        array.add(new ActivityInfo(SelectModeTest.class, getString(R.string.ac_select_mode)));
         return array;
     }
 

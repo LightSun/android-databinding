@@ -7,4 +7,5 @@
     <string name="ac_text_multi_item_listview">此demo展示如何绑定多个Item在adapter中</string>
     <string name="ac_bind_round_image">此demo展示如何绑定圆角图片</string>
     <string name="ac_double_listview">此demo展示如何绑定2个或多个list view</string>
+    <string name="ac_select_mode">展示如何使用选择模式selectMode，通过SelectHelper去控制所想要的</string>
 </resources>

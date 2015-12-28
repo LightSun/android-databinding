@@ -43,6 +43,9 @@
         <activity android:name=".samples.DoubleListViewTest"
             android:label="DoubleListViewTest"
             />
+        <activity android:name=".samples.SelectModeTest"
+            android:label="SelectModeTest"
+            />
     </application>
 
 </manifest>
