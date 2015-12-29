@@ -13,8 +13,7 @@ public interface PropertyNames {
     String TEXT_CHANGE             =    "textChange";
     String TEXT_CHANGE_AFTER       =    "textChange_after";
     String ON_FOCUS_CHANGE         =    "onFocusChange";
-
-   // String ON_TOUCH                =    "onTouch";
+    String ON_TOUCH                =    "onTouch";
 
     //common name
     String BACKGROUND              =    "background";       //drawable /color / res id

@@ -6,6 +6,7 @@ import com.heaven7.databinding.core.listener.ListenerImplContext;
 import com.heaven7.databinding.core.listener.OnClickListenerImpl;
 import com.heaven7.databinding.core.listener.OnFocusChangeListenerImpl;
 import com.heaven7.databinding.core.listener.OnLongClickListenerImpl;
+import com.heaven7.databinding.core.listener.OnTouchListenerImpl;
 import com.heaven7.databinding.core.listener.TextWatcherImpl;
 
 /**
@@ -25,6 +26,7 @@ public final class ListenerFactory {
         registEventListener(PropertyNames.TEXT_CHANGE_AFTER  , TextWatcherImpl.AfterTextChangeImpl.class);
         registEventListener(PropertyNames.TEXT_CHANGE_BEFORE, TextWatcherImpl.BeforeTextChangeImpl.class);
         registEventListener(PropertyNames.ON_FOCUS_CHANGE, OnFocusChangeListenerImpl.class);
+        registEventListener(PropertyNames.ON_TOUCH, OnTouchListenerImpl.class);
     }
 
     /** the class clazz must have empty constructor

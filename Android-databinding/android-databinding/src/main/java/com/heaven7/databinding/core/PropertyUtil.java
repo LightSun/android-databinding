@@ -92,6 +92,9 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
         }else if(PropertyNames.ON_FOCUS_CHANGE.equals(propertyName)){
             v.setOnFocusChangeListener((View.OnFocusChangeListener) mListenerMap.get(
                     getEventKey(id, layoutId, propertyName)));
+        }else if(PropertyNames.ON_TOUCH.equals(propertyName)){
+            v.setOnTouchListener((View.OnTouchListener) mListenerMap.get(
+                    getEventKey(id, layoutId, propertyName)));
         }
         //apply image
         else if(PropertyNames.IMGAE_BITMAP.equals(propertyName)){
