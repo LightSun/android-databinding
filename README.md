@@ -27,7 +27,7 @@ this framework.
     String TEXT_CHANGE_AFTER       =    "textChange_after";
     String ON_FOCUS_CHANGE         =    "onFocusChange";
 
-   // String ON_TOUCH                =    "onTouch";
+    String ON_TOUCH                =    "onTouch";
 
     //common name
     String BACKGROUND              =    "background";       //drawable /color / res id
@@ -97,7 +97,8 @@ this framework.
 
 
 ## version log
-  released [1.03](https://github.com/LightSun/android-databinding/releases)
+ - released [1.0.4](https://github.com/LightSun/android-databinding/tags)
+ - released [1.0.3](https://github.com/LightSun/android-databinding/tags)
 
 ## Gradle
 
