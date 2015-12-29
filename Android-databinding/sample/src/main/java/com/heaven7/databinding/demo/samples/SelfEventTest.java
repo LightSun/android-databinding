@@ -26,7 +26,7 @@ import java.util.List;
 public class SelfEventTest extends BaseActivity {
     @Override
     protected int getlayoutId() {
-        return R.layout.activity_listview;
+        return R.layout.activity_self_event;
     }
 
     @Override
@@ -47,11 +47,13 @@ public class SelfEventTest extends BaseActivity {
 
     @Override
     protected void doBind() {
+        final OnTouchHandler touchHandler = new OnTouchHandler(mDataBinder, getToaster());
         List<User> users = new ArrayList<>();
         for(int i=0 , size = 15; i<size ;i++){
             users.add(new User("name_" + i , false));
         }
-        mDataBinder.bindAdapter(R.id.lv, users,new OnTouchHandler(mDataBinder,getToaster()));
+        mDataBinder.bind(R.id.bt, false, touchHandler )
+                .bindAdapter(R.id.lv, users, touchHandler);
     }
 
     public static class OnTouchHandler extends TestEventContext{
@@ -69,6 +71,16 @@ public class SelfEventTest extends BaseActivity {
             Logger.i(TAG, "onTouchOccoured", " MotionEvent = " + event);
             switch (event.getAction()){
                 case MotionEvent.ACTION_DOWN:
+                    return true;
+
+            }
+            return false;
+        }
+
+        public boolean onTouchSimpleView(View v, MotionEvent event){
+            switch (event.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    getToaster().show("onTouchSimpleView ----> down event");
                     return true;
 
             }

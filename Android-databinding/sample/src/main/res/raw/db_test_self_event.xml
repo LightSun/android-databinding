@@ -7,6 +7,10 @@
         <import alias="View" classname="android.view.View"/>
     </data>
 
+    <bind id="bt">
+        <property name="onTouch" referVariable="touchHandler">touchHandler.onTouchSimpleView()</property>
+    </bind>
+
     <!-- 2 means multi select mode  , 1 means single mode -->
     <bindAdapter id="lv" referVariable="user" selectMode="2">
         <item layout="item_txt" referVariable="touchHandler">

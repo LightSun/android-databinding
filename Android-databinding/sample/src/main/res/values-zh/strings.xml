@@ -5,4 +5,6 @@
     <string name="action_settings">Settings</string>
     <string name="change_data_by_handler">点击或者长按 me 更换数据（by DataBinding方式） </string>
     <string name="change_data_by_traditional">点击或者长按 me 更换数据（by 传统方式） </string>
+    <string name="test_self_event">自定义事件测试</string>
+    <string name="toogle_focus">点此切换焦点</string>
 </resources>
