@@ -38,7 +38,7 @@ public class SelfEventTest extends BaseActivity {
     protected void onFinalInit(Bundle savedInstanceState) {
         /**
          * it has moved to framework internal. and stand property name is named 'onTouch'.
-         *  but here we just override for test self-event.
+         *  but here we just override for test bind self-event.
          */
         // self event called by reflect. method name is "view.setXXX/view.addXXX/view.XXX ".
         // 'XXX'is property name. so you know
