@@ -97,7 +97,7 @@ this framework.
 
 
 ## version log
-  released [1.03](https://github.com/LightSun/android-databinding/releases)
+  released [1.0.4](https://github.com/LightSun/android-databinding/releases)
 
 ## Gradle
 
