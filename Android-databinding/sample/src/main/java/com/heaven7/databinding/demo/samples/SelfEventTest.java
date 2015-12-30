@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 自定义事件self-event demo
+ * bind自定义事件self-event demo
  * Created by heaven7 on 2015/12/29.
  */
 public class SelfEventTest extends BaseActivity {
