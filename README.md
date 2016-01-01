@@ -5,7 +5,7 @@ this framework is now can be used in your app. By test and test,by find bug and 
  <img src="/databinding_2.gif" alt="Demo Screen Capture" width="300px" />
  <img src="/imgs/databinding_3.gif" alt="Demo Screen Capture" width="300px" />
  
-   before build the sample project,you need to import the xml schema file of this databind framework.
+   <b>before build the sample project,you need to import the xml schema file of this databind framework.</b>
    see <b>[How to use plugin and xml schema ?](https://github.com/LightSun/android-databinding#How to use plugin and xml schema ?)</b>
 
 ## Why I developed this ?
@@ -85,7 +85,7 @@ this framework.
 - blog and pdf is at the bottom of this page.
 
 
-#### How to use plugin and xml schema ?
+####How to use plugin and xml schema ?
 
 - 1, click [here](https://github.com/LightSun/android-databinding-plugin/releases) to donwload the zip. It contains a xml       schema file and a jar of android-databinding plugin.
  
