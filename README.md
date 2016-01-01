@@ -5,8 +5,8 @@ this framework is now can be used in your app. By test and test,by find bug and 
  <img src="/databinding_2.gif" alt="Demo Screen Capture" width="300px" />
  <img src="/imgs/databinding_3.gif" alt="Demo Screen Capture" width="300px" />
  
-   <b>before build the sample project,you need to import the xml schema file of this databind framework.</b>
-   see <b>[How to use plugin and xml schema ?](https://github.com/LightSun/android-databinding#How to use plugin and xml schema ?)</b>
+   <b>before build the sample project,you need to import the xml schema file of this databind framework, see it below.</b>
+   see <b>[How to use plugin and xml schema ?]</b>
 
 ## Why I developed this ?
 at google-io-2015. android databindingnow can be used, it have some problem, even if this is not the reason. because i think the engineer of google's is one of the  best of the world. so it can be better and better i believe.  I absolutely can not be compared with them. but i don't like to writing databinding expression in android layout file(in javaweb I hate it too ). so I developed 
