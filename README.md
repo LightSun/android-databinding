@@ -85,7 +85,7 @@ this framework.
 - blog and pdf is at the bottom of this page.
 
 
-## How to use plugin and xml schema ?
+#### How to use plugin and xml schema ?
 
 - 1, click [here](https://github.com/LightSun/android-databinding-plugin/releases) to donwload the zip. It contains a xml       schema file and a jar of android-databinding plugin.
  
