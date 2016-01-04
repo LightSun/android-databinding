@@ -22,7 +22,7 @@ this framework.
 - Support for custom attr and listener
 - support for bind adapter for any child of Adapter view  or RecyclerView
   ( contains multi items and multi select mode of adapter )
-- suooprt for bind image 
+- support for bind image (like round/borderColor/borderWith/placeHolder/errorResId),see it bellow.
 - The common support attrs: 
 
   ``` java
