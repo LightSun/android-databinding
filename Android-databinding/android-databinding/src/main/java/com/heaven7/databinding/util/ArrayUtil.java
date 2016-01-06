@@ -41,4 +41,11 @@ public class ArrayUtil {
         }
         return clss;
     }
+
+    /** compute the best capacity
+     * @param predict the predict capacity */
+    public static int computeBestCapacity(int predict){
+        return predict * 4 / 3  + 1;
+    }
+
 }

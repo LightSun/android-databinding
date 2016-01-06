@@ -9,22 +9,17 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.heaven7.databinding.R;
-import com.heaven7.databinding.core.expression.ExpressionParseException;
-import com.heaven7.databinding.core.expression.ExpressionParser;
 import com.heaven7.databinding.core.expression.IExpression;
 import com.heaven7.databinding.core.listener.ListenerImplContext;
 import com.heaven7.databinding.core.xml.elements.BindAdapterElement;
 import com.heaven7.databinding.core.xml.elements.BindElement;
-import com.heaven7.databinding.core.xml.elements.CornersElement;
 import com.heaven7.databinding.core.xml.elements.DataBindingElement;
 import com.heaven7.databinding.core.xml.elements.DataElement;
-import com.heaven7.databinding.core.xml.elements.ImagePropertyElement;
 import com.heaven7.databinding.core.xml.elements.ImportElement;
 import com.heaven7.databinding.core.xml.elements.ItemElement;
 import com.heaven7.databinding.core.xml.elements.PropertyElement;
 import com.heaven7.databinding.core.xml.elements.VariableElement;
 import com.heaven7.databinding.util.ArrayUtil;
-import com.heaven7.databinding.util.DataBindUtil;
 import com.heaven7.databinding.util.IResetable;
 import com.heaven7.databinding.util.Objects;
 import com.heaven7.databinding.util.ResourceUtil;
@@ -39,11 +34,16 @@ import org.heaven7.core.viewhelper.ViewHelper;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.heaven7.databinding.core.BindUtil.checkDatasExist;
+import static com.heaven7.databinding.core.BindUtil.containsAll;
+import static com.heaven7.databinding.core.BindUtil.convert2BindInfos;
+import static com.heaven7.databinding.core.BindUtil.parseListItemBindInfos;
+import static com.heaven7.databinding.core.BindUtil.parseListItemEventPropertyInfos;
+import static com.heaven7.databinding.core.BindUtil.releasePropertyBindInfos;
 import static com.heaven7.databinding.core.ListenerFactory.createEventListener;
 import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
 import static com.heaven7.databinding.core.PropertyUtil.apply;
@@ -164,92 +164,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
             final Array<PropertyBindInfo> infos = new Array<>(8);
             mBindMap.put(id,infos);
 
-            convert2BindInfos(getContext(),propEles, infos);
-        }
-    }
-
-    /** convert  PropertyElement to  PropertyBindInfo,  and put it into target infos ! */
-    private static void convert2BindInfos(Context ctx,List<PropertyElement> propEles, Array<PropertyBindInfo> infos) {
-        if(propEles.size() == 0){
-            return;
-        }
-        PropertyBindInfo info ;
-        ImagePropertyBindInfo ipb;
-
-        PropertyElement pe ;
-        ImagePropertyElement ipe;
-        CornersElement ce;
-
-        String expre;
-
-        for (int i = 0, size = propEles.size(); i < size; i++) {
-            pe = propEles.get(i);
-            if (pe instanceof ImagePropertyElement) {
-                ipe = (ImagePropertyElement) pe;
-                ipb = new ImagePropertyBindInfo();
-                try{
-                    ipb.referVariables = DataBindUtil.convertRefer(ipe.getReferVariable());
-                    ipb.type = ipe.getType().hashCode();
-
-                    expre = ipe.getUrlText();
-                    if(expre!=null) {
-                        ipb.url = ExpressionParser.parse(expre);
-                    }
-                    expre = ipe.getDefaultText();
-                    if(expre!=null) {
-                        ipb.defaultExpre = ExpressionParser.parse(expre);
-                    }
-                    expre = ipe.getErrorResIdText();
-                    if(expre!=null) {
-                        ipb.errorExpre = ExpressionParser.parse(expre);
-                    }
-                    //round , border
-                    expre = ipe.getRoundSizeText();
-                    if(expre!=null) {
-                        ipb.roundSizeExpre = ExpressionParser.parse(expre);
-                    }
-                    expre = ipe.getBorderColorText();
-                    if(expre!=null) {
-                        ipb.borderColorExpre = ExpressionParser.parse(expre);
-                    }
-                    expre = ipe.getBorderWidthText();
-                    if(expre!=null) {
-                        ipb.borderWidthExpre = ExpressionParser.parse(expre);
-                    }
-                    //corners
-                    ce = ipe.getCornersElement();
-                    if(ce != null){
-                        ipb.cornerInfo = new CornerInfo();
-                        expre = ce.getTopLeftText();
-                        if(!TextUtils.isEmpty(expre)){
-                            ipb.cornerInfo.topLeftExpre = ExpressionParser.parse(expre);
-                        }
-                        expre = ce.getTopRightText();
-                        if(!TextUtils.isEmpty(expre)){
-                            ipb.cornerInfo.topRightExpre = ExpressionParser.parse(expre);
-                        }
-                        expre = ce.getBottomLeftText();
-                        if(!TextUtils.isEmpty(expre)){
-                            ipb.cornerInfo.bottomLeftExpre = ExpressionParser.parse(expre);
-                        }
-                        expre = ce.getBottomRightText();
-                        if(!TextUtils.isEmpty(expre)){
-                            ipb.cornerInfo.bottomRightExpre = ExpressionParser.parse(expre);
-                        }
-                    }
-                    info = ipb;
-                }catch (ExpressionParseException e){
-                    throw new DataBindException("while parse the <imageProperty> , the view id = " +
-                            ResourceUtil.getResId(ctx, ipe.getId(), ResourceUtil.ResourceType.Id),e);
-                }
-            } else {
-                info = new PropertyBindInfo();
-                convert(info, pe);
-            }
-            if(pe.getId()!=null){
-                info.viewId = ResourceUtil.getResId(ctx, pe.getId(), ResourceUtil.ResourceType.Id);
-            }
-            infos.add(info);
+            convert2BindInfos(getContext(), propEles, infos);
         }
     }
 
@@ -592,23 +507,6 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         }
     }
 
-    public static void convert(PropertyBindInfo outInfo, PropertyElement inElement) {
-        String var;
-        //referVariables
-        var = inElement.getReferVariable();
-        if(var!=null){
-            outInfo.referVariables = var.trim().split(",");
-        }
-        outInfo.expression = inElement.getText().trim();
-        outInfo.propertyName = inElement.getName();
-       // outInfo.expressionValueType = inElement.getValueType();
-        try {
-            outInfo.realExpr = ExpressionParser.parse(outInfo.expression);
-        } catch (ExpressionParseException e) {
-            throw new DataBindException("can't parse the expression of " + outInfo.expression);
-        }
-    }
-
     /** apply data of one target PropertyBindInfo , this will auto add obj(the bind data) to IDataResolver,
      * so you might call clear after call this. */
     private static void applyDataInternal0(int id, Array<VariableInfo> mTmpVariables,
@@ -672,71 +570,6 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
             apply(null, v, id, layoutId, info.propertyName, val, mListenerMap);
         }
     }
-
-    private static boolean containsAll(Array<VariableInfo> container, String[] variables) {
-        for(int i = 0,size = variables.length ;  i<size ;i++){
-            if(!container.contains(new VariableInfo(variables[i],null),false)){
-                Logger.w(TAG, "the variable = " + variables[i] + " can't find the mapping data!");
-                return false;
-            }
-        }
-        return true;
-    }
-    private static boolean containsAll(Array<VariableInfo> container, Collection<String> vars) {
-        for(String var: vars){
-            if(!container.contains(new VariableInfo(var,null),false)){
-                Logger.w(TAG, "the variable = " + var + " can't find the mapping data!");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static void checkDatasExist(Object[] datas) {
-        if(datas == null || datas.length == 0)
-            throw new RuntimeException("datas can't be empty");
-    }
-
-    private static void releasePropertyBindInfos(SparseArray<Array<PropertyBindInfo>> mBindMap) {
-        if(mBindMap == null ) return;
-        for(int i =0 , size = mBindMap.size() ;i<size ;i++){
-            releasePropertyBindInfos(mBindMap.get(i));
-        }
-        mBindMap.clear();
-    }
-    private static Array<PropertyBindInfo> parseListItemBindInfos(Context context,
-                                                                  List<BindElement> list) {
-        if(list== null || list.size() == 0)
-            return  null;
-        final Array<PropertyBindInfo> infos = new Array<>(7);
-        for( BindElement be : list ){
-            convert2BindInfos(context, be.getPropertyElements(), infos);
-        }
-        return infos;
-    }
-
-    private static Array<PropertyBindInfo> parseListItemEventPropertyInfos( List<PropertyElement> list) {
-        if(list== null || list.size() ==0)
-            return  null;
-        Array<PropertyBindInfo> infos = new Array<>(3);
-        PropertyBindInfo info ;
-        for(PropertyElement pe : list){
-            info = new PropertyBindInfo();
-            convert(info,pe);
-            infos.add(info);
-        }
-        return infos;
-    }
-    /** release the array of PropertyBindInfo */
-    private static void releasePropertyBindInfos( Array<PropertyBindInfo> infos) {
-        if(infos!=null && infos.size>0){
-            for(int i=0,size = infos.size ; i<size ;i++){
-                ExpressionParser.recycleIfNeed(infos.get(i).realExpr);
-            }
-            infos.clear();
-        }
-    }
-
     @Override
     public void onEvaluateCallback(Object holder, Method method, Object... params) {
         //if(!v.hasOnClickListeners() //api 15
@@ -1012,7 +845,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         IExpression bottomRightExpre ;
     }
 
-    private static class VariableInfo{
+    static class VariableInfo{
         String variableName;
         Object data;
         public VariableInfo(String variableName, Object data) {
