@@ -2,9 +2,122 @@
 
    <img src="/databinding_1.gif" alt="Demo Screen Capture" width="300px" />
    <img src="/databinding_2.gif" alt="Demo Screen Capture" width="300px" />
+   <img src="/imgs/databinding_3.gif" alt="Demo Screen Capture" width="300px" />
    
    before build the sample project,you need to import the xml schema file of this databind framework.
    see <b>[How to use plugin and xml schema ?]</b>
+   
+## databind config  detail
+
+``` java
+<DataBinding
+    xmlns = "http://schemas.android.com/heaven7/android-databinding/1"
+    version="1.0"
+    >
+    <data>
+        <!-- define the a bean data , decided by type = 'bean' -->
+        <variable name="user"  classname="com.heaven7.databinding.demo.bean.User"  type="bean"/>
+        <!-- define the a event variable , decided by type = 'callback' -->
+        <variable name="mainHanlder" classname="com.heaven7.databinding.demo.callback.MainEventHandler" type="callback"/>
+        <!-- import a class and then you can use alias to call the static methods and fields.
+           such as: View.VISIBLE  and etc.
+           the property of alias can be hide.  that mean's alias is the string'classname.substring(classname.lastIndexOf(".")+1)'
+           -->
+        <import classname="android.view.View" alias="View"/>
+    </data>
+
+    <!-- bind multi properties to  the view(id = 'bt') -->
+    <bind id="bt">
+        <property name="text" referVariable="user" >@{user.username}</property>
+        <property name="textColor" referVariable="user" >user.male ? {@color/red} : {@color/random}</property>
+    </bind>
+
+    <!-- bind a data to multi views  -->
+    <bind referVariable="user">
+        <!-- bind the  value of expression to the text of view  which id = 'bt2' -->
+        <property id ="bt2" name="text" >@{user.username}</property>
+        <property id ="bt3" name="text" >user.getNickname()</property>
+    </bind>
+
+    <bind id="iv">
+        <!-- old -->
+        <property name="img_url" referVariable="user">@{user.link}</property>
+
+        <!-- image full config -->
+        <imageProperty type="round" referVariable="user">  <!-- type must be :  round / circle / oval -->
+
+             <roundSize >{@dimen/xxx}</roundSize>           <!-- roundSize define the four corners size of image  -->
+
+            <corners >                                      <!-- corners equals to  roundSize  -->
+                 <topRight>{@dimen/xxx}</topRight>          <!-- the top right corner size -->
+                 <topLeft>{@dimen/xxx}</topLeft>            <!-- the top left corner size -->
+                 <bottomLeft>{@dimen/xxx}</bottomLeft>      <!-- the bottom left corner size -->
+                 <bottomRight>{@dimen/xxx}</bottomRight>    <!-- the bottom right corner size -->
+             </corners>
+
+             <borderWidth>{@dimen/xxx}</borderWidth>       <!-- the border width  -->
+             <borderColor>{@color/xxx}</borderColor>       <!-- the border color  -->
+
+            <url>@{user.link}</url>                       <!-- the network url of image -->
+            <default>@{xxx}</default>        <!-- default image . support drawable ,bitmap,  resource id -->
+            <errorResId>@{xxx}</errorResId>  <!-- error image . only support resource id -->
+
+        </imageProperty>
+    </bind>
+
+    <!-- bean class must implements the interface ISelectable in bind adapter  -->
+    <!-- 选择模式select mode: selectMode="1"means single , 2  means multi -->
+    <bindAdapter id="lv" referVariable="user" selectMode="1">
+        <item layout="item_xxx" tag = "1" referVariable="itemHandler">
+            <!-- bind item root onLongClick event -->
+            <property name="onLongClick" >itemHandler.onItemLongClick(user)</property>
+            <!-- bin item root onClick event -->
+            <property name="onClick" >itemHandler.onItemClick(user)</property>
+            <bind id="bt">
+                <property name="text" >user.username</property>
+                <property name="textColor" >user.isSelected() ? {@color/red} : {@color/random}</property>
+                <property name="onClick" referVariable="orderHandler">orderHandler.onClickName(user)</property>
+            </bind>
+        </item>
+        <item layout="item_xxx2" tag="2"  >
+            <bind >
+                <property id ="bt2" name="text" >@{user.username}</property>
+                <property id ="bt3" name="text" >user.getNickname()</property>
+            </bind>
+            <bind id="bt">
+                <property name="text" >user.username</property>
+                <property name="onClick" referVariable="orderHandler">orderHandler.onClickName(user)</property>
+            </bind>
+            <bind id="iv">
+                <property name="img_url" >@{user.link}</property>
+                <imageProperty type="round">  <!-- round / circle / oval -->
+                    <roundSize >{@dimen/xxx}</roundSize>
+                    <corners >
+                        <topRight>{@dimen/xxx}</topRight>
+                        <topLeft>{@dimen/xxx}</topLeft>
+                        <bottomLeft>{@dimen/xxx}</bottomLeft>
+                        <bottomRight>{@dimen/xxx}</bottomRight>
+                    </corners>
+
+                    <borderWidth>{@dimen/xxx}</borderWidth>
+                    <borderColor>{@color/xxx}</borderColor>
+
+                    <url>@{user.link}</url>
+                    <default>@{xxx}</default>        <!-- support drawable ,bitmap,  resource id -->
+                    <errorResId>@{xxx}</errorResId>  <!-- only support resource id -->
+
+                </imageProperty>
+            </bind>
+
+        </item>
+    </bindAdapter>
+
+
+</DataBinding>
+
+```
+
+## Usage   
 
 base BaseBehaviour.
 

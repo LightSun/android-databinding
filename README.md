@@ -1,5 +1,12 @@
-# android-databinding
+## android-databinding
 this framework is now can be used in your app. By test and test,by find bug and fix i think it is now can work with well. it helps you fast bind data and event. <b>Plugin and xml schema file for this framework can be used now. </b>
+
+ <img src="/databinding_1.gif" alt="Demo Screen Capture" width="300px" />
+ <img src="/databinding_2.gif" alt="Demo Screen Capture" width="300px" />
+ <img src="/imgs/databinding_3.gif" alt="Demo Screen Capture" width="300px" />
+ 
+   <b>before build the sample project,you need to import the xml schema file of this databind framework, see it below.</b>
+   see <b>[How to use plugin and xml schema ?]</b>
 
 ## Why I developed this ?
 at google-io-2015. android databindingnow can be used, it have some problem, even if this is not the reason. because i think the engineer of google's is one of the  best of the world. so it can be better and better i believe.  I absolutely can not be compared with them. but i don't like to writing databinding expression in android layout file(in javaweb I hate it too ). so I developed 
@@ -15,7 +22,7 @@ this framework.
 - Support for custom attr and listener
 - support for bind adapter for any child of Adapter view  or RecyclerView
   ( contains multi items and multi select mode of adapter )
-- suooprt for bind image 
+- support for bind image (like round/borderColor/borderWith/placeHolder/errorResId),see it bellow.
 - The common support attrs: 
 
   ``` java
@@ -58,7 +65,7 @@ this framework.
    android resource reference expression {@drawable/ic_default} or R.drawable.ic_default , dp and sp like "15dp",
    and color like "#ff0000" and so on.
 - <b>the image full config was supported  now (round/circle/borderWith/borderColor/placeHolder).</b>  
-- here is the demo: 
+  here is the demo: 
   ``` java
    <bind id="eniv2">
         <property name="onClick" referVariable="eventHandler" > eventHandler.onClickImage()</property>
@@ -78,7 +85,7 @@ this framework.
 - blog and pdf is at the bottom of this page.
 
 
-## How to use plugin and xml schema ?
+####How to use plugin and xml schema ?
 
 - 1, click [here](https://github.com/LightSun/android-databinding-plugin/releases) to donwload the zip. It contains a xml       schema file and a jar of android-databinding plugin.
  
@@ -98,7 +105,7 @@ this framework.
 
 ## version log
  - released [1.0.4](https://github.com/LightSun/android-databinding/tags)
- - released [1.0.3](https://github.com/LightSun/android-databinding/tags)
+ - click [here](https://github.com/LightSun/android-databinding/blob/master/readmes/version_log.md) to see more .
 
 ## Gradle
 
@@ -110,11 +117,7 @@ dependencies {
 
 ``` 
 
-## Samples and Usage
-
- <img src="/databinding_1.gif" alt="Demo Screen Capture" width="300px" />
- <img src="/databinding_2.gif" alt="Demo Screen Capture" width="300px" />
- <img src="/imgs/databinding_3.gif" alt="Demo Screen Capture" width="300px" />
+## Usage
    
 The explanation of usage is moved to child directory. click to see it. [Usage Detail](https://github.com/LightSun/android-databinding/blob/master/readmes/sample.md)
  
