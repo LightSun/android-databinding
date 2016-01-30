@@ -112,7 +112,7 @@ this framework.
  gradle config:
 ``` java
 dependencies {
-    compile 'com.heaven7.databinding:android-databinding:1.0.4'
+    compile 'com.heaven7.databinding:android-databinding:1.1.0'
 }
 
 ``` 
