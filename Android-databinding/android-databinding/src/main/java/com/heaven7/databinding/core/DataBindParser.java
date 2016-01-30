@@ -544,7 +544,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
                                         IDataResolver dr,SparseArray<ListenerImplContext> mListenerMap,
                                         EventParseCaretaker caretaker) {
         if(info instanceof ImagePropertyBindInfo){
-            applyImageProperty(vp.getView(id),dr, (ImagePropertyBindInfo) info);
+            applyImageProperty(vp.getView(id), dr, (ImagePropertyBindInfo) info);
         }else {
             caretaker.beginParse(id, layoutId, info.propertyName, mListenerMap);
             final Object val = info.realExpr.evaluate(dr);
@@ -683,6 +683,51 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         return info;
     }
 
+    /**
+     * @param mMainRefer the mainrefer variables like 'user1,user2' and etc.
+     * @param hashCode the hash code of adapter
+     */
+    private void onBindAdapterData(int position, ViewHelper helper, Object item,
+                                   ItemBindInfo bindInfo,String mMainRefer,int hashCode) {
+        final SparseArray<ListenerImplContext> mListenerMap = DataBindParser.this.mListenerMap;
+        final IDataResolver mDataResolver = DataBindParser.this.mDataResolver;
+        final EventParseCaretaker mEventCareTaker = DataBindParser.this.mEventCareTaker;
+
+        //put object
+        mDataResolver.putObject(mMainRefer, item);
+        mDataResolver.beginBindItem(position,item);
+
+       // final int hashCode = this.hashCode();
+        int size = bindInfo.itemEvents !=null ? bindInfo.itemEvents.size : 0;
+        PropertyBindInfo info;
+
+        if(size > 0) {
+            final View rootView = helper.getRootView();
+            rootView.setTag(R.id.key_adapter_hash,hashCode);
+            mDataResolver.setCurrentBindingView(rootView);
+            for (int i = 0; i < size; i++) {
+                info = bindInfo.itemEvents.get(i);
+                applyDataReally(rootView, bindInfo.layoutId, info, helper,
+                        mDataResolver, mListenerMap, mEventCareTaker);
+            }
+        }
+        size = bindInfo.itemBinds !=null ? bindInfo.itemBinds.size : 0;
+        if(size > 0) {
+            View v;
+            for (int i = 0; i < size; i++) {
+                info = bindInfo.itemBinds.get(i);
+                v = helper.getView(info.viewId);
+                v.setTag(R.id.key_adapter_hash,hashCode);
+                mDataResolver.setCurrentBindingView(v);
+                applyDataReally(v, bindInfo.layoutId, info, helper,
+                        mDataResolver, mListenerMap, mEventCareTaker);
+                //below have a bug , that position and item transfer is wrong
+          /*  applyDataReally(info.viewId, bindInfo.layoutId, info, helper,
+                    mDataResolver, mListenerMap, mEventCareTaker);*/
+            }
+        }
+    }
+
     class QuickRecycleAdapterImpl<T extends ISelectable> extends AdapterUtil.QuickRecycleAdapter2<T>{
 
         final String mMainRefer;
@@ -705,40 +750,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         @Override
         protected void bindDataImpl(Context context, int position, ViewHelper helper,
                                     int itemLayoutId, T item, ItemBindInfo bindInfo) {
-            final SparseArray<ListenerImplContext> mListenerMap = DataBindParser.this.mListenerMap;
-            final IDataResolver mDataResolver = DataBindParser.this.mDataResolver;
-            final EventParseCaretaker mEventCareTaker = DataBindParser.this.mEventCareTaker;
-
-            //put object
-            mDataResolver.putObject(mMainRefer, item);
-            mDataResolver.beginBindItem(position,item);
-
-            final int hashCode = this.hashCode();
-            int size = bindInfo.itemEvents !=null ? bindInfo.itemEvents.size : 0;
-            PropertyBindInfo info;
-
-            if(size > 0) {
-                final View rootView = helper.getRootView();
-                rootView.setTag(R.id.key_adapter_hash,hashCode);
-                mDataResolver.setCurrentBindingView(rootView);
-                for (int i = 0; i < size; i++) {
-                    info = bindInfo.itemEvents.get(i);
-                    applyDataReally(rootView, bindInfo.layoutId, info, helper,
-                            mDataResolver, mListenerMap, mEventCareTaker);
-                }
-            }
-            size = bindInfo.itemBinds !=null ? bindInfo.itemBinds.size : 0;
-            if(size > 0) {
-                View v;
-                for (int i = 0; i < size; i++) {
-                    info = bindInfo.itemBinds.get(i);
-                    v = helper.getView(info.viewId);
-                    v.setTag(R.id.key_adapter_hash,hashCode);
-                    mDataResolver.setCurrentBindingView(v);
-                    applyDataReally(v, bindInfo.layoutId, info, helper,
-                            mDataResolver, mListenerMap, mEventCareTaker);
-                }
-            }
+            onBindAdapterData(position, helper, item, bindInfo,mMainRefer,this.hashCode());
         }
     }
 
@@ -767,43 +779,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         @Override
         protected void bindDataImpl(Context context, int position, ViewHelper helper,
                                     int itemLayoutId, T item, ItemBindInfo bindInfo) {
-            final SparseArray<ListenerImplContext> mListenerMap = DataBindParser.this.mListenerMap;
-            final IDataResolver mDataResolver = DataBindParser.this.mDataResolver;
-            final EventParseCaretaker mEventCareTaker = DataBindParser.this.mEventCareTaker;
-
-            //put object
-            mDataResolver.putObject(mMainRefer, item);
-            mDataResolver.beginBindItem(position,item);
-
-            int size = bindInfo.itemEvents !=null ? bindInfo.itemEvents.size : 0;
-            final int hashCode = this.hashCode();
-            PropertyBindInfo info;
-
-            if(size > 0) {
-                final View rootView = helper.getRootView();
-                rootView.setTag(R.id.key_adapter_hash, hashCode);
-                mDataResolver.setCurrentBindingView(rootView);
-                for (int i = 0; i < size; i++) {
-                    info = bindInfo.itemEvents.get(i);
-                    applyDataReally(rootView, bindInfo.layoutId, info, helper,
-                            mDataResolver, mListenerMap, mEventCareTaker);
-                }
-            }
-            size = bindInfo.itemBinds !=null ? bindInfo.itemBinds.size : 0;
-            if(size > 0) {
-                View v;
-                for (int i = 0; i < size; i++) {
-                    info = bindInfo.itemBinds.get(i);
-                    v = helper.getView(info.viewId);
-                    v.setTag(R.id.key_adapter_hash, hashCode);
-                    mDataResolver.setCurrentBindingView(v);
-                    applyDataReally(v, bindInfo.layoutId, info, helper,
-                            mDataResolver, mListenerMap, mEventCareTaker);
-                    //below have a bug , that position and item transfer is wrong
-                  /*  applyDataReally(info.viewId, bindInfo.layoutId, info, helper,
-                            mDataResolver, mListenerMap, mEventCareTaker);*/
-                }
-            }
+            onBindAdapterData(position, helper, item, bindInfo, mMainRefer,this.hashCode());
         }
     }
 
