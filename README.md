@@ -126,6 +126,7 @@ if you are a chinese developer or know chinese.  please click  [here](http://blo
 [chinese pdf](http://download.csdn.net/detail/pkjjun2012/9352397)
 
 ## TODO
+   * support recycler view animator and other.
    * optimize the plugin to use easier.
    
 ## issue
