@@ -683,7 +683,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         return info;
     }
 
-    class QuickRecycleAdapterImpl<T extends ISelectable> extends BindHelper.QuickRecycleAdapter2<T>{
+    class QuickRecycleAdapterImpl<T extends ISelectable> extends AdapterUtil.QuickRecycleAdapter2<T>{
 
         final String mMainRefer;
 
@@ -698,7 +698,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         }
 
         @Override
-        protected void beforeNotifyDataChanged() {
+        public void beforeNotifyDataChanged() {
             mDataResolver.putAdapterManager(this.hashCode(), getAdapterManager());
         }
 
@@ -744,7 +744,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
 
     // if use multi item, T must implement ITag. onClick onLongClick in adapter
     // param like (View v,int position,Object item,SelectHelper helper... etc)
-    class QuickAdapterImpl<T extends ISelectable> extends BindHelper.QuickAdapter2<T>{
+    class QuickAdapterImpl<T extends ISelectable> extends AdapterUtil.QuickAdapter2<T>{
 
         final String mMainRefer;
        // final int mAdapterViewId;

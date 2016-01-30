@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by heaven7 on 2015/11/26.
  */
-/*public*/ class BindHelper {
+/*public*/ class AdapterUtil {
 
     /**
      * this class implements MultiItemTypeSupport ,and also support one item for easy use.
