@@ -49,6 +49,9 @@
         <activity android:name=".samples.SelfEventTest"
             android:label="SelfEventTest"
             />
+        <activity android:name=".samples.SelfAttributeTest"
+            android:label="SelfEventTest"
+            />
     </application>
 
 </manifest>

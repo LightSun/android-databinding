@@ -11,4 +11,5 @@
     <string name="ac_double_listview">this demo show how to bind double list view</string>
     <string name="ac_select_mode">this demo show how to use select mode with SelectHelper</string>
     <string name="ac_self_event">this demo show how to bind self event</string>
+    <string name="ac_self_attr">this demo show how to bind self attribute</string>
 </resources>

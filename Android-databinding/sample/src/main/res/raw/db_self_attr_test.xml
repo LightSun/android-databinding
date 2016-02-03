@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataBinding xmlns="http://schemas.android.com/heaven7/android-databinding/1" version="1.0">
+    <data>
+        <variable classname="com.heaven7.databinding.demo.bean.User" name="user" type="bean"/>
+        <variable classname="com.heaven7.databinding.demo.samples.SelfAttributeTest$ClickHandler"
+                    name="clickHandler" type="callback"/>
+        <import alias="View" classname="android.view.View"/>
+    </data>
+
+    <bind id="simpleView">
+        <property name="newText" referVariable="user"> user.getUsername() </property>
+        <property name="onClick" referVariable="clickHandler,user"> clickHandler.onClickNewText(user) </property>
+    </bind>
+
+</DataBinding>
+

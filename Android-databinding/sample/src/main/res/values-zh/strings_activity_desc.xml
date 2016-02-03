@@ -9,4 +9,5 @@
     <string name="ac_double_listview">此demo展示如何绑定2个或多个list view</string>
     <string name="ac_select_mode">展示如何使用选择模式selectMode，通过SelectHelper去控制所想要的</string>
     <string name="ac_self_event">展示如何绑定自定义事件</string>
+    <string name="ac_self_attr">展示如何绑定自定义属性</string>
 </resources>
