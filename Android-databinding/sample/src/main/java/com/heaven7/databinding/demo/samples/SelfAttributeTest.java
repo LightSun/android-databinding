@@ -15,7 +15,10 @@ import org.heaven7.core.util.Toaster;
 
 /**
  * self attribute test,自定义属性测试
+ * eg: if your self attr is 'newText' , that means your self-view must have one method of
+ * setNewText/newText/addNewText . or else exception will be throw.
  * Created by heaven7 on 2016/2/3.
+ * @see com.heaven7.databinding.demo.view.SimpleView#setNewText(CharSequence)
  */
 public class SelfAttributeTest extends BaseActivity {
     @Override
