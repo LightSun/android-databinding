@@ -29,6 +29,5 @@ public class RResourceExpr implements IExpression {
 
     @Override
     public void reset() {
-        expr = null;
     }
 }
