@@ -1,29 +1,53 @@
 ## android-databinding
-this framework is now can be used in your app. By test and test,by find bug and fix i think it is now can work with well. it helps you fast bind data and event. <b>Plugin and xml schema file for this framework can be used now. </b>
+
+这是一个android数据绑定框架， 它可以帮助你快速绑定数据和事件。 拥有xml约束支持and插件支持。目前已经发布release版本。
 
  <img src="/databinding_1.gif" alt="Demo Screen Capture" width="300px" />
  <img src="/databinding_2.gif" alt="Demo Screen Capture" width="300px" />
  <img src="/imgs/databinding_3.gif" alt="Demo Screen Capture" width="300px" />
  
-   <b>before build the sample project,you need to import the xml schema file of this databind framework, see it below.</b>
-   see <b>[How to use plugin and xml schema ?]</b>
+   <b>如果你把源代码下载下来了 ，首先你需要导入xml约束的xsd文件, 否则会build失败。
+   </b>
 
-## Why I developed this ?
-at google-io-2015. android databindingnow can be used, it have some problem, even if this is not the reason. because i think the engineer of google's is one of the  best of the world. so it can be better and better i believe.  I absolutely can not be compared with them. but i don't like to writing databinding expression in android layout file(in javaweb I hate it too ). so I developed 
-this framework. 
+## 我为什么要开发这个框架 ?
+在google 2015年io大会的时候，Google公布了一个新的框架。android数据绑定的框架。 虽然它目前有些问题。 但是我相信会越来好，因为google的工程师是世界最好的工程师之一。 我不能他们比 。 但是我对该框架的设计中，在xml布局
+文件中绑定数据文件，这点我是不敢苟同的。它使得layout文件的可读性大影响。而且一旦布局复杂了就更甚
+（在javaweb的时候就讨厌了）。我喜欢纯粹的东西。所以我设计了这个框架。它的数据绑定配置文件在res/raw目录下。
 
-## support plugin and xml schema
- android studio plugin and the xml schema of config file which are used for android-databinding framework is now available  .
 
-## Features
-- supported by plugin and xml schema file. 
-- support for bind data and event handler by xml. but you must call bind method in java code.
-- support for notify data change.
-- Support for custom attr and listener
-- support for bind adapter for any child of Adapter view  or RecyclerView
-  ( contains multi items and multi select mode of adapter )
-- support for bind image (like round/borderColor/borderWith/placeHolder/errorResId),see it bellow.
-- The common support attrs: 
+## 支持 as 插件和 xml约束文件
+ 
+
+## 框架特点
+- 支持android开发中常用的数据绑定，比如控件的背景，文字，文字颜色，文字大小，图片（圆角边框，默认图,错误图等）.
+-
+- 支持常用事件的绑定，支持自定义属性，自定义事件的绑定（需要注册）。支持对象数据改变后调用notify通知.
+- 
+- 支持ListView,GridView,RecyclerView adapter数据的绑定(支持多种item), 事件回调对象AdapterManage   可对adapter的数据进行crud操作,支持单选多选模式.
+- 
+- 插件支持 和 xml约束文件支持
+
+- 丰富的表达式支持. 
+   比如: java 表达式的调用(均可嵌套),字段，方法，数组的调用. 支持android 资源的引用,比如 表达式 为'{@drawable/ic_default} '
+    支持sp,dp，16进制颜色，比如 "15dp", "15sp", "#ff0000" 等等
+
+- <b> 图片完整的配置如果还不清楚请看demo </b>  
+  ``` java
+   <bind id="eniv2">
+        <property name="onClick" referVariable="eventHandler" > eventHandler.onClickImage()</property>
+        <imageProperty type="round" referVariable="imageParam">  <!-- round / circle / oval -->
+            <roundSize>{@dimen/corner_size}</roundSize>
+            <borderWidth>5dp</borderWidth>
+            <borderColor>#ff0000</borderColor>
+
+            <url>imageParam.link</url>
+            <default>{@drawable/ic_default}</default>     <!-- support drawable ,bitmap,  resource id -->
+            <errorResId>R.drawable.ic_error</errorResId>  <!-- only support resource id -->
+
+        </imageProperty>
+    </bind>
+  ```
+- 数据绑定, 常用的属性如下: 
 
   ``` java
     //event name
@@ -61,44 +85,20 @@ this framework.
    //ps:  and also support self-attrs 
   ```
 
-- Support multi expressions. eg: java calling expression (only nested ternary expression is not support), 
-   android resource reference expression {@drawable/ic_default} or R.drawable.ic_default , dp and sp like "15dp",
-   and color like "#ff0000" and so on.
-- <b>the image full config was supported  now (round/circle/borderWith/borderColor/placeHolder).</b>  
-  here is the demo: 
-  ``` java
-   <bind id="eniv2">
-        <property name="onClick" referVariable="eventHandler" > eventHandler.onClickImage()</property>
-        <imageProperty type="round" referVariable="imageParam">  <!-- round / circle / oval -->
-            <roundSize>{@dimen/corner_size}</roundSize>
-            <borderWidth>5dp</borderWidth>
-            <borderColor>#ff0000</borderColor>
+#### 支持 as 插件和 xml约束文件, 如何使用插件和xsd约束文件 ?
 
-            <url>imageParam.link</url>
-            <default>{@drawable/ic_default}</default>     <!-- support drawable ,bitmap,  resource id -->
-            <errorResId>R.drawable.ic_error</errorResId>  <!-- only support resource id -->
-
-        </imageProperty>
-    </bind>
-  ```
-    the more to see in sample/RoundImageBindTest Activity.
-- blog and pdf is at the bottom of this page.
-
-
-####How to use plugin and xml schema ?
-
-- 1, click [here](https://github.com/LightSun/android-databinding-plugin/releases) to donwload the zip. It contains a xml       schema file and a jar of android-databinding plugin.
+- 1, 点击去下载压缩包。
+    [here](https://github.com/LightSun/android-databinding-plugin/releases). 它包含 插件jar 和 xml约束xsd文件.
  
-- 2 , Add the xml schema file (android_databinding.xsd )to android studio. 
-   and the URI must be 'http://schemas.android.com/heaven7/android-databinding/1'. And the xsd file can be found in the          downloaded zip .
+- 2，添加xml约束到android studio中. 
+  按下面配置，需填写的uri必须为 'http://schemas.android.com/heaven7/android-databinding/1'. 
   <img src="/2.jpg" alt="add xsd file to as" width="1163px" height="711px"/>
 
-- 3, install the plugin 'android_databinding_plugin'. step:
+- 3, 安装好插件'android_databinding_plugin', 步骤：
    in android studio click file-> setting->plugins -> install plugin from disk 
     and select the file android_databinding_plugin.jar which can be found in the downloaded zip file.
 
-- 4, at the res directory of android studio, right-click and select android-databinding then follow it.
-  and then you can enjoy the android-databinding framework.
+- 4, 以上完成后，在res目录右击后选择 android-databinding ， 然后你就可以 使用数据绑定的框架了. 示例：
   <img src="/3.png" alt="use demo " width="1027px" height="768px"/> 
   <img src="/imgs/xsd_1.png" alt="use demo " width="884px" height="599px"/> 
 
@@ -117,20 +117,20 @@ dependencies {
 
 ``` 
 
-## Usage
+## 使用
    
-The explanation of usage is moved to child directory. click to see it. [Usage Detail](https://github.com/LightSun/android-databinding/blob/master/readmes/sample.md)
+使用详情. [Usage Detail](https://github.com/LightSun/android-databinding/blob/master/readmes/sample.md)
  
-## blog and pdf resource
-if you are a chinese developer or know chinese.  please click  [here](http://blog.csdn.net/pkjjun2012/article/details/50286621) to see more easier.
-[chinese pdf](http://download.csdn.net/detail/pkjjun2012/9352397)
+## 博客和 关于框架的pdf
+如果你是个中国的开发者，或者熟悉汉语。 请点击。 [here](http://blog.csdn.net/pkjjun2012/article/details/50286621) to see more easier.
+[中文文档](http://download.csdn.net/detail/pkjjun2012/9352397)
 
 ## TODO
-   * support recycler view animator and other.
+   * 支持adapter item 左滑右滑.
    * optimize the plugin to use easier.
    
 ## issue
-   * this framework i will try my best to uphold , and  if you have a good suggestion  about this, please tell me. Thanks! 
+   * 这个框架我会尽力去维护。如果你有好的建议或者idea,请告诉我。Thanks! 
    
 ## About me
    * heaven7 
