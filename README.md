@@ -126,6 +126,9 @@ The explanation of usage is moved to child directory. click to see it. [Usage De
 if you are a chinese developer or know chinese.  please click  [here](http://blog.csdn.net/pkjjun2012/article/details/50286621) to see more easier.
 [chinese pdf](http://download.csdn.net/detail/pkjjun2012/9352397)
 
+## refer lib
+[android-common-utils](https://github.com/LightSun/android-common-utils)
+
 ## TODO
    * support recycler view animator and other.
    * optimize the plugin to use easier.
