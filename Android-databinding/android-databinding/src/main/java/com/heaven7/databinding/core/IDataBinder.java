@@ -2,6 +2,7 @@ package com.heaven7.databinding.core;
 
 import org.heaven7.core.adapter.AdapterManager;
 import org.heaven7.core.adapter.ISelectable;
+import org.heaven7.core.viewhelper.ViewHelper;
 
 import java.util.List;
 
@@ -132,7 +133,14 @@ public interface IDataBinder{
      */
     <T extends ISelectable> AdapterManager<T> bindAdapter(int adapterViewId, List<T> data,Object...extras);
 
-    /**
+
+    /*
      * void notifyAdapterDataSetChanged(int id); // moved to  AdapterManager
      */
+
+    /**
+     *  get the view helper for quick access the  all view in activity or fragment.
+     * @return ViewHelper
+     */
+    ViewHelper getViewHelper();
 }

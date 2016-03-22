@@ -192,4 +192,9 @@ public final class DataBinder implements IDataBinder{
         return  mDataBindParser.bindAdapter(id,data,extras);
     }
 
+    @Override
+    public ViewHelper getViewHelper() {
+        return mDataBindParser.getViewHelper();
+    }
+
 }

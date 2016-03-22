@@ -728,6 +728,10 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         }
     }
 
+    public ViewHelper getViewHelper() {
+        return mViewHelper;
+    }
+
     class QuickRecycleAdapterImpl<T extends ISelectable> extends AdapterUtil.QuickRecycleAdapter2<T>{
 
         final String mMainRefer;
