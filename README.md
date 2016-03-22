@@ -130,6 +130,8 @@ if you are a chinese developer or know chinese.  please click  [here](http://blo
 [android-common-utils](https://github.com/LightSun/android-common-utils)
 
 ## TODO
+   * support gesture image (also nested in viewpager)
+   * support generate relative code. 
    * support recycler view animator and other.
    * optimize the plugin to use easier.
    
