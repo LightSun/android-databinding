@@ -126,6 +126,9 @@ The explanation of usage is moved to child directory. click to see it. [Usage De
 if you are a chinese developer or know chinese.  please click  [here](http://blog.csdn.net/pkjjun2012/article/details/50286621) to see more easier.
 [chinese pdf](http://download.csdn.net/detail/pkjjun2012/9352397)
 
+## Compile to google's databinding
+   see it [here](http://blog.csdn.net/pkjjun2012/article/details/50949306). this currently only have chinese doc.
+
 ## refer lib
 [android-common-utils](https://github.com/LightSun/android-common-utils)
 
