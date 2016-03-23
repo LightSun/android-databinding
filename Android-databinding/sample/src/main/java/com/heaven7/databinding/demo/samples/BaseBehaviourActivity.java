@@ -76,8 +76,8 @@ public class BaseBehaviourActivity extends AppCompatActivity {
         //test
         System.out.println("read android R res: " + StringUtil2.getResId("android.R.color.holo_red_light", this));
         int color  = getResources().getColor(StringUtil2.getResId("android.R.color.holo_red_light", this));
-        mDataBinder.getViewHelper().setTextColor(R.id.bt3, color);
-       // mDataBinder.getViewHelper().setTextColor(R.id.bt3, (Integer) ResourceResolver.getResValue(this,"{@android:color/holo_red_light}"));
+        // mDataBinder.getViewHelper().setTextColor(R.id.bt3, color);
+        // mDataBinder.getViewHelper().setTextColor(R.id.bt3, (Integer) ResourceResolver.getResValue(this,"{@android:color/holo_red_light}"));
     }
 
     @Override

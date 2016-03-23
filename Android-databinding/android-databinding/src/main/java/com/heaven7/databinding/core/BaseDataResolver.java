@@ -251,14 +251,9 @@ import java.util.List;
             f = sFields.get(key);
             if (f != null) return f;
         }
-        try {
-            f = clazz.getDeclaredField(fieldName);
-            f.setAccessible(true);
-            if(sEnableReflectCache) {
-                sFields.put(key, f);
-            }
-        }catch (Exception e){
-            throw new RuntimeException("can't find the field, field name = "+ fieldName , e);
+        f = ReflectUtil.getFieldRecursiveLy(clazz,fieldName);
+        if(sEnableReflectCache) {
+            sFields.put(key, f);
         }
         return f;
     }

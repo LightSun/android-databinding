@@ -8,12 +8,13 @@ import org.heaven7.core.adapter.ISelectable;
  * Created by heaven7 on 2015/11/5.
  */
 @DatabindingClass
-public class User implements ISelectable{
+public class User extends Person implements ISelectable{
 
-    private String username ;
+    // moved to super
+    // private String username ;
+    //  private String nickname ;
+
     private boolean male ;       //man or woman
-
-    private String nickname ;
     private boolean select;
 
     public User(String username, boolean male) {
@@ -25,10 +26,6 @@ public class User implements ISelectable{
         this.username = username;
         this.male = male;
         this.nickname = nickname;
-    }
-
-    public String getNickname(){
-        return nickname;
     }
 
     public boolean isMale() {
@@ -46,10 +43,13 @@ public class User implements ISelectable{
     public void setUsername(String username) {
         this.username = username;
     }
-
+//moved to super
+  /*  public String getNickname(){
+        return nickname;
+    }
     public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
+    }*/
 
     @Override
     public String toString() {

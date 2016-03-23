@@ -10,6 +10,8 @@ import com.heaven7.databinding.util.ResourceUtil;
 
 
 /**
+ * this class help to expand some thing relate {@link android.content.res.Resources.Theme}.
+ * while get resource.
  * like <pre>{@color/xxxx} </pre>
  * <p><li>add new support for android internal res reference, eg:
  * <pre>

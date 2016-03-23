@@ -64,15 +64,17 @@ public final class ExpressionParser {
 		}
 		if (sDebug)
 			System.out.println("begin parse : " + str);
-
+//xxx ? {android:anim/xxx} : xxx2
 		// parse  ? :
 		int index_problem = str.indexOf("?");
+		//may have : {android:anim/xxx}, may cause bug. //TODO how to differentiate ' ? :' with '{android:color/xxx}'   ?
 		int index_colon = str.indexOf(":");
-		if( index_problem * index_colon <= 0 ){
+
+		if(index_problem != -1 && index_colon == -1 ){
 			throw new ExpressionParseException("'?' and ':' must exist at the same time ,"
 					+ "or expression is incorrect");
 		}
-		if((index_problem + index_colon ) != -2){
+		if(index_problem > 0 && index_colon > 0){
 			String left =  str.substring(0, index_problem);
 			String middle =  str.substring(index_problem + 1, index_colon);
 			String right =  str.substring(index_colon + 1);
