@@ -1,7 +1,7 @@
 package com.heaven7.databinding.core.expression;
 
 
-public class ExpressionParser {
+public final class ExpressionParser {
 	
 	static boolean sDebug = false;
 	

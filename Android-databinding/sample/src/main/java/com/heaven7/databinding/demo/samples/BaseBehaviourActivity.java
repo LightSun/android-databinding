@@ -11,6 +11,7 @@ import com.heaven7.databinding.demo.R;
 import com.heaven7.databinding.demo.bean.User;
 import com.heaven7.databinding.demo.callback.MainEventHandler;
 import com.heaven7.databinding.demo.util.Util;
+import com.heaven7.databinding.util.StringUtil2;
 
 /**
  * this sample show the base behaviour of data-binding framework.
@@ -56,17 +57,27 @@ public class BaseBehaviourActivity extends AppCompatActivity {
         mDataBinder.bind(R.id.bt, true, mUser = new User("heaven7", false));
 
         //bind onClick event and onLongClick event and not cache any data
-        mDataBinder.bind(R.id.bt0, false, mUser,new MainEventHandler(mDataBinder));
+        mDataBinder.bind(R.id.bt0, false, mUser, new MainEventHandler(mDataBinder));
 
         //bind a data to multi views. but not cache
-        mDataBinder.bind(new User("joker", true,"xxx_joker"));
+        mDataBinder.bind(new User("joker", true, "xxx_joker"));
     }
 
     private void doBind2() {
-        (mDataBinder = DataBinder.getDataBinder(this,R.raw.db_main,false))
+        (mDataBinder = DataBinder.getDataBinder(this, R.raw.db_main, false))
                 .bind(R.id.bt, true, mUser = new User("heaven7", false))
                 .bind(R.id.bt0, false, mUser,new MainEventHandler(mDataBinder))
-                .bind(new User("joker", true,"xxx_joker"));
+                .bind(new User("joker", true, "xxx_joker"));
+
+        test();
+    }
+
+    private void test() {
+        //test
+        System.out.println("read android R res: " + StringUtil2.getResId("android.R.color.holo_red_light", this));
+        int color  = getResources().getColor(StringUtil2.getResId("android.R.color.holo_red_light", this));
+        mDataBinder.getViewHelper().setTextColor(R.id.bt3, color);
+       // mDataBinder.getViewHelper().setTextColor(R.id.bt3, (Integer) ResourceResolver.getResValue(this,"{@android:color/holo_red_light}"));
     }
 
     @Override
