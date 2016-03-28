@@ -31,21 +31,21 @@ public final class DataBinder implements IDataBinder{
      * @param bindsRawResId    the id of raw resource
      * @param cacheXml     true to cache xml data for reuse
      */
-    public DataBinder(Activity activity,int bindsRawResId,boolean cacheXml){
+    DataBinder(Activity activity,int bindsRawResId,boolean cacheXml){
         this(activity.getWindow().getDecorView(), bindsRawResId, cacheXml);
     }
 
     /** default not cache xml ,@see #DataBinder(Activity, int, boolean)  */
-    public DataBinder(Activity activity,int bindsRawResId){
+    DataBinder(Activity activity,int bindsRawResId){
         this(activity.getWindow().getDecorView(), bindsRawResId, false);
     }
 
-    /** @see #DataBinder(Activity, int, boolean)
+    /**
      * @param root  the root view
      * @param bindsRawResId    the id of raw resource
      * @param cacheXml     true to cache xml data for reuse
      * */
-    public DataBinder(View root,int bindsRawResId,boolean cacheXml){
+    DataBinder(View root,int bindsRawResId,boolean cacheXml){
         this.mBindRawResId = bindsRawResId;
         this.mDataBindParser = new DataBindParser(root, new BaseDataResolver());
         parseXml(root.getContext(), bindsRawResId, cacheXml);
@@ -63,30 +63,33 @@ public final class DataBinder implements IDataBinder{
     }
 
     /**
-     *  create an instance of IDataBinder.
+     *  create an instance of IDataBinder. use {@link DataBindingFactory#createDataBinder(Activity, int, boolean)} instead.
      * @param activity   the Activity
      * @param bindsRawResId  the raw resource id of data bind.
      * @param cacheXml to cache xml for reuse
      */
+    @Deprecated
     public static IDataBinder getDataBinder(Activity activity,int bindsRawResId,boolean cacheXml){
         return new DataBinder(activity, bindsRawResId, cacheXml);
     }
     /**
-     *  create an instance of IDataBinder.
+     *  create an instance of IDataBinder. use {@link DataBindingFactory#createDataBinder(View, int, boolean)} instead.
      * @param root   the root view of activity or fragment or others.
      * @param bindsRawResId  the raw resource id of data bind.
      * @param cacheXml to cache xml for reuse
      */
+    @Deprecated
     public static IDataBinder getDataBinder(View root,int bindsRawResId,boolean cacheXml){
         return new DataBinder(root, bindsRawResId, cacheXml);
     }
 
     /**
-     * create an instance of IDataBinder.
+     * create an instance of IDataBinder.  use {@link DataBindingFactory#createDataBinder(ViewHelper, int, boolean)} instead.
      * @param vp   the view helper
      * @param bindsRawResId  the raw resource id of data bind.
      * @param cacheXml to cache xml for reuse
      */
+    @Deprecated
     public static IDataBinder getDataBinder(ViewHelper vp ,int bindsRawResId,boolean cacheXml){
         return new DataBinder(vp, bindsRawResId,cacheXml);
     }

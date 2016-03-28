@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.heaven7.databinding.core.DataBinder;
+import com.heaven7.databinding.core.DataBindingFactory;
 import com.heaven7.databinding.core.IDataBinder;
 import com.heaven7.databinding.core.PropertyNames;
 import com.heaven7.databinding.demo.R;
@@ -52,7 +52,7 @@ public class BaseBehaviourActivity extends AppCompatActivity {
 
     /**  old call */
     private void doBind() {
-        mDataBinder = DataBinder.getDataBinder(this, R.raw.db_main,false);
+        mDataBinder = DataBindingFactory.createDataBinder(this, R.raw.db_main, false);
         //bind a User and cache it for latter call notify.
         mDataBinder.bind(R.id.bt, true, mUser = new User("heaven7", false));
 
@@ -64,8 +64,8 @@ public class BaseBehaviourActivity extends AppCompatActivity {
     }
 
     private void doBind2() {
-        (mDataBinder = DataBinder.getDataBinder(this, R.raw.db_main, false))
-                .bind(R.id.bt, true, mUser = new User("heaven7", false))
+        mDataBinder = DataBindingFactory.createDataBinder(this, R.raw.db_main, false);
+        mDataBinder.bind(R.id.bt, true, mUser = new User("heaven7", false))
                 .bind(R.id.bt0, false, mUser,new MainEventHandler(mDataBinder))
                 .bind(new User("joker", true, "xxx_joker"));
 
