@@ -17,7 +17,7 @@ import static com.heaven7.databinding.core.expression.ExpressionParser.QUOTE;
  * Created by heaven7 on 2015/8/12.
  */
 public class StringUtil2 {
-
+// PATTERN_PHONE = Pattern.compile("^[1][\\d]{10}" + "|" + "^[0]\\d{2,3}[\\-]*\\d{7,8}" +"|"+ "^[1-9]\\d{6,7}");
     private static final char[] UpperCases              = "ABCDEFGHIJKLMNOPQRSTWVUXYZ".toCharArray();
     private static final Pattern sIntParttern           = Pattern.compile("[0-9]+");
     private static final Pattern sFloatParttern         = Pattern.compile("[0-9]+[\\.][0-9]+");

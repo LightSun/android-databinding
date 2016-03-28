@@ -11,6 +11,7 @@ import com.heaven7.xml.ObjectMap;
 
 import org.heaven7.core.adapter.AdapterManager;
 import org.heaven7.core.adapter.ISelectable;
+import org.heaven7.core.anno.Hide;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -21,7 +22,8 @@ import java.util.List;
 /**
  * Created by heaven7 on 2015/12/20.
  */
-/*public*/ class BaseDataResolver implements IDataResolver {
+@Hide
+public class BaseDataResolver implements IDataResolver {
 
     private static boolean sEnableReflectCache = true;
 
@@ -128,7 +130,7 @@ import java.util.List;
         }
         else if(ResourceResolver.isResourceReference(pName)){
             //check android resource reference , eg: '@color/red'
-            return ResourceResolver.getResValue(mAppContext,pName);
+            return ResourceResolver.getResValue(mAppContext, pName);
         }
 
         Object val = mObjectMap.get(pName);

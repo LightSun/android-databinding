@@ -292,9 +292,6 @@ class ExpressionParserImpl implements IResetable {
 			     .setArrayIndexExpression(info.isArray() ? parse(str.substring(
 						info.compactSquareLeftIndex + 1,info.compactSquareRightIndex),false
 						).get(0) :null)
-				 //.setArrayIndex(arrayIndex)
-			     //.setNextAccessInfo(nextAccessInfo)
-			     // .setHolder(mHolder)
 			     .build();
 			
 			if(i == 0){

@@ -27,31 +27,6 @@ public final class DataBinder implements IDataBinder{
     private XmlReader.Element mCacheXml;
 
     /**
-     * @param activity    the activity
-     * @param bindsRawResId    the id of raw resource
-     * @param cacheXml     true to cache xml data for reuse
-     */
-    DataBinder(Activity activity,int bindsRawResId,boolean cacheXml){
-        this(activity.getWindow().getDecorView(), bindsRawResId, cacheXml);
-    }
-
-    /** default not cache xml ,@see #DataBinder(Activity, int, boolean)  */
-    DataBinder(Activity activity,int bindsRawResId){
-        this(activity.getWindow().getDecorView(), bindsRawResId, false);
-    }
-
-    /**
-     * @param root  the root view
-     * @param bindsRawResId    the id of raw resource
-     * @param cacheXml     true to cache xml data for reuse
-     * */
-    DataBinder(View root,int bindsRawResId,boolean cacheXml){
-        this.mBindRawResId = bindsRawResId;
-        this.mDataBindParser = new DataBindParser(root, new BaseDataResolver());
-        parseXml(root.getContext(), bindsRawResId, cacheXml);
-        // property change listener ( attach and detach) notifyDataChange(user)
-    }
-    /**
      * @param vp   the view helper
      * @param bindsRawResId  the raw resource id of data bind.
      * @param cacheXml to cache xml for reuse
@@ -70,7 +45,7 @@ public final class DataBinder implements IDataBinder{
      */
     @Deprecated
     public static IDataBinder getDataBinder(Activity activity,int bindsRawResId,boolean cacheXml){
-        return new DataBinder(activity, bindsRawResId, cacheXml);
+        return new DataBinder(new ViewHelper(activity.getWindow().getDecorView()), bindsRawResId, cacheXml);
     }
     /**
      *  create an instance of IDataBinder. use {@link DataBindingFactory#createDataBinder(View, int, boolean)} instead.
@@ -80,7 +55,7 @@ public final class DataBinder implements IDataBinder{
      */
     @Deprecated
     public static IDataBinder getDataBinder(View root,int bindsRawResId,boolean cacheXml){
-        return new DataBinder(root, bindsRawResId, cacheXml);
+        return new DataBinder(new ViewHelper(root), bindsRawResId, cacheXml);
     }
 
     /**

@@ -5,8 +5,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.heaven7.databinding.anno.DatabindingMethod;
+import com.heaven7.databinding.core.DataBindingFactory;
 import com.heaven7.databinding.core.IDataBinder;
-import com.heaven7.databinding.core.ListenerFactory;
 import com.heaven7.databinding.core.listener.ListenerImplContext;
 import com.heaven7.databinding.demo.R;
 import com.heaven7.databinding.demo.TestEventContext;
@@ -42,7 +42,7 @@ public class SelfEventTest extends BaseActivity {
          */
         // self event called by reflect. method name is "view.setXXX/view.addXXX/view.XXX ".
         // 'XXX'is property name. so you know
-        ListenerFactory.registEventListener("onTouchListener", OnTouchListenerImpl.class);
+        DataBindingFactory.registEventListener("onTouchListener", OnTouchListenerImpl.class);
     }
 
     @Override

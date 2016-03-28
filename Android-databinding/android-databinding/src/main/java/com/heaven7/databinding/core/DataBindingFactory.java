@@ -22,7 +22,7 @@ public final class DataBindingFactory {
      * @param cacheXml to cache xml for reuse
      */
     public static IDataBinder createDataBinder(Activity activity,int bindsRawResId,boolean cacheXml){
-        return new DataBinder(activity, bindsRawResId, cacheXml);
+        return createDataBinder(activity.getWindow().getDecorView(), bindsRawResId, cacheXml);
     }
     /**
      *  create an instance of IDataBinder and not cache the xml.
@@ -30,7 +30,7 @@ public final class DataBindingFactory {
      * @param bindsRawResId  the raw resource id of data bind.
      */
     public static IDataBinder createDataBinder(Activity activity,int bindsRawResId){
-        return new DataBinder(activity, bindsRawResId, false);
+        return createDataBinder(activity.getWindow().getDecorView(), bindsRawResId, false);
     }
     /**
      *  create an instance of IDataBinder.
@@ -39,7 +39,7 @@ public final class DataBindingFactory {
      * @param cacheXml to cache xml for reuse
      */
     public static IDataBinder createDataBinder(View root,int bindsRawResId,boolean cacheXml){
-        return new DataBinder(root, bindsRawResId, cacheXml);
+        return createDataBinder(new ViewHelper(root), bindsRawResId, cacheXml);
     }
     /**
      *  create an instance of IDataBinder and not cache the xml.
@@ -47,7 +47,7 @@ public final class DataBindingFactory {
      * @param bindsRawResId  the raw resource id of data bind.
      */
     public static IDataBinder createDataBinder(View root,int bindsRawResId){
-        return new DataBinder(root, bindsRawResId, false);
+        return createDataBinder(new ViewHelper(root), bindsRawResId, false);
     }
 
     /**
