@@ -134,6 +134,7 @@ if you are a chinese developer or know chinese.  please click  [here](http://blo
 
 ## TODO
    * support gesture image (also nested in viewpager)
+   * make image load library expandable.
    * support generate relative code. 
    * add demo for fragment .
    * support recycler view animator and other.
