@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
+import com.heaven7.adapter.AdapterManager;
+import com.heaven7.adapter.ISelectable;
+import com.heaven7.core.util.ViewHelper;
 import com.heaven7.databinding.core.xml.XmlElementNames;
 import com.heaven7.databinding.core.xml.elements.DataBindingElement;
 import com.heaven7.xml.XmlReader;
-
-import org.heaven7.core.adapter.AdapterManager;
-import org.heaven7.core.adapter.ISelectable;
-import org.heaven7.core.viewhelper.ViewHelper;
 
 import java.io.IOException;
 import java.io.InputStream;

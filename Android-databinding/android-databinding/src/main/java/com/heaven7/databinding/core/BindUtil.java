@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
+import com.heaven7.core.util.Logger;
 import com.heaven7.databinding.core.expression.ExpressionParseException;
 import com.heaven7.databinding.core.expression.ExpressionParser;
 import com.heaven7.databinding.core.xml.elements.BindElement;
@@ -14,12 +15,10 @@ import com.heaven7.databinding.util.DataBindUtil;
 import com.heaven7.databinding.util.ResourceUtil;
 import com.heaven7.xml.Array;
 
-import org.heaven7.core.util.Logger;
-
 import java.util.Collection;
 import java.util.List;
 
-import static com.heaven7.databinding.core.DataBindParser.*;
+import static com.heaven7.databinding.core.DataBindParser.PropertyBindInfo;
 /**
  *
  * Created by heaven7 on 2016/1/6.

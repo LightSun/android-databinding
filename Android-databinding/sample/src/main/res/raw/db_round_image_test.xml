@@ -10,11 +10,12 @@
         <import classname="com.heaven7.databinding.demo.test.Test" alias="Test"/>
     </data>
 
-    <bind id="eniv">
+    <!-- deprecated -->
+   <!-- <bind id="eniv">
         <property name="img_round_builder" referVariable="imageParam" >
             Test.createRoundBuilder(imageParam.roundSize,imageParam.url)
         </property>
-    </bind>
+    </bind>-->
     <bind id="eniv2">
         <property name="onClick" referVariable="eventHandler" > eventHandler.onClickImage()</property>
         <imageProperty type="round" referVariable="imageParam">  <!-- round / circle / oval -->

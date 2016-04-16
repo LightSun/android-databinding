@@ -1,14 +1,14 @@
 package com.heaven7.databinding.demo.bean;
 
+import com.heaven7.adapter.ISelectable;
 import com.heaven7.databinding.anno.DatabindingClass;
 
-import org.heaven7.core.adapter.ISelectable;
 
 /**
  * Created by heaven7 on 2015/11/5.
  */
 @DatabindingClass
-public class User extends Person implements ISelectable{
+public class User extends Person implements ISelectable {
 
     // moved to super
     // private String username ;

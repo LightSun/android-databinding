@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
 
+import com.heaven7.core.util.Logger;
+import com.heaven7.core.util.Toaster;
 import com.heaven7.databinding.anno.DatabindingClass;
 import com.heaven7.databinding.anno.DatabindingMethod;
 import com.heaven7.databinding.core.IDataBinder;
@@ -11,8 +13,6 @@ import com.heaven7.databinding.demo.R;
 import com.heaven7.databinding.demo.TestEventContext;
 import com.heaven7.databinding.util.ViewUtil;
 
-import org.heaven7.core.util.Logger;
-import org.heaven7.core.util.Toaster;
 
 /**
  * Created by heaven7 on 2015/12/1.

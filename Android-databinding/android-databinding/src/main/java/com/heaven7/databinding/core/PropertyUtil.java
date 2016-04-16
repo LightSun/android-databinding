@@ -8,17 +8,14 @@ import android.graphics.drawable.Drawable;
 import android.text.TextWatcher;
 import android.util.SparseArray;
 import android.view.View;
+import android.widget.ImageView;
 
-import com.android.volley.extra.Corner;
-import com.android.volley.extra.ExpandNetworkImageView;
-import com.android.volley.extra.RoundedBitmapBuilder;
+import com.heaven7.core.util.Logger;
+import com.heaven7.core.util.ViewCompatUtil;
+import com.heaven7.core.util.ViewHelper;
+import com.heaven7.core.util.ViewHelperImpl;
 import com.heaven7.databinding.core.listener.ListenerImplContext;
-import com.heaven7.databinding.core.xml.elements.ImagePropertyElement;
 import com.heaven7.databinding.util.ReflectUtil;
-
-import org.heaven7.core.util.ViewCompatUtil;
-import org.heaven7.core.viewhelper.ViewHelper;
-import org.heaven7.core.viewhelper.ViewHelperImpl;
 
 import java.lang.reflect.Method;
 
@@ -112,16 +109,10 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
                 impl.setImageDrawable((Drawable) value);
             }
         } else if(PropertyNames.IMGAE_URL.equals(propertyName)){
-            if(! (v instanceof ExpandNetworkImageView)){
-                throw new DataBindException("property name: img_url only can be used for ExpandNetworkImageView");
-            }
-            new RoundedBitmapBuilder().url((String)value).into((ExpandNetworkImageView) v);
+            checkAndGetImageApplier().apply((ImageView) v, (String) value);
 
         } else if(PropertyNames.IMGAE_ROUND_BUILDER.equals(propertyName)){
-            if(! (v instanceof ExpandNetworkImageView)){
-                 throw new DataBindException("property name: img_round_builder only can be used for ExpandNetworkImageView");
-            }
-            ((RoundedBitmapBuilder) value).into((ExpandNetworkImageView) v);
+            Logger.w("databind","apply property failed, by unsupported old image builder property now.");
         }
         else if( isEventProperty(propertyName)) {
             //self property indicate is self listener
@@ -162,7 +153,7 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
                 layoutId, propertyName, value, mListenerMap);
     }
 
-    public static void applyImageProperty(View imageView, IDataResolver dataResolver,
+   /* public static void applyImageProperty(View imageView, IDataResolver dataResolver,
                              DataBindParser.ImagePropertyBindInfo info){
         if(! (imageView instanceof ExpandNetworkImageView))
             throw new RuntimeException("<imageProperty> can only apply to ExpandNetworkImageView.");
@@ -182,9 +173,9 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
                 throw new RuntimeException("can't discern the expression value type ," +
                         " only support resId/bitmap/drawable?");
             }
-            /**
+            *//**
              * the default expression can only use once , or else must cause  bug when in adapter.
-             */
+             *//*
             info.defaultExpre = null;
         }
         if(info.errorExpre!=null){
@@ -230,6 +221,16 @@ import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
             builder.borderWidth((Float) info.borderWidthExpre.evaluate(dataResolver));
         }
         builder.into(eniv);
+    }
+*/
+
+    public static DataBindingFactory.IImagePropertyApplier checkAndGetImageApplier(){
+        DataBindingFactory.IImagePropertyApplier applier = DataBindingFactory.getImagePropertyApplier();
+        if(applier == null){
+            throw new NullPointerException("you must call " +
+                    "DataBindingFactory#setImagePropertyApplier first.");
+        }
+        return applier;
     }
 
     /**  name -> Name-> setName */

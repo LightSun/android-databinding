@@ -4,17 +4,22 @@ import android.content.Context;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
+import com.heaven7.adapter.ISelectable;
+import com.heaven7.adapter.MultiItemTypeSupport;
+import com.heaven7.adapter.QuickAdapter;
+import com.heaven7.adapter.QuickRecycleViewAdapter;
+import com.heaven7.core.util.ViewHelper;
 import com.heaven7.databinding.util.ArrayUtil;
 import com.heaven7.xml.Array;
 
-import org.heaven7.core.adapter.ISelectable;
+import java.util.ArrayList;
+import java.util.List;
+
+/*import org.heaven7.core.adapter.ISelectable;
 import org.heaven7.core.adapter.MultiItemTypeSupport;
 import org.heaven7.core.adapter.QuickAdapter;
 import org.heaven7.core.adapter.QuickRecycleViewAdapter;
-import org.heaven7.core.viewhelper.ViewHelper;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.heaven7.core.viewhelper.ViewHelper;*/
 
 /**
  * Created by heaven7 on 2015/11/26.
@@ -26,7 +31,7 @@ import java.util.List;
      * but when support multi items, the T must implements the interface ITag.
      * @param <T>
      */
-    /*public*/ static class MultiItemTypeSupportImpl<T extends ISelectable> implements MultiItemTypeSupport<T>{
+    /*public*/ static class MultiItemTypeSupportImpl<T extends ISelectable> implements MultiItemTypeSupport<T> {
 
         private SparseIntArray mViewTypeMap ;
         private final AdapterHelper mHelper;
@@ -94,7 +99,7 @@ import java.util.List;
                                              int itemLayoutId, T item, DataBindParser.ItemBindInfo bindInfo);
     }
 
-    /*public*/ static abstract class QuickRecycleAdapter2<T extends ISelectable> extends QuickRecycleViewAdapter<T>{
+    /*public*/ static abstract class QuickRecycleAdapter2<T extends ISelectable> extends QuickRecycleViewAdapter<T> {
 
         private final AdapterHelper mHelper;
 

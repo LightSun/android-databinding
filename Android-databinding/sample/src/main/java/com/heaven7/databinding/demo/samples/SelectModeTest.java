@@ -5,16 +5,15 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
+import com.heaven7.adapter.AdapterManager;
+import com.heaven7.core.util.Logger;
+import com.heaven7.core.util.Toaster;
 import com.heaven7.databinding.anno.DatabindingClass;
 import com.heaven7.databinding.anno.DatabindingMethod;
 import com.heaven7.databinding.core.IDataBinder;
 import com.heaven7.databinding.demo.R;
 import com.heaven7.databinding.demo.TestEventContext;
 import com.heaven7.databinding.demo.bean.User;
-
-import org.heaven7.core.adapter.AdapterManager;
-import org.heaven7.core.util.Logger;
-import org.heaven7.core.util.Toaster;
 
 import java.util.ArrayList;
 import java.util.List;

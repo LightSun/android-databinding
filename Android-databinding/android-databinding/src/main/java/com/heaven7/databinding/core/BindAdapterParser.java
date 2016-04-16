@@ -3,6 +3,8 @@ package com.heaven7.databinding.core;
 import android.content.Context;
 import android.util.SparseArray;
 
+import com.heaven7.adapter.ISelectable;
+import com.heaven7.core.util.ResourceUtil;
 import com.heaven7.databinding.core.xml.elements.BindAdapterElement;
 import com.heaven7.databinding.core.xml.elements.BindElement;
 import com.heaven7.databinding.core.xml.elements.DataBindingElement;
@@ -10,9 +12,6 @@ import com.heaven7.databinding.core.xml.elements.DataElement;
 import com.heaven7.databinding.core.xml.elements.ItemElement;
 import com.heaven7.databinding.util.IResetable;
 import com.heaven7.xml.Array;
-
-import org.heaven7.core.adapter.ISelectable;
-import org.heaven7.core.util.ResourceUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

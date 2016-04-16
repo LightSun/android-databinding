@@ -5,13 +5,12 @@ import android.graphics.Color;
 import android.util.SparseArray;
 import android.view.View;
 
+import com.heaven7.adapter.AdapterManager;
+import com.heaven7.adapter.ISelectable;
+import com.heaven7.anno.Hide;
 import com.heaven7.databinding.util.ReflectUtil;
 import com.heaven7.databinding.util.ViewUtil;
 import com.heaven7.xml.ObjectMap;
-
-import org.heaven7.core.adapter.AdapterManager;
-import org.heaven7.core.adapter.ISelectable;
-import org.heaven7.core.anno.Hide;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "com.heaven7.databinding.demo"
@@ -24,4 +24,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile project(':android-databinding')
    // compile 'com.heaven7.databinding:android-databinding:1.0'
+
+    compile 'com.heaven7.volley:volley_with_extra:1.0.1'
 }

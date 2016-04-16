@@ -32,9 +32,17 @@ public interface PropertyNames {
 
     String VISIBILITY              =    "visibility";
     //image
+    @Deprecated
+    /**
+     * use ImageProperty instead
+     */
     String IMGAE_URL               =    "img_url";
     String IMGAE_BITMAP            =    "img_bitmap";
     String IMGAE_DRAWABLE          =    "img_drawable";
+    @Deprecated
+    /**
+     * no longer use any more
+     */
     String IMGAE_ROUND_BUILDER     =    "img_round_builder";
 
 }

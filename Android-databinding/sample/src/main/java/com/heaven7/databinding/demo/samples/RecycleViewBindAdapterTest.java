@@ -4,11 +4,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.heaven7.adapter.AdapterManager;
 import com.heaven7.databinding.demo.R;
 import com.heaven7.databinding.demo.bean.ImageInfo;
 import com.heaven7.databinding.demo.test.Test;
-
-import org.heaven7.core.adapter.AdapterManager;
 
 import java.util.ArrayList;
 import java.util.List;

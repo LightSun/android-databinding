@@ -1,9 +1,9 @@
 package com.heaven7.databinding.demo.bean;
 
+import com.heaven7.adapter.ISelectable;
 import com.heaven7.databinding.anno.DatabindingClass;
 import com.heaven7.databinding.core.ITag;
 
-import org.heaven7.core.adapter.ISelectable;
 
 /**
  * as the item of bind adapter . ImageInfo must implement ISelectable interface.

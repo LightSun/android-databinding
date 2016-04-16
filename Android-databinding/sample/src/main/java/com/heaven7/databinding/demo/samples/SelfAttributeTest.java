@@ -3,6 +3,7 @@ package com.heaven7.databinding.demo.samples;
 import android.os.Bundle;
 import android.view.View;
 
+import com.heaven7.core.util.Toaster;
 import com.heaven7.databinding.anno.DatabindingClass;
 import com.heaven7.databinding.anno.DatabindingMethod;
 import com.heaven7.databinding.core.IDataBinder;
@@ -11,7 +12,6 @@ import com.heaven7.databinding.demo.TestEventContext;
 import com.heaven7.databinding.demo.bean.User;
 import com.heaven7.databinding.demo.util.Util;
 
-import org.heaven7.core.util.Toaster;
 
 /**
  * self attribute test,自定义属性测试

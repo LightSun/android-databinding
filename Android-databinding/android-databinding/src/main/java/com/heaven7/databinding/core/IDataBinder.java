@@ -1,8 +1,9 @@
 package com.heaven7.databinding.core;
 
-import org.heaven7.core.adapter.AdapterManager;
-import org.heaven7.core.adapter.ISelectable;
-import org.heaven7.core.viewhelper.ViewHelper;
+
+import com.heaven7.adapter.AdapterManager;
+import com.heaven7.adapter.ISelectable;
+import com.heaven7.core.util.ViewHelper;
 
 import java.util.List;
 
@@ -143,4 +144,5 @@ public interface IDataBinder{
      * @return ViewHelper
      */
     ViewHelper getViewHelper();
+
 }

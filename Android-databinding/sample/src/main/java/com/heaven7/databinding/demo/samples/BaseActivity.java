@@ -1,15 +1,12 @@
 package com.heaven7.databinding.demo.samples;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 
+import com.heaven7.core.util.Toaster;
 import com.heaven7.databinding.core.DataBindingFactory;
 import com.heaven7.databinding.core.IDataBinder;
-
-import org.heaven7.core.save_state.SaveStateHelper;
-import org.heaven7.core.util.Toaster;
 
 /**
  * Created by heaven7 on 2015/11/30.
@@ -19,7 +16,7 @@ public abstract  class BaseActivity extends AppCompatActivity{
     private Toaster mToaster;
     protected IDataBinder mDataBinder;
     //protected VolleyUtil.HttpExecutor mHttpExecute;
-    private SaveStateHelper mSaveStateHelper;
+  //  private SaveStateHelper mSaveStateHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +24,7 @@ public abstract  class BaseActivity extends AppCompatActivity{
 
         mToaster = new Toaster(this, Gravity.CENTER);
       //  mHttpExecute = new VolleyUtil.HttpExecutor();
-        mSaveStateHelper = new SaveStateHelper(this);
+     //   mSaveStateHelper = new SaveStateHelper(this);
         setContentView(getlayoutId());
         mDataBinder = DataBindingFactory.createDataBinder(this, getBindRawId(), false);
         onFinalInit(savedInstanceState);
@@ -46,7 +43,7 @@ public abstract  class BaseActivity extends AppCompatActivity{
         super.onDestroy();
     }
 
-    @Override
+   /* @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         mSaveStateHelper.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState, outPersistentState);
@@ -56,7 +53,7 @@ public abstract  class BaseActivity extends AppCompatActivity{
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mSaveStateHelper.onRestoreInstanceState(savedInstanceState);
-    }
+    }*/
 
     protected void showToast(String msg){
         mToaster.show(msg);

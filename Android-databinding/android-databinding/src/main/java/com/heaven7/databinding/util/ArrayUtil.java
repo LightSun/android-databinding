@@ -2,8 +2,9 @@ package com.heaven7.databinding.util;
 
 import android.view.View;
 
-import org.heaven7.core.adapter.AdapterManager;
-import org.heaven7.core.anno.Hide;
+import com.heaven7.adapter.AdapterManager;
+import com.heaven7.anno.Hide;
+
 
 /**
  * Created by heaven7 on 2015/11/6.

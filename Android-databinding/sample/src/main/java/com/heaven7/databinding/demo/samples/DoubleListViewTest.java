@@ -3,12 +3,11 @@ package com.heaven7.databinding.demo.samples;
 import android.os.Bundle;
 import android.view.View;
 
+import com.heaven7.adapter.AdapterManager;
+import com.heaven7.core.util.Toaster;
 import com.heaven7.databinding.demo.R;
 import com.heaven7.databinding.demo.bean.ImageInfo;
 import com.heaven7.databinding.demo.test.Test;
-
-import org.heaven7.core.adapter.AdapterManager;
-import org.heaven7.core.util.Toaster;
 
 import java.util.ArrayList;
 import java.util.List;

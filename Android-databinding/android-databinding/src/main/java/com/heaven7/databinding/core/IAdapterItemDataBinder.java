@@ -1,6 +1,7 @@
 package com.heaven7.databinding.core;
 
-import org.heaven7.core.viewhelper.ViewHelper;
+
+import com.heaven7.core.util.ViewHelper;
 
 /**
  * the adapter item data binder

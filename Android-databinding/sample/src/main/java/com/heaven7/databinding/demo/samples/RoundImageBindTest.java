@@ -3,11 +3,11 @@ package com.heaven7.databinding.demo.samples;
 import android.os.Bundle;
 import android.view.View;
 
+import com.heaven7.core.util.Toaster;
 import com.heaven7.databinding.anno.DatabindingField;
 import com.heaven7.databinding.demo.R;
 import com.heaven7.databinding.demo.test.Test;
 
-import org.heaven7.core.util.Toaster;
 
 /**
  * later will support full config in xml
@@ -28,7 +28,7 @@ public class RoundImageBindTest extends BaseActivity {
     }
     @Override
     protected void doBind() {
-        mDataBinder.bind(R.id.eniv, false, new ImageParam(30f, Test.URLS[0]) );
+        //deprecated   mDataBinder.bind(R.id.eniv, false, new ImageParam(30f, Test.URLS[0]) );
         mDataBinder.bind(R.id.eniv2, false, new ImageParam(Test.URLS[1]),new ClickHandler(getToaster()) );
     }
 

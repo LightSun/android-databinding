@@ -1,7 +1,8 @@
 package com.heaven7.databinding.core;
 
-import org.heaven7.core.adapter.AdapterManager;
-import org.heaven7.core.adapter.ISelectable;
+
+import com.heaven7.adapter.AdapterManager;
+import com.heaven7.adapter.ISelectable;
 
 /**
  * Created by heaven7 on 2015/11/29.

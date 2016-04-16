@@ -7,7 +7,12 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 
+import com.heaven7.adapter.AdapterManager;
+import com.heaven7.adapter.ISelectable;
+import com.heaven7.core.util.Logger;
+import com.heaven7.core.util.ViewHelper;
 import com.heaven7.databinding.R;
 import com.heaven7.databinding.core.expression.IExpression;
 import com.heaven7.databinding.core.listener.ListenerImplContext;
@@ -25,11 +30,6 @@ import com.heaven7.databinding.util.ResourceUtil;
 import com.heaven7.xml.Array;
 import com.heaven7.xml.ObjectMap;
 
-import org.heaven7.core.adapter.AdapterManager;
-import org.heaven7.core.adapter.ISelectable;
-import org.heaven7.core.util.Logger;
-import org.heaven7.core.viewhelper.ViewHelper;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,15 +44,20 @@ import static com.heaven7.databinding.core.BindUtil.releasePropertyBindInfos;
 import static com.heaven7.databinding.core.ListenerFactory.createEventListener;
 import static com.heaven7.databinding.core.ListenerFactory.isEventProperty;
 import static com.heaven7.databinding.core.PropertyUtil.apply;
-import static com.heaven7.databinding.core.PropertyUtil.applyImageProperty;
+import static com.heaven7.databinding.core.PropertyUtil.checkAndGetImageApplier;
 import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
+
+/*import org.heaven7.core.adapter.AdapterManager;
+import org.heaven7.core.adapter.ISelectable;
+import org.heaven7.core.util.Logger;
+import org.heaven7.core.viewhelper.ViewHelper;*/
 
 
 /**
  * data bind really implements.
  * Created by heaven7 on 2015/8/11.
  */
-/*public*/ class DataBindParser implements IDataResolver.IEventEvaluateCallback{
+public class DataBindParser implements IDataResolver.IEventEvaluateCallback{
 
     private static final boolean sDebug = false ;
 
@@ -87,7 +92,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
     private HashSet<String> mTmpVarStrs;
     //================== end for tmp use , just avoid reallocate memory ============//
 
-    public DataBindParser(ViewHelper vp,IDataResolver resolver){
+    /*public*/ DataBindParser(ViewHelper vp,IDataResolver resolver){
         this.mViewHelper = vp ;
         mDataResolver = resolver ;
         resolver.setEventEvaluateCallback(this);
@@ -103,7 +108,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
         mListenerMap = new SparseArray<>();
         mEventCareTaker = new EventParseCaretaker();
     }
-    public DataBindParser(@NonNull View root,IDataResolver resolver) {
+    /*public*/ DataBindParser(@NonNull View root,IDataResolver resolver) {
         this(new ViewHelper(root),resolver);
     }
 
@@ -396,7 +401,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
                                        Array<VariableInfo> outVarInfos) throws DataBindException {
         if(sDebug) {
             Logger.i(TAG, "getReferVariableInfos", "referVars = " + Arrays.toString(referVars)
-                    +" ,datas = " + Arrays.toString(datas));
+                    + " ,datas = " + Arrays.toString(datas));
         }
        /* if(referVars != null && referVars.length > 0 && (datas == null || datas.length == 0)){
            throw new DataBindException("can't find the mapping data, referVars = "+ Arrays.toString(referVars)
@@ -431,7 +436,7 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
     @android.support.annotation.NonNull
     private String getVariableName(String className) throws DataBindException{
         if(sDebug){
-            Logger.d(TAG, "getVariableName","className = " + className);
+            Logger.d(TAG, "getVariableName", "className = " + className);
         }
         String var = mVariableBeanMap.get(className);
         if(var == null){
@@ -541,7 +546,9 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
                                         IDataResolver dr,SparseArray<ListenerImplContext> mListenerMap,
                                         EventParseCaretaker caretaker) {
         if(info instanceof ImagePropertyBindInfo){
-            applyImageProperty(vp.getView(id), dr, (ImagePropertyBindInfo) info);
+           checkAndGetImageApplier().apply((ImageView) vp.getView(id),
+                   dr, (ImagePropertyBindInfo) info);
+           // applyImageProperty(vp.getView(id), dr, (ImagePropertyBindInfo) info);
         }else {
             caretaker.beginParse(id, layoutId, info.propertyName, mListenerMap);
             final Object val = info.realExpr.evaluate(dr);
@@ -558,7 +565,8 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
                                         IDataResolver dr,SparseArray<ListenerImplContext> mListenerMap,
                                         EventParseCaretaker caretaker) {
         if(info instanceof ImagePropertyBindInfo){
-            applyImageProperty(v, dr, (ImagePropertyBindInfo) info);
+            checkAndGetImageApplier().apply((ImageView) v, dr, (ImagePropertyBindInfo) info);
+            //applyImageProperty(v, dr, (ImagePropertyBindInfo) info);
         }else {
             final int id = v.hashCode();
             caretaker.beginParse(id, layoutId, info.propertyName, mListenerMap);
@@ -798,28 +806,34 @@ import static com.heaven7.databinding.core.PropertyUtil.getEventKey;
     /**
      * the image property of bind info
      */
-    static class ImagePropertyBindInfo extends PropertyBindInfo{
+    public static class ImagePropertyBindInfo extends PropertyBindInfo{
 
-         IExpression url;
-         IExpression defaultExpre;
-         IExpression errorExpre;
-         int type;        //round ,oval,circle
+         public IExpression url;
+        /** the default image expression */
+         public IExpression defaultExpre;
+        /** the error image expression, when load occour error */
+         public IExpression errorExpre;
+        /** {@link com.heaven7.databinding.core.xml.elements.ImagePropertyElement#TYPE_ROUND} and other */
+         public int type;        //round ,oval,circle
+        /** this indicate the round size of the four corner */
+         public IExpression roundSizeExpre;
+        /** this indicate the border color expression */
+         public IExpression borderColorExpre;
+        /** this indicate the border width expression */
+         public IExpression borderWidthExpre;
 
-         IExpression roundSizeExpre;
-         IExpression borderColorExpre;
-         IExpression borderWidthExpre;
-
-         CornerInfo cornerInfo;
+        /** the corner info , can be null */
+         public CornerInfo cornerInfo;
     }
 
     /**
      * the corner info of round image
      */
-    static class CornerInfo{
-        IExpression topLeftExpre ;
-        IExpression topRightExpre ;
-        IExpression bottomLeftExpre ;
-        IExpression bottomRightExpre ;
+    public static class CornerInfo{
+        public IExpression topLeftExpre ;
+        public IExpression topRightExpre ;
+        public IExpression bottomLeftExpre ;
+        public IExpression bottomRightExpre ;
     }
 
     static class VariableInfo{

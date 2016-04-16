@@ -2,10 +2,11 @@ package com.heaven7.databinding.core;
 
 import android.app.Activity;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.heaven7.core.util.ViewHelper;
 import com.heaven7.databinding.core.listener.ListenerImplContext;
 
-import org.heaven7.core.viewhelper.ViewHelper;
 
 /**
  * this class help you to create the IDataBinder instance and register the self event listener.
@@ -14,6 +15,8 @@ import org.heaven7.core.viewhelper.ViewHelper;
 public final class DataBindingFactory {
 
     private DataBindingFactory(){}
+
+    private static IImagePropertyApplier sImageApplier;
 
     /**
      *  create an instance of IDataBinder.
@@ -75,4 +78,42 @@ public final class DataBindingFactory {
     public static void registEventListener(String propertyName,Class<? extends ListenerImplContext> clazz){
         ListenerFactory.registEventListener(propertyName,clazz);
     }
+
+    /**
+     * set the image property applier.
+     * @param applier the applier.
+     */
+    public static void setImagePropertyApplier(IImagePropertyApplier applier){
+        DataBindingFactory.sImageApplier = applier;
+    }
+
+    static IImagePropertyApplier getImagePropertyApplier() {
+        return sImageApplier;
+    }
+
+    /**
+     * the image property applier
+     */
+    public interface IImagePropertyApplier{
+        /**
+         * apply the image property
+         * @param view the image view
+         * @param resolver the data resolver
+         * @param info image property bind info from your xml config
+         */
+        void apply(ImageView view, IDataResolver resolver, DataBindParser.ImagePropertyBindInfo info);
+
+        void apply(ImageView view,String url);
+    }
+
+    public static class SimpleImagePropertyApplier implements IImagePropertyApplier{
+        @Override
+        public void apply(ImageView view, IDataResolver resolver, DataBindParser.ImagePropertyBindInfo info) {
+        }
+
+        @Override
+        public void apply(ImageView view, String url) {
+        }
+    }
+
 }
