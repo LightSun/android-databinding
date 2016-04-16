@@ -135,7 +135,7 @@ if you are a chinese developer or know chinese.  please click  [here](http://blo
    see it [here](http://blog.csdn.net/pkjjun2012/article/details/50949306). this currently only have chinese doc.
 
 ## refer lib
-[android-common-utils](https://github.com/LightSun/android-common-utils)
+[android-common-util-light](https://github.com/LightSun/android-common-util-light)
 
 ## TODO
    * support gesture image (also nested in viewpager)
