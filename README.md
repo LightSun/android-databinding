@@ -18,6 +18,10 @@ this framework.
 
 ## Features
 - you can apply image property (round,borderColor,borderWidth,circle) by you like now.
+  so to apply image property you must call like this. 
+ ``` java
+ DataBindingFactory.setImagePropertyApplier(new VolleyImageApplier());
+ ```
 
 - supported by plugin and xml schema file. 
 - support for bind data and event handler by xml. but you must call bind method in java code.
@@ -59,7 +63,6 @@ this framework.
     String IMGAE_URL               =    "img_url";
     String IMGAE_BITMAP            =    "img_bitmap";
     String IMGAE_DRAWABLE          =    "img_drawable";
-    String IMGAE_ROUND_BUILDER     =    "img_round_builder";
     
    //ps:  and also support self-attrs 
   ```
@@ -115,7 +118,7 @@ this framework.
  gradle config:
 ``` java
 dependencies {
-    compile 'com.heaven7.databinding:android-databinding:1.1.0'
+    compile 'com.heaven7.databinding:android-databinding:1.1.5'
 }
 
 ``` 
