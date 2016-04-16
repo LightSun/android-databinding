@@ -20,7 +20,7 @@ this framework.
 - you can apply image property (round,borderColor,borderWidth,circle) by you like now.
   so to apply image property you must call like this. 
  ``` java
- DataBindingFactory.setImagePropertyApplier(new VolleyImageApplier());
+ DataBindingFactory.setImagePropertyApplier(new VolleyImageApplier()); //here i just use volley to load
  ```
 
 - supported by plugin and xml schema file. 
