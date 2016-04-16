@@ -17,6 +17,8 @@ this framework.
  android studio plugin and the xml schema of config file which are used for android-databinding framework is now available  .
 
 ## Features
+- you can apply image property (round,borderColor,borderWidth,circle) by you like now.
+
 - supported by plugin and xml schema file. 
 - support for bind data and event handler by xml. but you must call bind method in java code.
 - support for notify data change.
