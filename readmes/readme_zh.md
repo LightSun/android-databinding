@@ -21,6 +21,10 @@
 ## 框架特点
 
 - 图片属性如何应用可以自定义了。也就是说你可以用自己喜欢的图片加载库，glide或者facebook fresco 或者image loader等库去加载。
+  比如，demo中我用volley去加载。
+ ```java
+ DataBindingFactory.setImagePropertyApplier(new VolleyImageApplier());
+ ```
 
 - 支持android开发中常用的数据绑定，比如控件的背景，文字，文字颜色，文字大小，图片（圆角边框，默认图,错误图等）.
 -
@@ -128,9 +132,6 @@ dependencies {
 如果你是个中国的开发者，或者熟悉汉语。 请点击。 [here](http://blog.csdn.net/pkjjun2012/article/details/50286621) to see more easier.
 [中文文档](http://download.csdn.net/detail/pkjjun2012/9352397)
 
-## TODO
-   
-   * optimize the plugin to use easier.
    
 ## issue
    * 这个框架我会尽力去维护。如果你有好的建议或者idea,请告诉我。Thanks! 
