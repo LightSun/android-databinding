@@ -19,6 +19,9 @@
  
 
 ## 框架特点
+
+- 图片属性如何应用可以自定义了。也就是说你可以用自己喜欢的库，glide或者facebook fresco 或者image loader等库去加载。
+
 - 支持android开发中常用的数据绑定，比如控件的背景，文字，文字颜色，文字大小，图片（圆角边框，默认图,错误图等）.
 -
 - 支持常用事件的绑定，支持自定义属性，自定义事件的绑定（需要注册）。支持对象数据改变后调用notify通知.
@@ -112,7 +115,7 @@
  gradle config:
 ``` java
 dependencies {
-    compile 'com.heaven7.databinding:android-databinding:1.1.0'
+    compile 'com.heaven7.databinding:android-databinding:1.1.5'
 }
 
 ``` 
@@ -126,7 +129,7 @@ dependencies {
 [中文文档](http://download.csdn.net/detail/pkjjun2012/9352397)
 
 ## TODO
-   * 支持adapter item 左滑右滑.
+   
    * optimize the plugin to use easier.
    
 ## issue
