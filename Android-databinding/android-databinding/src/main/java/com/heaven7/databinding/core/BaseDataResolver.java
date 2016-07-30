@@ -24,10 +24,9 @@ import java.util.List;
 @Hide
 public class BaseDataResolver implements IDataResolver {
 
-    private static boolean sEnableReflectCache = true;
+    private static boolean sEnableReflectCache = false;
 
     private static final SparseArray<List<Method>> sMethods;
-    private static final SparseArray<Field> sFields;
 
     private IEventEvaluateCallback mEvaluateCallback;
     private WeakReference<Object> mWrf_CurrentBindingView;
@@ -51,7 +50,6 @@ public class BaseDataResolver implements IDataResolver {
 
     static{
         sMethods = new SparseArray<>();
-        sFields = new SparseArray<>();
     }
 
     public BaseDataResolver() {
@@ -63,8 +61,8 @@ public class BaseDataResolver implements IDataResolver {
     }
 
     @Override
-    public void putLongStandingData(String variable, Object data) {
-        mLongStandingObjs.put(variable,data);
+    public void putLongStandingData(String variable , Object data) {
+        mLongStandingObjs.put(variable , data);
     }
 
     @Override
@@ -245,7 +243,8 @@ public class BaseDataResolver implements IDataResolver {
 
     public static Field getField0(Class<?> clazz, String fieldName){
         fieldName = fieldName.trim();
-
+        // field seem to no need cache
+/*
         final int key = generateKey(clazz, fieldName,false);
         Field f ;
         if(sEnableReflectCache) {
@@ -256,9 +255,11 @@ public class BaseDataResolver implements IDataResolver {
         if(sEnableReflectCache) {
             sFields.put(key, f);
         }
-        return f;
+        return f;*/
+        return ReflectUtil.getFieldRecursiveLy(clazz,fieldName);
     }
-
+//TODO 使用类似cglib 来优化反射调用？ lru ?
+    /** get the public methods of the class */
     public static List<Method> getMethods(Class<?> clazz, String methodname) {
         methodname = methodname.trim();
         int key = generateKey(clazz, methodname,true);

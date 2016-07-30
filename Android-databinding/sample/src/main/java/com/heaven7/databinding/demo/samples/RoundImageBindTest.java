@@ -28,6 +28,7 @@ public class RoundImageBindTest extends BaseActivity {
     }
     @Override
     protected void doBind() {
+       // sun.misc.Unsafe unsafe = sun.misc.Unsafe.getUnsafe();
         //deprecated   mDataBinder.bind(R.id.eniv, false, new ImageParam(30f, Test.URLS[0]) );
         mDataBinder.bind(R.id.eniv2, false, new ImageParam(Test.URLS[1]),new ClickHandler(getToaster()) );
     }

@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class ReflectUtil {
 
+    /** the field can be private */
     public static Field getFieldRecursiveLy(Class<?> clazz , String fieldName){
         Field f = null;
         try {
@@ -33,6 +34,7 @@ public class ReflectUtil {
         return f;
     }
 
+    /** get the all public methods */
     public static List<Method> getMethods(Class<?> clazz,String methodName){
         List<Method> list = new ArrayList<>();
         Method[] ms = clazz.getMethods();

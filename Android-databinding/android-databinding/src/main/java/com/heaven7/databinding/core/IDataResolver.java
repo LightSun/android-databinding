@@ -14,14 +14,14 @@ public interface IDataResolver extends IVariableResolver,IAdapterBindTracker,IRe
 	/** field can be private */
     Field getField(Class<?> clazz, String fieldName) throws DataBindException;
 
+    //may burden,mMethod must be public
+    List<Method> getMethod(Class<?> clazz, String methodname) throws DataBindException;
+
     /** put alias-classname */
     void putClassname(String alias, String classname);
 
     /**@param variable  may be static classname */
     String getClassname(String variable) throws DataBindException;
-
-    //may burden,mMethod must be public
-    List<Method> getMethod(Class<?> clazz, String methodname) throws DataBindException;
 
    // IDataBinder getDataBinder();
 
