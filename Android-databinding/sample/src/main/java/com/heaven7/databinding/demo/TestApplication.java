@@ -13,8 +13,10 @@ public class TestApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        // init volley
         RequestManager.init(this);
+
+        //init image property applier.(here just use volley)
         DataBindingFactory.setImagePropertyApplier(new VolleyImageApplier());
     }
 }

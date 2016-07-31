@@ -14,6 +14,7 @@ import com.heaven7.databinding.core.IDataResolver;
 import com.heaven7.databinding.core.xml.elements.ImagePropertyElement;
 
 /**
+ * this is a image property applier. just use volley to load image
  * Created by heaven7 on 2016/4/16.
  */
 public class VolleyImageApplier implements DataBindingFactory.IImagePropertyApplier {

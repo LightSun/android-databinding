@@ -8,6 +8,7 @@ import android.view.View;
 import com.heaven7.adapter.AdapterManager;
 import com.heaven7.adapter.ISelectable;
 import com.heaven7.anno.Hide;
+import com.heaven7.databinding.core.internal.ReflectPool;
 import com.heaven7.databinding.util.ReflectUtil;
 import com.heaven7.databinding.util.ViewUtil;
 import com.heaven7.xml.ObjectMap;
@@ -24,9 +25,7 @@ import java.util.List;
 @Hide
 public class BaseDataResolver implements IDataResolver {
 
-    private static boolean sEnableReflectCache = false;
-
-    private static final SparseArray<List<Method>> sMethods;
+    private final ReflectPool mReflectPool;
 
     private IEventEvaluateCallback mEvaluateCallback;
     private WeakReference<Object> mWrf_CurrentBindingView;
@@ -47,12 +46,9 @@ public class BaseDataResolver implements IDataResolver {
     private SparseArray<WeakReference<AdapterManager<? extends ISelectable>>> mAdapterManagerMap;
     //here use WeakSparseArray must cause NullPointerException . why?
 
-
-    static{
-        sMethods = new SparseArray<>();
-    }
-
     public BaseDataResolver() {
+        mReflectPool = new ReflectPool(DataBindingConfig.sMaxReflectMethodSize);
+
         mEventHandleVars = new ArrayList<>(4);
         mClassnameMap = new ObjectMap<>(10);
         mObjectMap = new ObjectMap<>(6);
@@ -206,12 +202,12 @@ public class BaseDataResolver implements IDataResolver {
     }
 
     @Override
-    public Field getField(Class<?> clazz, String fieldName) throws DataBindException {
-        return getField0(clazz,fieldName);
+    public Field getField(Class<?> clazz, String fieldName){
+        return  ReflectUtil.getFieldRecursiveLy(clazz, fieldName.trim());
     }
     @Override
-    public List<Method> getMethod(Class<?> clazz, String methodname) throws DataBindException {
-        return getMethods(clazz,methodname);
+    public List<Method> getMethod(Class<?> clazz, String methodname){
+        return mReflectPool.getMethods(clazz, methodname.trim());
     }
 
     @Override
@@ -228,53 +224,5 @@ public class BaseDataResolver implements IDataResolver {
     }
 
     //================================= static methods =========================================//
-
-    public static boolean isEnableReflectCache() {
-        return sEnableReflectCache;
-    }
-    public static void setEnableReflectCache(boolean enable) {
-        BaseDataResolver.sEnableReflectCache = enable;
-    }
-
-    /** @param name filed name or method name */
-    private static int generateKey(Class<?> clazz, String name,boolean method){
-        return  ( clazz.getName() + "_"+ ( method ? "method_"+ name : "field_"+ name )).hashCode();
-    }
-
-    public static Field getField0(Class<?> clazz, String fieldName){
-        fieldName = fieldName.trim();
-        // field seem to no need cache
-/*
-        final int key = generateKey(clazz, fieldName,false);
-        Field f ;
-        if(sEnableReflectCache) {
-            f = sFields.get(key);
-            if (f != null) return f;
-        }
-        f = ReflectUtil.getFieldRecursiveLy(clazz,fieldName);
-        if(sEnableReflectCache) {
-            sFields.put(key, f);
-        }
-        return f;*/
-        return ReflectUtil.getFieldRecursiveLy(clazz,fieldName);
-    }
-//TODO 使用类似cglib 来优化反射调用？ lru ?
-    /** get the public methods of the class */
-    public static List<Method> getMethods(Class<?> clazz, String methodname) {
-        methodname = methodname.trim();
-        int key = generateKey(clazz, methodname,true);
-        List<Method> list;
-
-        if(sEnableReflectCache) {
-            list = sMethods.get(key);
-            if (list != null) {
-                return list;
-            }
-        }
-        list = ReflectUtil.getMethods(clazz, methodname);
-        if(sEnableReflectCache)
-            sMethods.put(key , list);
-        return list;
-    }
 
 }

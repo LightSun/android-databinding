@@ -1,9 +1,15 @@
 package com.heaven7.databinding.core.expression;
 
 
+import com.heaven7.databinding.core.DataBindingConfig;
+
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * the expression parser
+ * @author heaven7
+ */
 public final class ExpressionParser {
 	
 	static boolean sDebug = false;
@@ -28,8 +34,6 @@ public final class ExpressionParser {
 	public static final int TAG_SQUARE_LEFT   = 4;
 	public static final int TAG_SQUARE_RIGHT  = 5;
 	
-	private static final ParserConfig DEFAULT_CONGIG = new ParserConfig();
-	
 	private static InternalPool sPool;
 
 	private static final List<int[]> sBigQuotes;
@@ -38,7 +42,8 @@ public final class ExpressionParser {
 		sBigQuotes = new ArrayList<>(3);
 	}
 	/** set the parser config , this is useful when parse expression in databinding
-	 * @see {@link ParserConfig} */
+	 * <p>use {@link com.heaven7.databinding.core.DataBindingConfig} instead </p> */
+	@Deprecated
 	public static void setParserConfig(ParserConfig config){
 		if(sPool!= null){
 			sPool.clearAll();
@@ -47,7 +52,11 @@ public final class ExpressionParser {
 		sPool = new InternalPool(config);
 	}
 	/*package*/ static InternalPool getInternalPool(){
-		return sPool != null ? sPool : (sPool = new InternalPool(DEFAULT_CONGIG));
+		if(sPool == null){
+			sDebug = DataBindingConfig.sParserConfig.debug;
+			sPool = new InternalPool(DataBindingConfig.sParserConfig);
+		}
+		return sPool ;
 	}
 
 	public static void recycleIfNeed(IExpression expression){
@@ -75,7 +84,7 @@ public final class ExpressionParser {
 //xxx ? {android:anim/xxx} : xxx2
 		// parse  ? :
 		int index_problem = str.indexOf("?");
-		//may have : {android:anim/xxx}, may cause bug. //TODO how to differentiate ' ? :' with '{@android:color/xxx}'   ?
+		//may have : {android:anim/xxx}, may cause bug.
 
 		/** just test '? :' with nested "{@android:color/holo_red_light}" :
 		 IDataResolver resolver = new BaseDataResolver();
@@ -88,7 +97,8 @@ public final class ExpressionParser {
 		 */
 		//index of ' : '
 		int index_colon = -1;
-		//find all pair of '{ }'
+		//find all pair of '{ }' nest '? : ' musy  use  big quote '{ }'
+		//mean: resolved: how to differentiate ' ? :' with '{@android:color/xxx}'   ?
 		List<int[]> bigList = findAllBigQuote(str);
 		if(bigList != null && bigList.size() >0){
 			 int[] arr; //big quote index '{ } '
@@ -106,7 +116,6 @@ public final class ExpressionParser {
 					 }
 				 }
 			 }
-			bigList.clear();
 		}else {
 			index_colon = str.indexOf(":");
 		}
@@ -129,6 +138,7 @@ public final class ExpressionParser {
 	}
 
 	private static List<int[]> findAllBigQuote(String str) {
+		sBigQuotes.clear();
 		//nested  '{ }' is not support , such as: '{xxx {xxx}xxx}'
 		int index_big_quote_l;
 		int index_big_quote_r;

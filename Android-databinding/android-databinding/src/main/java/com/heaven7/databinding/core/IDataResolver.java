@@ -12,10 +12,10 @@ import java.util.List;
 public interface IDataResolver extends IVariableResolver,IAdapterBindTracker,IResetable {
 
 	/** field can be private */
-    Field getField(Class<?> clazz, String fieldName) throws DataBindException;
+    Field getField(Class<?> clazz, String fieldName);
 
     //may burden,mMethod must be public
-    List<Method> getMethod(Class<?> clazz, String methodname) throws DataBindException;
+    List<Method> getMethod(Class<?> clazz, String methodname);
 
     /** put alias-classname */
     void putClassname(String alias, String classname);
