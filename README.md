@@ -1,4 +1,5 @@
 # this lib will not uphold. if you are interested in 'Data-Binding' please move to [Data-Mediator](https://github.com/LightSun/data-mediator). <br>
+# 这个库将不再维护。如果你对数据绑定感兴趣。推荐你去[Data-Mediator](https://github.com/LightSun/data-mediator). 这个库更加强大.
 
 ## android-databinding
 this framework is now can be used in your app. By test and test,by find bug and fix i think it is now can work with well. it helps you fast bind data and event. <b>Plugin and xml schema file for this framework can be used now. </b>
